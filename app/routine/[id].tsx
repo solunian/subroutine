@@ -1,11 +1,11 @@
-import { Link } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function HomeScreen() {
+export default function DetailsScreen() {
+  const { id } = useLocalSearchParams();
   return (
     <View style={styles.container}>
-      <Text>Home</Text>
-      <Link href="/routine/1">View routine 1</Link>
+      <Text>Details for Routine {id}</Text>
     </View>
   );
 }
