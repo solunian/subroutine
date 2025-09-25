@@ -1,3 +1,17 @@
+# types of subroutines
+- dot. tap for each X done.
+- loop. percentage slider.
+- torch. tap on and tap off. for continuous things like sleeping.
+- nudge. reminder with exhaustive scheduability
+- ping. remind a friend on X.
+- summit. long term goal, requires blaze (trail maker) with dot/loop trackers.
+
+self-defined lychees for these subroutines!
+
+show friends completed/defined lychees
+
+sleep conditions: lenient but upset eg sleeping past 12
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
