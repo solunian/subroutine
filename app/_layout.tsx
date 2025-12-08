@@ -1,35 +1,56 @@
+import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import "react-native-reanimated";
 
+import { SplashScreenController } from "@/components/splash-screen-controller";
+import { useColorScheme } from "react-native";
+import { useAuthContext } from "@/hooks/use-auth-context";
+import AuthProvider from "@/providers/auth-provider";
+import * as SplashScreen from "expo-splash-screen";
+
+// Makes the native splash screen (configured in app.json) remain visible until hideAsync is called.
 SplashScreen.preventAutoHideAsync();
 
+// Separate RootNavigator so we can access the AuthContext
+function RootNavigator() {
+  const { isLoggedIn } = useAuthContext();
+
+  return (
+    <Stack>
+      <Stack.Protected guard={isLoggedIn}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={!isLoggedIn}>
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Screen name="+not-found" />
+    </Stack>
+  );
+}
+
 export default function RootLayout() {
+  const colorScheme = useColorScheme();
+
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hide();
-    }
-  }, [loaded]);
-
   if (!loaded) {
+    // Async font loading only occurs in development.
     return null;
   }
 
   return (
-    <NativeTabs>
-      <NativeTabs.Trigger name="index">
-        <Label>Home</Label>
-        <Icon sf="house.fill" drawable="custom_android_drawable" />
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="settings">
-        <Icon sf="gear" drawable="custom_settings_drawable" />
-        <Label>Settings</Label>
-      </NativeTabs.Trigger>
-    </NativeTabs>
+    <>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <AuthProvider>
+          <SplashScreenController />
+          <RootNavigator />
+          <StatusBar style="auto" />
+        </AuthProvider>
+      </ThemeProvider>
+    </>
   );
 }
