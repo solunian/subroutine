@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
+  import Avatar from "$lib/components/avatar.svelte";
   import type { SubmitFunction } from "@sveltejs/kit";
 
   // ...
@@ -11,8 +12,7 @@
   let fullName: string = $derived(profile?.full_name ?? "");
   let username: string = $derived(profile?.username ?? "");
   let website: string = $derived(profile?.website ?? "");
-
-  // ...
+  let avatar_url: string = $derived(profile?.avatar_url ?? "");
 
   const handleSubmit: SubmitFunction = () => {
     loading = true;
@@ -37,7 +37,15 @@
     action="?/update"
     use:enhance={handleSubmit}
     bind:this={profileForm}>
-    // ...
+    <div class="flex w-full justify-center">
+      <Avatar
+        {supabase}
+        bind:url={avatar_url}
+        size={10}
+        onupload={() => {
+          profileForm.requestSubmit();
+        }} />
+    </div>
 
     <div>
       <label for="email">Email</label>
