@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
+  import { invalidate } from "$app/navigation";
   import PasswordInput from "$lib/components/password_input.svelte";
   import type { PageProps, SubmitFunction } from "./$types";
 
@@ -14,6 +15,7 @@
     return async ({ update, result }) => {
       loading = false;
       success = result.type === "success";
+      invalidate("supabase:auth");
       update({ reset: false });
     };
   };
