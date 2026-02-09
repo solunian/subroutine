@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { invalidate } from "$app/navigation";
   import type { PageProps } from "./$types";
 
   let { data }: PageProps = $props();
@@ -13,7 +14,7 @@ subroutine ~
 <div class="flex flex-col">
   {#if data.session}
     <a href="/account">/account</a>
-    <a href="/signout" data-sveltekit-reload>/signout</a>
+    <a href="/signout" onclick={() => invalidate("supabase:auth")}>/signout</a>
   {:else}
     <a href="/signin">/signin</a>
     <a href="/signup">/signup</a>

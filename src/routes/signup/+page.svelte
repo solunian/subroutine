@@ -39,7 +39,7 @@
     <PasswordInput name="password" required />
   </div>
 
-  <button type="submit">
+  <button type="submit" disabled={loading}>
     {#if success}
       success
     {:else if loading}
