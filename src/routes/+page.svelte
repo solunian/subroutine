@@ -13,6 +13,7 @@ subroutine ~
 <div class="flex flex-col">
   {#if data.session}
     <a href="/account">/account</a>
+    <a href="/signout" data-sveltekit-reload>/signout</a>
   {:else}
     <a href="/signin">/signin</a>
     <a href="/signup">/signup</a>
