@@ -1,16 +1,20 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
+  import PasswordInput from "$lib/components/password_input.svelte";
   import type { PageProps, SubmitFunction } from "./$types";
 
   let { form }: PageProps = $props();
 
+  let success = $state(false);
   let loading = $state(false);
 
-  const handleSubmit: SubmitFunction = () => {
+  const submit: SubmitFunction = () => {
     loading = true;
-    return async ({ update }) => {
-      update();
+
+    return async ({ update, result }) => {
       loading = false;
+      success = result.type === "success";
+      update({ reset: false });
     };
   };
 </script>
@@ -19,27 +23,29 @@
   <title>signin</title>
 </svelte:head>
 
-<form class="flex flex-col gap-2" method="POST" use:enhance={handleSubmit}>
-  {#if form?.message !== undefined}
-    <div class="success {form?.success ? '' : 'fail'}">
-      {form?.message}
-    </div>
+<form class="flex flex-col gap-2" method="POST" use:enhance={submit}>
+  {#if form?.message}
+    {form.message}
   {/if}
   <div>
     <label for="email">email address</label>
-    <input name="email" type="email" />
+    <input name="email" type="email" required />
   </div>
   {#if form?.errors?.email}
-    <span class="error flex items-center text-sm">
-      {form?.errors?.email}
-    </span>
+    <span>{form?.errors?.email}</span>
   {/if}
   <div>
     <label for="password">password</label>
-    <input name="password" type="password" />
+    <PasswordInput name="password" required />
   </div>
 
-  <button class="button primary block" type="submit">
-    {loading ? "loading" : "signin"}
+  <button type="submit">
+    {#if success}
+      success
+    {:else if loading}
+      loading
+    {:else}
+      sign in
+    {/if}
   </button>
 </form>
