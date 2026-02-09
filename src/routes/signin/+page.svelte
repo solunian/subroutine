@@ -45,7 +45,7 @@
     {:else if loading}
       loading
     {:else}
-      sign in
+      signin
     {/if}
   </button>
 </form>

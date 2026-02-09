@@ -41,6 +41,5 @@ export const actions: Actions = {
     }
 
     return { success: true };
-    redirect(303, "/");
   },
 };
