@@ -26,19 +26,18 @@
 </svelte:head>
 
 <form class="flex flex-col gap-2" method="POST" use:enhance={submit}>
-  {#if form?.message}
-    {form.message}
-  {/if}
+  {form?.message}
+
   <div>
     <label for="email">email address</label>
     <input name="email" type="email" required />
+    {form?.errors?.email}
   </div>
-  {#if form?.errors?.email}
-    <span>{form?.errors?.email}</span>
-  {/if}
+
   <div>
     <label for="password">password</label>
     <PasswordInput name="password" required />
+    {form?.errors?.password}
   </div>
 
   <button type="submit" disabled={loading}>

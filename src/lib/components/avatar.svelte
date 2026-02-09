@@ -10,11 +10,11 @@
   }
   let { size = 10, url = $bindable(), supabase, onupload }: Props = $props();
 
-  let avatarUrl: string | null = $state(null);
+  let avatar_url: string | null = $state(null);
   let uploading = $state(false);
   let files: FileList | undefined = $state();
 
-  const downloadImage = async (path: string) => {
+  const download_image = async (path: string) => {
     try {
       const { data, error } = await supabase.storage.from("avatars").download(path);
 
@@ -23,7 +23,7 @@
       }
 
       const url = URL.createObjectURL(data);
-      avatarUrl = url;
+      avatar_url = url;
     } catch (error) {
       if (error instanceof Error) {
         console.log("Error downloading image: ", error.message);
@@ -31,7 +31,7 @@
     }
   };
 
-  const uploadAvatar = async () => {
+  const upload_avatar = async () => {
     try {
       uploading = true;
 
@@ -63,33 +63,27 @@
   };
 
   $effect(() => {
-    if (url) downloadImage(url);
+    if (url) download_image(url);
   });
 </script>
 
 <div>
-  {#if avatarUrl}
-    <img
-      src={avatarUrl}
-      alt={avatarUrl ? "Avatar" : "No image"}
-      class="avatar image"
-      style="height: {size}em; width: {size}em;" />
+  {#if avatar_url}
+    <img src={avatar_url} alt="avatar_url" style="height: {size}em; width: {size}em;" />
   {:else}
-    <div class="avatar no-image" style="height: {size}em; width: {size}em;"></div>
+    <div style="height: {size}em; width: {size}em;"></div>
   {/if}
-  <input type="hidden" name="avatarUrl" value={url} />
+  <input type="hidden" name="avatar_url" value={url} />
 
-  <div style="width: {size}em;">
-    <label class="button primary block" for="single">
-      {uploading ? "Uploading ..." : "Upload"}
-    </label>
+  <div style="width: {size}em;" class="relative">
+    <label for="single">{uploading ? "uploading" : "upload"}</label>
     <input
-      style="visibility: hidden; position:absolute;"
-      type="file"
       id="single"
+      class="absolute hidden"
+      type="file"
       accept="image/*"
       bind:files
-      onchange={uploadAvatar}
+      onchange={upload_avatar}
       disabled={uploading} />
   </div>
 </div>
