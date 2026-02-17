@@ -20,3 +20,18 @@ because several arcs = ring!
 - semaphore. an increment/decrement count.
 
 no images. but can upload image into ascii art??
+
+## cgp grey habit tracking notes
+
+- improve/change/constant-ify
+  - typically brainstorming for sleep, exercise, diet, work
+- daily trackers
+  - order list in decreasing priority
+  - allow partial credit
+  - allow for every day of the week
+- daily check-in/journaling
+  - location marker
+  - gratitude. BE SPECIFIC.
+  - other thoughts.
+  - ONE THING THAT WENT WELL DURING THE DAY.
+- theme (essentially summit, directory/ordering for other subroutines into a summit)
