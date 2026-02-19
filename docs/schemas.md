@@ -32,6 +32,8 @@ all items must have:
 - uuid (owner)
   - only owner can delete!
 - time
+  - start, current, end
+  - deadline
 - location (nullable)
 - visiblity
   - view type: private (default), friends, public
