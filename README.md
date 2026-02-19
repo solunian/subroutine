@@ -18,6 +18,7 @@ because several arcs = ring!
   - all people must "pay" into this amount to have a starting balance
   - allow several "currencies" with fixed trade rates
 - semaphore. an increment/decrement count.
+- journal.
 
 no images. but can upload image into ascii art??
 
