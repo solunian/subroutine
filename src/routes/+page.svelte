@@ -13,7 +13,7 @@ subroutine ~
 
 <div class="flex flex-col">
   {#if data.session}
-    <a href="/account">/account</a>
+    <a href="/settings">/settings</a>
     <a href="/signout" onclick={() => invalidate("supabase:auth")}>/signout</a>
   {:else}
     <a href="/signin">/signin</a>
