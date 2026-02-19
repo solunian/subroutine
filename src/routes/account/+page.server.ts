@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select(`username, full_name, website, avatar_url`)
+    .select(`username, name, website, avatar_url`)
     .eq("id", session.user.id)
     .single();
 
@@ -23,15 +23,15 @@ export const actions: Actions = {
   update: async ({ request, locals: { supabase, safeGetSession } }) => {
     const fdata = await request.formData();
 
-    const full_name = v.safeParse(v.nullable(TrimNormalStrSchema), fdata.get("full_name"));
+    const name = v.safeParse(v.nullable(TrimNormalStrSchema), fdata.get("name"));
     const username = v.safeParse(v.nullable(TrimNormalStrSchema), fdata.get("username"));
     const website = v.safeParse(v.nullable(TrimNormalStrSchema), fdata.get("website"));
     const avatar_url = v.safeParse(v.nullable(TrimNormalStrSchema), fdata.get("avatar_url"));
 
-    if (!full_name.success || !username.success || !website.success || !avatar_url) {
+    if (!name.success || !username.success || !website.success || !avatar_url) {
       return fail(400, {
         errors: {
-          full_name: full_name.issues && v.summarize(full_name.issues),
+          name: name.issues && v.summarize(name.issues),
           username: username.issues && v.summarize(username.issues),
           website: website.issues && v.summarize(website.issues),
           avatar_url: avatar_url.issues && v.summarize(avatar_url.issues),
@@ -42,7 +42,7 @@ export const actions: Actions = {
     const { session } = await safeGetSession();
     const { error } = await supabase.from("profiles").upsert({
       id: session?.user.id,
-      full_name: full_name.output,
+      name: name.output,
       username: username.output,
       website: website.output,
       avatar_url: avatar_url.output,
@@ -54,7 +54,7 @@ export const actions: Actions = {
     }
 
     return {
-      full_name: full_name.output,
+      name: name.output,
       username: username.output,
       website: website.output,
       avatar_url: avatar_url.output,

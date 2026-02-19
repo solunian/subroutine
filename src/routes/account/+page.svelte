@@ -9,7 +9,7 @@
 
   let loading = $state(false);
   let profileForm: HTMLFormElement;
-  let full_name: string = $derived(profile?.full_name ?? "");
+  let name: string = $derived(profile?.name ?? "");
   let username: string = $derived(profile?.username ?? "");
   let website: string = $derived(profile?.website ?? "");
   let avatar_url: string = $derived(profile?.avatar_url ?? "");
@@ -41,9 +41,9 @@
     </div>
 
     <div>
-      <label for="fullName">Full Name</label>
-      <input name="full_name" type="text" value={form?.full_name ?? full_name} />
-      {form?.errors?.full_name}
+      <label for="name">Full Name</label>
+      <input name="name" type="text" value={form?.name ?? name} />
+      {form?.errors?.name}
     </div>
 
     <div>
