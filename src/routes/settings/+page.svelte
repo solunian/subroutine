@@ -61,5 +61,6 @@
     <button type="submit" disabled={loading}>{loading ? "loading" : "update"}</button>
   </form>
 
-  <a href="/signout" onclick={() => invalidate("supabase:auth")}>signout</a>
+  <a href="/signout" onclick={() => invalidate("supabase:auth")} data-sveltekit-preload-data="off"
+    >/signout</a>
 </div>
