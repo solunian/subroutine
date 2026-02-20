@@ -1,5 +1,6 @@
 <script lang="ts">
   import { invalidate } from "$app/navigation";
+  import UsernameGoto from "$lib/components/username_goto.svelte";
   import type { PageProps } from "./$types";
 
   let { data }: PageProps = $props();
@@ -10,6 +11,8 @@
 </svelte:head>
 
 subroutine ~
+
+<UsernameGoto />
 
 <div class="flex flex-col">
   {#if data.session}
