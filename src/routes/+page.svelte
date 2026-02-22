@@ -10,11 +10,9 @@
   <title>subroutine</title>
 </svelte:head>
 
-subroutine ~
-
 <UsernameGoto />
 
-<div class="flex flex-col">
+<div>
   {#if data.session}
     <a href="/settings">/settings</a>
     <a href="/signout" onclick={() => invalidate("supabase:auth")} data-sveltekit-preload-data="off"

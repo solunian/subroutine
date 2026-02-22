@@ -3,6 +3,7 @@
   import "../app.css";
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
+  import { page } from "$app/state";
 
   let { data, children } = $props();
   let { supabase, session } = $derived(data);
@@ -31,6 +32,10 @@
 </div>
 
 <div class="p-2">
+  <div class="py-2 font-nova text-3xl">
+    subroutine {page.url.pathname}
+  </div>
+
   {@render children()}
 </div>
 
