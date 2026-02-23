@@ -18,7 +18,3 @@ input {
 button {
   @apply border hover:cursor-pointer;
 }
-
-a {
-  @apply underline;
-}

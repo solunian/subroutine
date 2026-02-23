@@ -4,6 +4,7 @@
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
   import { page } from "$app/state";
+  import ReleaseStageBanner from "$lib/components/release_stage_banner.svelte";
 
   let { data, children } = $props();
   let { supabase, session } = $derived(data);
@@ -17,36 +18,19 @@
 
     return () => data.subscription.unsubscribe();
   });
-
-  // pre-alpha, alpha, beta, release candidate, general availability
-  const release_stage = "pre-alpha";
 </script>
 
 <svelte:head>
   <title>subroutine</title>
 </svelte:head>
 
-<div
-  class="pleated-stripes flex h-7 w-full flex-col items-center justify-center border-b border-gray-300 py-1 text-gray-500">
-  <span>{release_stage}</span>
-</div>
+<ReleaseStageBanner />
 
 <div class="p-2">
   <div class="py-2 font-nova text-3xl">
-    subroutine {page.url.pathname}
+    <a href="/">subroutine</a>
+    {page.url.pathname}
   </div>
 
   {@render children()}
 </div>
-
-<style>
-  .pleated-stripes {
-    background: repeating-linear-gradient(
-      45deg,
-      #ffeedd 0px,
-      #ffffff 15px,
-      #ffb366 15px,
-      #ffd9b3 30px
-    );
-  }
-</style>

@@ -10,16 +10,43 @@
   <title>subroutine</title>
 </svelte:head>
 
-<UsernameGoto />
+<main class="flex flex-col gap-2">
+  <UsernameGoto />
 
-<div>
   {#if data.session}
-    <a href="/settings">/settings</a>
-    <a href="/signout" onclick={() => invalidate("supabase:auth")} data-sveltekit-preload-data="off"
-      >/signout</a>
+    <div>
+      <a href="/settings">/settings</a>
+      <a
+        href="/signout"
+        onclick={() => invalidate("supabase:auth")}
+        data-sveltekit-preload-data="off">/signout</a>
+    </div>
+
+    <hr />
+    <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+      {#each data.subroutines as [sub, entries]}
+        <div class="flex flex-col gap-2 border p-2">
+          <div>
+            <h2>{sub.title} {`<${sub.type}>`}</h2>
+            <div>{sub.description}</div>
+          </div>
+
+          {#if entries}
+            <div class="border p-2">
+              <h2>entries</h2>
+              {#each entries as entry}
+                <div>{new Date(entry.created_at)}</div>
+              {/each}
+            </div>
+          {/if}
+        </div>
+      {/each}
+    </div>
   {:else}
-    <a href="/signin">/signin</a>
-    <a href="/signup">/signup</a>
-    <a href="/magiclink">/magiclink</a>
+    <div>
+      <a href="/signin">/signin</a>
+      <a href="/signup">/signup</a>
+      <a href="/magiclink">/magiclink</a>
+    </div>
   {/if}
-</div>
+</main>
