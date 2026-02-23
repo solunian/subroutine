@@ -1,6 +1,5 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import { invalidate } from "$app/navigation";
   import Avatar from "$lib/components/avatar.svelte";
   import type { SubmitFunction } from "@sveltejs/kit";
 
@@ -61,6 +60,5 @@
     <button type="submit" disabled={loading}>{loading ? "loading" : "update"}</button>
   </form>
 
-  <a href="/signout" onclick={() => invalidate("supabase:auth")} data-sveltekit-preload-data="off"
-    >/signout</a>
+  <a href="/signout" data-sveltekit-reload>/signout</a>
 </div>

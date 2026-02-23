@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { invalidate } from "$app/navigation";
   import UsernameGoto from "$lib/components/username_goto.svelte";
   import type { PageProps } from "./$types";
 
@@ -16,10 +15,7 @@
   {#if data.session}
     <div>
       <a href="/settings">/settings</a>
-      <a
-        href="/signout"
-        onclick={() => invalidate("supabase:auth")}
-        data-sveltekit-preload-data="off">/signout</a>
+      <a href="/signout" data-sveltekit-reload>/signout</a>
     </div>
 
     <hr />
