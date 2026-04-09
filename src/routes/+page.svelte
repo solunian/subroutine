@@ -1,4 +1,5 @@
 <script lang="ts">
+  import LineChart from "$lib/components/line_chart.svelte";
   import UsernameGoto from "$lib/components/username_goto.svelte";
   import type { PageProps } from "./$types";
 
@@ -27,6 +28,8 @@
             <div>{sub.description}</div>
           </div>
 
+          <LineChart {entries} />
+
           {#if entries}
             <div class="border p-2">
               <h2>entries</h2>
@@ -46,3 +49,10 @@
     </div>
   {/if}
 </main>
+
+<!-- <main>
+  <h2>Standard 16:9 Chart</h2>
+  <div class="">
+    <LineChart data={sampleData} aspect_ratio={16 / 9} />
+  </div>
+</main> -->
