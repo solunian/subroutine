@@ -3,6 +3,9 @@
 
   interface Entry {
     created_at: string;
+    data: {
+      value: number;
+    };
   }
 
   interface DataPoint {
@@ -13,9 +16,10 @@
   const margin = { left: 50, top: 20, right: 50, bottom: 20 };
 
   let {
+    type,
     entries = [],
     aspect_ratio = 16 / 9, // Default to widescreen aspect ratio
-  }: { entries: Entry[]; aspect_ratio?: number } = $props();
+  }: { type: string; entries: Entry[]; aspect_ratio?: number } = $props();
 
   // 1. State to hold the dynamic width of the parent container
   let containter_width = $state(0);
@@ -34,7 +38,11 @@
       (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
     );
     for (const [i, e] of sorted_entries.entries()) {
-      data.push({ time: new Date(e.created_at), value: i });
+      if (type === "dot") {
+        data.push({ time: new Date(e.created_at), value: i });
+      } else if (type === "semaphore") {
+        data.push({ time: new Date(e.created_at), value: e.data.value });
+      }
     }
     return data;
   });
@@ -118,6 +126,15 @@
     tooltip = null;
   }
 </script>
+
+<div class="flex justify-between border px-3 py-2 font-mono text-2xl">
+  {#if tooltip}
+    <span>{tooltip.data.value}</span>
+    <span>{tooltip.data.time.toLocaleDateString()}</span>
+  {:else}
+    <span>{sorted_data[sorted_data.length - 1]?.value ?? "∅"}</span>
+  {/if}
+</div>
 
 <div class="relative w-full" bind:clientWidth={containter_width}>
   {#if containter_width > 0}

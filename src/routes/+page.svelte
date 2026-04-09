@@ -28,7 +28,7 @@
             <div>{sub.description}</div>
           </div>
 
-          <LineChart {entries} />
+          <LineChart type={sub.type} {entries} />
 
           {#if entries}
             <div class="border p-2">
