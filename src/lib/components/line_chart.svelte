@@ -14,6 +14,9 @@
     value: number;
   }
 
+  const ranges = ["1W", "1M", "3M", "YTD", "1Y", "ALL"];
+  let current_range = $state("1W");
+
   const margin = { left: 40, top: 25, right: 40, bottom: 20 };
 
   let {
@@ -38,9 +41,14 @@
     const sorted_entries = entries.sort(
       (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
     );
+    if (type === "dot" && sorted_entries.length > 0) {
+      const day_before_first = new Date(sorted_entries[0].created_at);
+      day_before_first.setSeconds(day_before_first.getSeconds() - 1);
+      data.push({ time: day_before_first, value: 0 });
+    }
     for (const [i, e] of sorted_entries.entries()) {
       if (type === "dot") {
-        data.push({ time: new Date(e.created_at), value: i });
+        data.push({ time: new Date(e.created_at), value: i + 1 });
       } else if (type === "semaphore") {
         data.push({ time: new Date(e.created_at), value: e.data.value });
       }
@@ -82,13 +90,20 @@
       .range([Math.max(0, inner_height), 0]);
   });
 
-  let line_path = $derived(
-    d3
-      .line<DataPoint>()
-      .x((d) => x_scale(d.time))
-      .y((d) => y_scale(d.value))
-      .curve(d3.curveMonotoneX)(sorted_data) || ""
-  );
+  let line_path = $derived.by(() => {
+    let curve = d3.curveMonotoneX;
+    if (type === "dot") {
+      curve = d3.curveStepAfter;
+    }
+
+    return (
+      d3
+        .line<DataPoint>()
+        .x((d) => x_scale(d.time))
+        .y((d) => y_scale(d.value))
+        .curve(curve)(sorted_data) || ""
+    );
+  });
 
   // let x_axis_element: SVGGElement | undefined = $state();
   // let y_axis_element: SVGGElement | undefined = $state();
@@ -189,12 +204,15 @@
       </svg>
 
       <div class="flex justify-start gap-2 overflow-x-scroll font-mono sm:justify-center">
-        <button class="px-2">1W</button>
-        <button class="px-2">1M</button>
-        <button class="px-2">3M</button>
-        <button class="px-2">YTD</button>
-        <button class="px-2">1Y</button>
-        <button class="px-2">ALL</button>
+        {#each ranges as range_select}
+          <button
+            class={[
+              "px-2",
+              current_range === range_select &&
+                "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black",
+            ]}
+            onclick={() => (current_range = range_select)}>{range_select}</button>
+        {/each}
       </div>
     {:else}
       <NoData {height} />
