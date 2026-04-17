@@ -201,8 +201,12 @@
 
   let average = $derived.by(() => {
     if (view_data.length === 0) return 0;
-    const sum = view_data.reduce((acc, d) => acc + d.value, 0);
-    return sum / view_data.length;
+
+    // remove the line extenders from the average calculation
+    let view_data_slice = view_data.slice(1, -1);
+
+    const sum = view_data_slice.reduce((acc, d) => acc + d.value, 0);
+    return sum / view_data_slice.length;
   });
 
   function handle_mouse_move(event: MouseEvent) {
@@ -217,17 +221,21 @@
   }
 </script>
 
-avg: {average.toFixed(2)}
-
 <div class="flex justify-between border px-3 py-2 font-mono text-2xl">
   {#if tooltip_data}
     <div class="space-x-2">
       <span>{tooltip_data.data.value}</span>
     </div>
 
-    <span>{tooltip_data.data.time.toLocaleDateString()}</span>
+    <span>
+      {tooltip_data.data.time.getFullYear()}-{tooltip_data.data.time
+        .getMonth()
+        .toString()
+        .padStart(2, "0")}-{tooltip_data.data.time.getDay().toString().padStart(2, "0")}
+    </span>
   {:else}
     <span>{view_data[view_data.length - 1]?.value ?? "∅"}</span>
+    <span class="text-gray-500">{average.toFixed(2)}</span>
   {/if}
 </div>
 
@@ -241,13 +249,6 @@ avg: {average.toFixed(2)}
               d={line_path}
               transform={`translate(0, 0)`}
               class="fill-none stroke-purple-500 stroke-2" />
-          {/if}
-
-          {#if view_data.length > 0}
-            <path
-              d={line_path}
-              transform={`translate(0, 0)`}
-              class="fill-none stroke-purple-500 stroke-2" />
 
             <!-- New: Dotted average line -->
             <line
@@ -255,15 +256,25 @@ avg: {average.toFixed(2)}
               y1={y_scale(average)}
               x2={inner_width}
               y2={y_scale(average)}
-              class="stroke-gray-400 stroke-1 opacity-50"
+              class="stroke-gray-500 stroke-2 opacity-50"
               stroke-dasharray="5,5" />
           {/if}
 
           {#if tooltip_data}
             <g transform={`translate(${tooltip_data.x}, 0)`}>
-              <text text-anchor="middle" y="0" class=" fill-gray-500 text-sm"
-                >{tooltip_data.data.time.toLocaleTimeString()}</text>
-              <line x1={0} y1={10} x2={1} y2={height} class="stroke-gray-500 stroke-1" />
+              <text text-anchor="middle" y="0" class=" fill-gray-500 text-sm">
+                {tooltip_data.data.time
+                  .getHours()
+                  .toString()
+                  .padStart(2, "0")}:{tooltip_data.data.time
+                  .getMinutes()
+                  .toString()
+                  .padStart(2, "0")}:{tooltip_data.data.time
+                  .getSeconds()
+                  .toString()
+                  .padStart(2, "0")}
+              </text>
+              <line x1={0} y1={10} x2={1} y2={height} class="stroke-gray-500 stroke-2" />
             </g>
           {/if}
 
