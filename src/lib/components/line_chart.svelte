@@ -233,9 +233,11 @@
         .toString()
         .padStart(2, "0")}-{tooltip_data.data.time.getDay().toString().padStart(2, "0")}
     </span>
-  {:else}
-    <span>{view_data[view_data.length - 1]?.value ?? "∅"}</span>
+  {:else if view_data.length > 0}
+    <span>{view_data[view_data.length - 1].value}</span>
     <span class="text-gray-500">{average.toFixed(2)}</span>
+  {:else}
+    <span>{"∅"}</span>
   {/if}
 </div>
 
@@ -274,7 +276,7 @@
                   .toString()
                   .padStart(2, "0")}
               </text>
-              <line x1={0} y1={10} x2={1} y2={height} class="stroke-gray-500 stroke-2" />
+              <line x1={0} y1={10} x2={1} y2={height} class="stroke-gray-500 stroke-1" />
             </g>
           {/if}
 
