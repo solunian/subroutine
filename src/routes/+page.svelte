@@ -1,4 +1,5 @@
 <script lang="ts">
+  import LineChart from "$lib/components/line_chart.svelte";
   import UsernameGoto from "$lib/components/username_goto.svelte";
   import type { PageProps } from "./$types";
 
@@ -19,13 +20,15 @@
     </div>
 
     <hr />
-    <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+    <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
       {#each data.subroutines as [sub, entries]}
         <div class="flex flex-col gap-2 border p-2">
           <div>
             <h2>{sub.title} {`<${sub.type}>`}</h2>
             <div>{sub.description}</div>
           </div>
+
+          <LineChart type={sub.type} {entries} />
 
           {#if entries}
             <div class="border p-2">
@@ -46,3 +49,10 @@
     </div>
   {/if}
 </main>
+
+<!-- <main>
+  <h2>Standard 16:9 Chart</h2>
+  <div class="">
+    <LineChart data={sampleData} aspect_ratio={16 / 9} />
+  </div>
+</main> -->
