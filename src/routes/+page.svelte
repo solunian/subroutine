@@ -25,7 +25,7 @@
         <div class="flex flex-col gap-2 border p-2">
           <div>
             <h2>{sub.title} {`<${sub.type}>`}</h2>
-            <div>{sub.description}</div>
+            <!-- <div>{sub.description}</div> -->
           </div>
 
           <LineChart type={sub.type} {entries} />
