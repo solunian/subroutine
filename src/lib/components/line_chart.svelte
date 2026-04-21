@@ -202,6 +202,9 @@
   let average = $derived.by(() => {
     if (view_data.length === 0) return 0;
 
+    // special case when last data point is left of the range, use the last value (basically the line extender value)
+    if (view_data.length <= 2) return view_data[view_data.length - 1].value;
+
     // remove the line extenders from the average calculation
     let view_data_slice = view_data.slice(1, -1);
 

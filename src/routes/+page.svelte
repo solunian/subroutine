@@ -49,10 +49,3 @@
     </div>
   {/if}
 </main>
-
-<!-- <main>
-  <h2>Standard 16:9 Chart</h2>
-  <div class="">
-    <LineChart data={sampleData} aspect_ratio={16 / 9} />
-  </div>
-</main> -->
