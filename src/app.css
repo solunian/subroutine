@@ -12,8 +12,13 @@ body {
   @apply dark:bg-black dark:text-white;
 }
 
-input {
+input,
+select {
   @apply border pl-1;
+}
+
+textarea {
+  @apply border;
 }
 
 button {

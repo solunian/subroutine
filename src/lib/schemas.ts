@@ -13,3 +13,7 @@ export const PasswordSchema = v.pipe(
 
 // idk why this didnt work for nullable() like with the TrimNormalStrSchema. wtf...
 export const URLSchema = v.pipe(TrimNormalStrSchema, v.url("invalid url"));
+
+export const DateTimeSchema = v.pipe(TrimNormalStrSchema, v.isoDateTime("invalid iso datetime"));
+
+export const TimestampSchema = v.pipe(TrimNormalStrSchema, v.isoTimestamp("invalid iso timestamp"));
