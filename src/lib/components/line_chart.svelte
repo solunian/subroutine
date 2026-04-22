@@ -42,20 +42,18 @@
     return () => clearInterval(interval);
   });
 
-  let sorted_entries = $derived.by(() => {
-    const newly_sorted = entries.toSorted(
-      (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-    );
+  let processed_entries = $derived.by(() => {
+    const alr_sorted_entries = entries.slice();
 
     // set init values for dot type
     if (type === "dot") {
-      for (const [i, e] of newly_sorted.entries()) {
+      for (const [i, e] of alr_sorted_entries.entries()) {
         e.data = {
-          value: i + 1,
+          value: i,
         };
       }
     }
-    return newly_sorted;
+    return alr_sorted_entries;
   });
 
   let date_range = $derived.by(() => {
@@ -77,7 +75,7 @@
         start = new Date(current_time.getTime() - 365 * 24 * 60 * 60 * 1000);
         break;
       case "ALL":
-        start = new Date(sorted_entries.at(0)?.created_at ?? 0);
+        start = new Date(processed_entries.at(0)?.created_at ?? 0);
         break;
     }
     return { start, end: current_time };
@@ -87,12 +85,12 @@
     let data: DataPoint[] = [];
 
     let start_slice = 0;
-    for (; start_slice < sorted_entries.length; start_slice++) {
-      if (date_range.start <= new Date(sorted_entries[start_slice].created_at)) {
+    for (; start_slice < processed_entries.length; start_slice++) {
+      if (date_range.start <= new Date(processed_entries[start_slice].created_at)) {
         break;
       }
     }
-    const filtered_entries = sorted_entries.slice(start_slice);
+    const filtered_entries = processed_entries.slice(start_slice);
 
     if (filtered_entries.length > 0) {
       for (const e of filtered_entries) {
@@ -108,7 +106,7 @@
       });
     } else {
       // No data in range, show flat line from last data point
-      const last_entries = sorted_entries
+      const last_entries = processed_entries
         .filter((e) => new Date(e.created_at) < date_range.start)
         .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
       if (last_entries.length > 0) {

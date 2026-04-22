@@ -9,13 +9,19 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
   }
 
   const subroutines = [];
-  const sub_res = await supabase.from("subroutines").select("*").eq("user_id", session.user.id);
+  const sub_res = await supabase
+    .from("subroutines")
+    .select("*")
+    .eq("user_id", session.user.id)
+    .order("created_at");
   if (sub_res.error) {
     error(500, sub_res.error.message);
   }
 
   const entries_res = await Promise.all(
-    sub_res.data.map((sub) => supabase.from("entries").select("*").eq("subroutine_id", sub.id))
+    sub_res.data.map((sub) =>
+      supabase.from("entries").select("*").eq("subroutine_id", sub.id).order("created_at")
+    )
   );
 
   for (let i = 0; i < sub_res.data.length; i++) {
