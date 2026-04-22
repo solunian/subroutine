@@ -244,7 +244,7 @@
   {/if}
 </div>
 
-<div class="relative w-full space-y-4" bind:clientWidth={containter_width}>
+<div class="relative w-full space-y-4 font-mono" bind:clientWidth={containter_width}>
   {#if containter_width > 0}
     {#if entries.length > 0}
       <svg {width} {height}>
@@ -267,7 +267,7 @@
 
           {#if tooltip_data}
             <g transform={`translate(${tooltip_data.x}, 0)`}>
-              <text text-anchor="middle" y="0" class=" fill-gray-500 text-sm">
+              <text text-anchor="middle" y="0" class=" fill-gray-500 text-base">
                 {tooltip_data.data.time
                   .getHours()
                   .toString()
@@ -293,7 +293,7 @@
         </g>
       </svg>
 
-      <div class="flex justify-start gap-2 overflow-x-scroll font-mono sm:justify-center">
+      <div class="flex justify-start gap-2 overflow-x-scroll sm:justify-center">
         {#each ranges as range_select}
           <button
             class={[
