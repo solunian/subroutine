@@ -231,10 +231,9 @@
     </div>
 
     <span>
-      {tooltip_data.data.time.getFullYear()}-{tooltip_data.data.time
-        .getMonth()
+      {tooltip_data.data.time.getFullYear()}-{(tooltip_data.data.time.getMonth() + 1)
         .toString()
-        .padStart(2, "0")}-{tooltip_data.data.time.getDay().toString().padStart(2, "0")}
+        .padStart(2, "0")}-{tooltip_data.data.time.getDate().toString().padStart(2, "0")}
     </span>
   {:else if view_data.length > 0}
     <span>{view_data[view_data.length - 1].value}</span>

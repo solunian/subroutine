@@ -12,8 +12,8 @@
 
 <div class="flex from-white/50 to-black/50 text-right font-mono text-base">
   <span class="border bg-transparent px-2 py-1">
-    {time.getFullYear()}-{time.getMonth().toString().padStart(2, "0")}-{time
-      .getDay()
+    {time.getFullYear()}-{(time.getMonth() + 1).toString().padStart(2, "0")}-{time
+      .getDate()
       .toString()
       .padStart(2, "0")}
   </span>
