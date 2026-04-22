@@ -1,8 +1,16 @@
 // src/routes/+page.server.ts
 import { fail, redirect } from "@sveltejs/kit";
-import type { Actions } from "./$types";
+import type { Actions, PageServerLoad } from "./$types";
 import * as v from "valibot";
 import { DateTimeSchema, NormalStrSchema, TrimNormalStrSchema } from "$lib/schemas";
+
+export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
+  const { session } = await safeGetSession();
+
+  if (!session) {
+    redirect(303, "/");
+  }
+};
 
 export const actions: Actions = {
   default: async ({ request, locals: { supabase, safeGetSession } }) => {
@@ -26,10 +34,10 @@ export const actions: Actions = {
     }
 
     // db queries
-    const { user } = await safeGetSession();
+    const { session } = await safeGetSession();
 
     const { error } = await supabase.from("subroutines").insert({
-      user_id: user?.id,
+      user_id: session?.user?.id,
       type: type.output,
       title: title.output,
       description: description.output,
