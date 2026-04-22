@@ -240,7 +240,7 @@
     <span>{view_data[view_data.length - 1].value}</span>
     <span class="text-gray-500">{average.toFixed(2)}</span>
   {:else}
-    <span>{"∅"}</span>
+    <span>∅</span>
   {/if}
 </div>
 
@@ -252,7 +252,7 @@
           {#if view_data.length > 0}
             <path
               d={line_path}
-              transform={`translate(0, 0)`}
+              transform="translate(0, 0)"
               class="fill-none stroke-purple-500 stroke-2" />
 
             <!-- New: Dotted average line -->
@@ -294,7 +294,7 @@
       </svg>
 
       <div class="flex justify-start gap-2 overflow-x-scroll sm:justify-center">
-        {#each ranges as range_select}
+        {#each ranges as range_select (range_select)}
           <button
             class={[
               "px-2",

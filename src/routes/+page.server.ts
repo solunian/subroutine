@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
     return;
   }
 
-  let subroutines = [];
+  const subroutines = [];
   const sub_res = await supabase.from("subroutines").select("*").eq("user_id", session.user.id);
   if (sub_res.error) {
     error(500, sub_res.error.message);

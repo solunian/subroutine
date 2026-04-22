@@ -21,7 +21,7 @@
 
     <hr />
     <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-      {#each data.subroutines as [sub, entries]}
+      {#each data.subroutines as [sub, entries] (sub.id)}
         <div class="flex flex-col gap-2 border p-2">
           <div>
             <h2>{sub.title} {`<${sub.type}>`}</h2>
@@ -33,7 +33,7 @@
           {#if entries}
             <div class="border p-2">
               <h2>entries</h2>
-              {#each entries as entry}
+              {#each entries as entry (entry.id)}
                 <div>{new Date(entry.created_at)}</div>
               {/each}
             </div>

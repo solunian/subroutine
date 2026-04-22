@@ -1,6 +1,5 @@
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
-import { profile } from "console";
 
 export const load: PageServerLoad = async ({ params, locals: { safeGetSession, supabase } }) => {
   const { session } = await safeGetSession();
@@ -21,7 +20,7 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
   }
 
   // if logged in, load subroutines if identity or friend
-  let subroutines = [];
+  const subroutines = [];
   const sub_res = await supabase.from("subroutines").select("*").eq("user_id", profile_res.data.id);
   if (sub_res.error) {
     error(500, sub_res.error.message.toLowerCase());
