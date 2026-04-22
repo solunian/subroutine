@@ -13,7 +13,7 @@ body {
 }
 
 input {
-  @apply border;
+  @apply border pl-1;
 }
 
 button {

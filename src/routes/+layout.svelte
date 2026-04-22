@@ -3,8 +3,8 @@
   import "../app.css";
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
-  import { page } from "$app/state";
   import ReleaseStageBanner from "$lib/components/release_stage_banner.svelte";
+  import TimeInfo from "$lib/components/time_info.svelte";
 
   let { data, children } = $props();
   let { supabase, session } = $derived(data);
@@ -26,11 +26,15 @@
 
 <ReleaseStageBanner />
 
-<div class="p-2">
-  <div class="py-2 font-nova text-3xl">
-    <a href="/">subroutine</a>
-    {page.url.pathname}
-  </div>
+<div class="px-4 py-2">
+  <header
+    class="flex flex-col items-center justify-between gap-2 py-2 font-nova text-3xl sm:flex-row">
+    <a href="/" class="flex items-center gap-2">
+      <img src="/icons/favicon.png" alt="favicon" class="inline w-12" />subroutine
+    </a>
+
+    <TimeInfo />
+  </header>
 
   {@render children()}
 </div>

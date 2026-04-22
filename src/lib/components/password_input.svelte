@@ -11,7 +11,7 @@
   <input {name} type={password_hidden ? "password" : "text"} {required} class="pr-10" />
   <button
     type="button"
-    class="absolute top-1/2 right-3 -translate-y-1/2 stroke-black"
+    class="absolute top-1/2 right-3 -translate-y-1/2 border-none stroke-black"
     onclick={() => (password_hidden = !password_hidden)}>
     {#if password_hidden}
       <!-- eye slash -->

@@ -10,5 +10,5 @@
     goto(`/@${username_goto}`);
   }}>
   <input type="text" placeholder="username" bind:value={username_goto} required />
-  <button type="submit">goto</button>
+  <button type="submit" class="px-1">goto</button>
 </form>

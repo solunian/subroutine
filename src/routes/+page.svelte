@@ -11,13 +11,12 @@
 </svelte:head>
 
 <main class="flex flex-col gap-2">
-  <UsernameGoto />
-
   {#if data.session}
-    <div>
+    <nav class="flex flex-wrap items-center justify-center gap-2 p-2 sm:justify-start">
+      <UsernameGoto />
       <a href="/settings">/settings</a>
       <a href="/signout" data-sveltekit-reload>/signout</a>
-    </div>
+    </nav>
 
     <hr />
     <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
