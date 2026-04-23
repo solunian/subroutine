@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
     .eq("user_id", session.user.id)
     .order("created_at");
   if (sub_res.error) {
-    error(sub_res.status, sub_res.error.message.toLowerCase());
+    error(sub_res.status, sub_res.error.message);
   }
 
   const entries_res = await Promise.all(
