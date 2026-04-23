@@ -1,5 +1,6 @@
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
+import type { Tables } from "$lib/database.types";
 
 export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession } }) => {
   const { session } = await safeGetSession();
@@ -9,6 +10,8 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
   }
 
   const subroutines = [];
+  const sub_entries = [];
+
   const sub_res = await supabase
     .from("subroutines")
     .select("*")
@@ -27,11 +30,13 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
   for (let i = 0; i < sub_res.data.length; i++) {
     if (entries_res[i].error) {
       // quietly errant subroutine with data fetch failed
-      subroutines.push([sub_res.data[i], []]);
+      subroutines.push(sub_res.data[i]);
+      sub_entries.push([]);
     } else {
-      subroutines.push([sub_res.data[i], entries_res[i].data]);
+      subroutines.push(sub_res.data[i]);
+      sub_entries.push(entries_res[i].data);
     }
   }
 
-  return { subroutines };
+  return { subroutines, sub_entries };
 };
