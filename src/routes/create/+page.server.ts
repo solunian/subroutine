@@ -36,16 +36,34 @@ export const actions: Actions = {
     // db queries
     const { session } = await safeGetSession();
 
-    const { error } = await supabase.from("subroutines").insert({
-      user_id: session?.user?.id,
-      type: type.output,
-      title: title.output,
-      description: description.output,
-      deadline: deadline.output,
-    });
+    const new_sub = await supabase
+      .from("subroutines")
+      .insert({
+        user_id: session?.user.id,
+        type: type.output,
+        title: title.output,
+        description: description.output,
+        deadline: deadline.output,
+      })
+      .select()
+      .single();
 
-    if (error) {
-      return fail(400, { message: error.message.toLowerCase() });
+    if (new_sub.error) {
+      return fail(new_sub.status, { message: new_sub.error.message });
+    } else {
+      // type specific db actions after creating subroutine
+      if (type.output === "dot") {
+        const init_dot_res = await supabase.from("entries").insert({
+          user_id: session?.user.id,
+          subroutine_id: new_sub.data.id,
+          created_at: new_sub.data.created_at,
+          title: "init dot",
+        });
+
+        if (init_dot_res.error) {
+          return fail(init_dot_res.status, { message: init_dot_res.error.message });
+        }
+      }
     }
 
     redirect(303, "/");

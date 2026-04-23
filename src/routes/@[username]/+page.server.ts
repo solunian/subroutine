@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
   const subroutines = [];
   const sub_res = await supabase.from("subroutines").select("*").eq("user_id", profile_res.data.id);
   if (sub_res.error) {
-    error(500, sub_res.error.message);
+    error(sub_res.status, sub_res.error.message);
   }
 
   const entries_res = await Promise.all(

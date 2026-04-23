@@ -37,7 +37,7 @@ export const actions: Actions = {
     });
 
     if (error) {
-      return fail(400, { message: error.message.toLowerCase() });
+      return fail(400, { message: error.message });
     }
 
     return { success: true };
