@@ -94,6 +94,7 @@ export type Database = {
       };
       relationships: {
         Row: {
+          blocked_by: string | null;
           created_at: string;
           id: string;
           requestee_id: string;
@@ -103,6 +104,7 @@ export type Database = {
           status: Database["public"]["Enums"]["relationship_status_type"];
         };
         Insert: {
+          blocked_by?: string | null;
           created_at?: string;
           id?: string;
           requestee_id: string;
@@ -112,6 +114,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["relationship_status_type"];
         };
         Update: {
+          blocked_by?: string | null;
           created_at?: string;
           id?: string;
           requestee_id?: string;
@@ -131,6 +134,13 @@ export type Database = {
           {
             foreignKeyName: "friends_requester_id_fkey";
             columns: ["requester_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "relationships_blocked_by_fkey";
+            columns: ["blocked_by"];
             isOneToOne: false;
             referencedRelation: "profiles";
             referencedColumns: ["id"];

@@ -13,7 +13,7 @@
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "supabase:login": "bunx supabase login",
-    "supabase:gen_types": "bunx supabase gen types typescript --project-id \"$PROJECT_REF\" --schema public > ./src/lib/types/database.types.ts && sed -i '' 's/data: Json | null/data: any/g' ./src/lib/types/database.types.ts && prettier --write ./src/lib/types/database.types.ts"
+    "supabase:gen_types": "bunx supabase gen types typescript --project-id 'skociusktxocudgkkoxe' --schema public > ./src/lib/types/database.types.ts && sed -i '' 's/data: Json | null/data: any/g' ./src/lib/types/database.types.ts && prettier --write ./src/lib/types/database.types.ts"
   },
   "devDependencies": {
     "@eslint/compat": "^2.0.1",
