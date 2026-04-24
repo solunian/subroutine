@@ -20,7 +20,6 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
   }
 
   // if logged in, load subroutines if identity or friend
-  const subroutines = [];
   const sub_res = await supabase.from("subroutines").select("*").eq("user_id", profile_res.data.id);
   if (sub_res.error) {
     error(sub_res.status, sub_res.error.message);
@@ -30,14 +29,17 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
     sub_res.data.map((sub) => supabase.from("entries").select("*").eq("subroutine_id", sub.id))
   );
 
-  for (let i = 0; i < sub_res.data.length; i++) {
-    if (entries_res[i].error) {
-      // quietly errant subroutine with data fetch failed
-      subroutines.push([sub_res.data[i], []]);
-    } else {
-      subroutines.push([sub_res.data[i], entries_res[i].data]);
-    }
-  }
+  const subroutines = sub_res.data;
+  // quietly errant subroutine with data fetch failed
+  const sub_entries = entries_res.map((entry_res) =>
+    entry_res.data === null ? [] : entry_res.data
+  );
 
-  return { session, username: params.username, profile: profile_res.data, subroutines };
+  return {
+    session,
+    username: params.username,
+    profile: profile_res.data,
+    subroutines,
+    sub_entries,
+  };
 };
