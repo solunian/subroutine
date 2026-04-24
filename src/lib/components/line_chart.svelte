@@ -1,13 +1,7 @@
 <script lang="ts">
   import * as d3 from "d3";
   import NoData from "./no_data.svelte";
-
-  interface Entry {
-    created_at: string;
-    data: {
-      value: number;
-    };
-  }
+  import type { Tables } from "$lib/types/database.types";
 
   interface DataPoint {
     time: Date;
@@ -18,7 +12,7 @@
     type,
     entries = [],
     aspect_ratio = 16 / 9, // Default to widescreen aspect ratio
-  }: { type: string; entries: Entry[]; aspect_ratio?: number } = $props();
+  }: { type: string; entries?: Tables<"entries">[]; aspect_ratio?: number } = $props();
 
   const margin = { left: 40, top: 25, right: 40, bottom: 20 };
   const ranges = ["1W", "1M", "3M", "YTD", "1Y", "ALL"];

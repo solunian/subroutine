@@ -12,7 +12,7 @@ export type Database = {
         Row: {
           ascii_art: string | null;
           created_at: string;
-          data: Json | null;
+          data: any;
           description: string | null;
           id: string;
           location: string | null;

@@ -21,6 +21,11 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 
 export const actions: Actions = {
   update: async ({ request, locals: { supabase, safeGetSession } }) => {
+    const { session } = await safeGetSession();
+    if (!session) {
+      redirect(303, "/");
+    }
+
     const fdata = await request.formData();
 
     const name = v.safeParse(v.nullable(TrimNormalStrSchema), fdata.get("name"));
@@ -28,7 +33,7 @@ export const actions: Actions = {
     const website = v.safeParse(v.nullable(TrimNormalStrSchema), fdata.get("website"));
     const avatar_url = v.safeParse(v.nullable(TrimNormalStrSchema), fdata.get("avatar_url"));
 
-    if (!name.success || !username.success || !website.success || !avatar_url) {
+    if (!name.success || !username.success || !website.success || !avatar_url.success) {
       return fail(400, {
         errors: {
           name: name.issues && v.summarize(name.issues),
@@ -39,14 +44,13 @@ export const actions: Actions = {
       });
     }
 
-    const { session } = await safeGetSession();
-    const { error } = await supabase.from("profiles").upsert({
-      id: session?.user.id,
-      name: name.output,
-      username: username.output,
-      website: website.output,
-      avatar_url: avatar_url.output,
-      updated_at: new Date(),
+    const { error } = await supabase.from("profiles").update({
+      id: session.user.id,
+      name: name.output ?? undefined,
+      username: username.output ?? undefined,
+      website: website.output ?? undefined,
+      avatar_url: avatar_url.output ?? undefined,
+      updated_at: new Date().toISOString(),
     });
 
     if (error) {
