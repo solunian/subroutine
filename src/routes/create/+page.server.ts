@@ -1,8 +1,7 @@
-// src/routes/+page.server.ts
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 import * as v from "valibot";
-import { DateTimeSchema, NormalStrSchema, TrimNormalStrSchema } from "$lib/schemas";
+import { DateTimeSchema, NormalStrSchema, SubroutineType, TrimNormalStrSchema } from "$lib/schemas";
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
   const { session } = await safeGetSession();
@@ -17,7 +16,8 @@ export const actions: Actions = {
     const fdata = await request.formData();
 
     // data validation
-    const type = v.safeParse(TrimNormalStrSchema, fdata.get("type"));
+    const created_at = new Date().toISOString();
+    const type = v.safeParse(SubroutineType, fdata.get("type"));
     const title = v.safeParse(TrimNormalStrSchema, fdata.get("title"));
     const description = v.safeParse(v.nullable(NormalStrSchema), fdata.get("description") || null);
     const deadline = v.safeParse(v.nullable(DateTimeSchema), fdata.get("deadline") || null);
@@ -35,11 +35,15 @@ export const actions: Actions = {
 
     // db queries
     const { session } = await safeGetSession();
+    if (!session) {
+      redirect(303, "/");
+    }
 
     const new_sub = await supabase
       .from("subroutines")
       .insert({
-        user_id: session?.user.id,
+        created_at,
+        user_id: session.user.id,
         type: type.output,
         title: title.output,
         description: description.output,
@@ -54,9 +58,9 @@ export const actions: Actions = {
       // type specific db actions after creating subroutine
       if (type.output === "dot") {
         const init_dot_res = await supabase.from("entries").insert({
-          user_id: session?.user.id,
+          created_at,
+          user_id: session.user.id,
           subroutine_id: new_sub.data.id,
-          created_at: new_sub.data.created_at,
           title: "init dot",
         });
 

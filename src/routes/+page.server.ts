@@ -8,7 +8,6 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
     return;
   }
 
-  const subroutines = [];
   const sub_res = await supabase
     .from("subroutines")
     .select("*")
@@ -24,14 +23,11 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
     )
   );
 
-  for (let i = 0; i < sub_res.data.length; i++) {
-    if (entries_res[i].error) {
-      // quietly errant subroutine with data fetch failed
-      subroutines.push([sub_res.data[i], []]);
-    } else {
-      subroutines.push([sub_res.data[i], entries_res[i].data]);
-    }
-  }
+  const subroutines = sub_res.data;
+  // quietly errant subroutine with data fetch failed
+  const sub_entries = entries_res.map((entry_res) =>
+    entry_res.data === null ? [] : entry_res.data
+  );
 
-  return { subroutines };
+  return { subroutines, sub_entries };
 };
