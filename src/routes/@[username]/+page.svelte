@@ -17,29 +17,14 @@
       {:else if data.relationship && data.relationship.status === "pending" && data.relationship.requestee_id === data.profile.id}
         <button class="px-2">requested</button>
       {:else}
-        <form
-          method="POST"
-          action="?/request_relation"
-          use:enhance={() => {
-            return async ({ update }) => {
-              await update({ reset: false });
-            };
-          }}>
-          <input name="other_id" value={data.profile.id} hidden />
+        <form method="POST" action="?/request_relation" use:enhance>
+          <input name="other_id" bind:value={data.profile.id} hidden />
           <button class="px-2" type="submit">add friend</button>
         </form>
       {/if}
 
-      <form
-        hidden={!data.relationship}
-        method="POST"
-        action="?/delete_relation"
-        use:enhance={() => {
-          return async ({ update }) => {
-            await update({ reset: false });
-          };
-        }}>
-        <input name="other_id" value={data.profile.id} hidden />
+      <form hidden={!data.relationship} method="POST" action="?/delete_relation" use:enhance>
+        <input name="other_id" bind:value={data.profile.id} hidden />
         <button type="submit" title="remove" class="h-full px-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"

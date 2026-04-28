@@ -2,6 +2,7 @@
   import * as d3 from "d3";
   import NoData from "./no_data.svelte";
   import type { Tables } from "$lib/types/database.types";
+  import { time } from "$lib/state/time.svelte";
 
   interface DataPoint {
     time: Date;
@@ -27,15 +28,6 @@
   let inner_width = $derived(width - margin.left - margin.right);
   let inner_height = $derived(height - margin.top - margin.bottom);
 
-  let current_time = $state(new Date());
-  // refresh current time for time ranges
-  $effect(() => {
-    const interval = setInterval(() => {
-      current_time = new Date();
-    }, 100);
-    return () => clearInterval(interval);
-  });
-
   let processed_entries = $derived.by(() => {
     const alr_sorted_entries = entries.slice();
 
@@ -51,28 +43,28 @@
   });
 
   let date_range = $derived.by(() => {
-    let start = current_time;
+    let start = time.now;
     switch (current_range) {
       case "1W":
-        start = new Date(current_time.getTime() - 7 * 24 * 60 * 60 * 1000);
+        start = new Date(time.now.getTime() - 7 * 24 * 60 * 60 * 1000);
         break;
       case "1M":
-        start = new Date(current_time.getTime() - 30 * 24 * 60 * 60 * 1000);
+        start = new Date(time.now.getTime() - 30 * 24 * 60 * 60 * 1000);
         break;
       case "3M":
-        start = new Date(current_time.getTime() - 90 * 24 * 60 * 60 * 1000);
+        start = new Date(time.now.getTime() - 90 * 24 * 60 * 60 * 1000);
         break;
       case "YTD":
-        start = new Date(current_time.getFullYear(), 0, 1);
+        start = new Date(time.now.getFullYear(), 0, 1);
         break;
       case "1Y":
-        start = new Date(current_time.getTime() - 365 * 24 * 60 * 60 * 1000);
+        start = new Date(time.now.getTime() - 365 * 24 * 60 * 60 * 1000);
         break;
       case "ALL":
         start = new Date(processed_entries.at(0)?.created_at ?? 0);
         break;
     }
-    return { start, end: current_time };
+    return { start, end: time.now };
   });
 
   let view_data = $derived.by(() => {

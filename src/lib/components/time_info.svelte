@@ -1,26 +1,18 @@
 <script lang="ts">
-  let time = $state(new Date());
-
-  $effect(() => {
-    const i = setInterval(() => {
-      time = new Date();
-    }, 200);
-
-    return () => clearInterval(i);
-  });
+  import { time } from "$lib/state/time.svelte";
 </script>
 
 <div class="flex from-white/50 to-black/50 text-right font-mono text-base">
   <span class="border bg-transparent px-2 py-1">
-    {time.getFullYear()}-{(time.getMonth() + 1).toString().padStart(2, "0")}-{time
+    {time.now.getFullYear()}-{(time.now.getMonth() + 1).toString().padStart(2, "0")}-{time.now
       .getDate()
       .toString()
       .padStart(2, "0")}
   </span>
   <span class="border border-l-0 bg-transparent px-2 py-1">
-    {time.getHours().toString().padStart(2, "0")}:{time
+    {time.now.getHours().toString().padStart(2, "0")}:{time.now
       .getMinutes()
       .toString()
-      .padStart(2, "0")}:{time.getSeconds().toString().padStart(2, "0")}
+      .padStart(2, "0")}:{time.now.getSeconds().toString().padStart(2, "0")}
   </span>
 </div>

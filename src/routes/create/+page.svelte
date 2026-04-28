@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
+  import { Constants } from "$lib/types/database.types";
   import type { PageProps, SubmitFunction } from "./$types";
 
   let { form }: PageProps = $props();
@@ -25,8 +26,9 @@
     <label for="type">type</label>
 
     <select name="type" required>
-      <option value="dot">dot</option>
-      <option value="semaphore">semaphore</option>
+      {#each Constants.public.Enums.subroutine_type as sub_type}
+        <option value={sub_type}>{sub_type}</option>
+      {/each}
     </select>
     {form?.errors?.type}
   </div>
