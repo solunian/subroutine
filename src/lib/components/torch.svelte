@@ -25,22 +25,28 @@
 
     return result;
   });
+
+  let hrs = $derived(Math.trunc(total_duration / 1000 / 60 / 60));
+  let min = $derived(Math.trunc((total_duration / 1000 / 60) % 60));
+  let sec = $derived(Math.trunc((total_duration / 1000) % 60));
 </script>
 
-<div class="border p-2">
-  <h2>{subroutine.title} {`<${subroutine.type}>`}</h2>
+<div
+  class={[
+    "flex flex-col gap-2 border bg-white/0 p-2 transition",
+    torch_on && "border-amber-500 bg-amber-100 dark:bg-amber-900",
+  ]}>
+  <h2 class="text-xl">{subroutine.title} {`<${subroutine.type}>`}</h2>
+
+  <div class="px-3 py-2 text-center font-mono text-2xl">
+    {hrs.toString().padStart(2, "0")}:{min.toString().padStart(2, "0")}:{sec
+      .toString()
+      .padStart(2, "0")}
+  </div>
 
   <form method="POST" action="/?/append" use:enhance>
     <input hidden name="subroutine_id" bind:value={subroutine.id} />
-    <button>torch</button>
+    <button class="w-full border-0! bg-black/10 px-2 text-lg dark:bg-white/10"
+      >{torch_on ? "torch off" : "torch on"}</button>
   </form>
-
-  <div class="flex justify-between">
-    <span>
-      {torch_on ? "on" : "off"}
-    </span>
-    <span class="font-mono">
-      {Math.trunc(total_duration / 1000)}
-    </span>
-  </div>
 </div>

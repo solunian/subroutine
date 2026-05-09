@@ -2,6 +2,7 @@ import { error, fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import * as v from "valibot";
 import { TrimNormalStrSchema } from "$lib/schemas";
+import type { Tables } from "$lib/types/database.types";
 
 export const load: PageServerLoad = async ({ params, locals: { safeGetSession, supabase } }) => {
   const { session } = await safeGetSession();
@@ -35,22 +36,36 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
     .maybeSingle();
 
   // load subroutines
-  const sub_res = await supabase.from("subroutines").select("*").eq("user_id", profile_res.data.id);
+  const sub_res = await supabase
+    .from("subroutines")
+    .select("*")
+    .eq("user_id", profile_res.data.id)
+    .order("created_at");
   if (sub_res.error) {
     error(sub_res.status, sub_res.error.message);
   }
 
   const entries_res = await Promise.all(
-    sub_res.data.map((sub) => supabase.from("entries").select("*").eq("subroutine_id", sub.id))
+    sub_res.data.map((sub) =>
+      supabase.from("entries").select("*").eq("subroutine_id", sub.id).order("created_at")
+    )
   );
-  // quiet errant subroutine with data fetch failed
+
+  const subroutines = sub_res.data;
+  const entries_map = new Map<string, Tables<"entries">[]>();
+
+  // quietly errant subroutine with data fetch failed
+  const sub_entries = entries_res.map((entry_res) => entry_res.data);
+  for (let i = 0; i < subroutines.length; i++) {
+    entries_map.set(subroutines[i].id, sub_entries[i] ?? []);
+  }
 
   return {
     session,
     username: params.username,
     profile: profile_res.data,
-    subroutines: sub_res.data,
-    sub_entries: entries_res.map((entry_res) => (entry_res.data === null ? [] : entry_res.data)),
+    subroutines,
+    entries_map,
     relationship: relationship_res.data,
   };
 };

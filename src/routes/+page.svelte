@@ -1,5 +1,5 @@
 <script lang="ts">
-  import LineChart from "$lib/components/line_chart.svelte";
+  import DotSemaphore from "$lib/components/dot_semaphore.svelte";
   import Torch from "$lib/components/torch.svelte";
   import UsernameGoto from "$lib/components/username_goto.svelte";
   import type { PageProps } from "./$types";
@@ -24,28 +24,22 @@
 
     <hr />
 
-    {#each grouped_subroutines.keys() as subtype}
+    {#if grouped_subroutines.has("torch")}
+      <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        {#each grouped_subroutines.get("torch") as sub (sub.id)}
+          <Torch subroutine={sub} entries={data.entries_map?.get(sub.id)} />
+        {/each}
+      </div>
+    {/if}
+
+    <hr />
+
+    {#each grouped_subroutines.keys() as subtype (subtype)}
       <h2 class="text-xl">{subtype}</h2>
       <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {#each grouped_subroutines.get(subtype) as sub (sub.id)}
           {#if sub.type === "dot" || sub.type === "semaphore"}
-            <div class="flex flex-col gap-2 border p-2">
-              <div>
-                <h2>{sub.title} {`<${sub.type}>`}</h2>
-                <!-- <div>{sub.description}</div> -->
-              </div>
-
-              <LineChart type={sub.type} entries={data.entries_map?.get(sub.id)} />
-
-              {#if data.entries_map?.get(sub.id)}
-                <div class="border p-2">
-                  <h2>entries</h2>
-                  {#each data.entries_map.get(sub.id) as entry (entry.id)}
-                    <div>{new Date(entry.created_at)}</div>
-                  {/each}
-                </div>
-              {/if}
-            </div>
+            <DotSemaphore subroutine={sub} entries={data.entries_map?.get(sub.id)} />
           {:else if sub.type === "torch"}
             <Torch subroutine={sub} entries={data.entries_map?.get(sub.id)} />
           {:else}

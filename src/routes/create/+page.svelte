@@ -26,7 +26,7 @@
     <label for="type">type</label>
 
     <select name="type" required>
-      {#each Constants.public.Enums.subroutine_type as sub_type}
+      {#each Constants.public.Enums.subroutine_type as sub_type (sub_type)}
         <option value={sub_type}>{sub_type}</option>
       {/each}
     </select>

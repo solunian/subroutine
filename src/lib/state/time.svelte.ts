@@ -1,7 +1,9 @@
+import { SvelteDate } from "svelte/reactivity";
+
 export const time = $state({
-  now: new Date(),
+  now: new SvelteDate(),
 });
 
 setInterval(() => {
-  time.now = new Date();
+  time.now = new SvelteDate();
 }, 100);

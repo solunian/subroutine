@@ -1,8 +1,11 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import LineChart from "$lib/components/line_chart.svelte";
+  import DotSemaphore from "$lib/components/dot_semaphore.svelte";
+  import Torch from "$lib/components/torch.svelte";
 
   let { data } = $props();
+
+  let grouped_subroutines = $derived(Map.groupBy(data.subroutines ?? [], (r) => r.type));
 </script>
 
 <div class="flex flex-col gap-2">
@@ -48,24 +51,20 @@
 
   {#if data.session && data.subroutines.length > 0}
     <hr />
+
     <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-      {#each data.subroutines as sub, i (sub.id)}
-        <div class="flex flex-col gap-2 border p-2">
-          <div>
-            <h2>{sub.title} {`<${sub.type}>`}</h2>
-            <!-- <div>{sub.description}</div> -->
-          </div>
-
-          <LineChart type={sub.type} entries={data.sub_entries?.at(i)} />
-
-          {#if data.sub_entries?.at(i)}
-            <div class="border p-2">
-              <h2>entries</h2>
-              {#each data.sub_entries[i] as entry (entry.id)}
-                <div>{new Date(entry.created_at)}</div>
-              {/each}
-            </div>
-          {/if}
+      {#each grouped_subroutines.keys() as subtype (subtype)}
+        <h2 class="text-xl">{subtype}</h2>
+        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+          {#each grouped_subroutines.get(subtype) as sub (sub.id)}
+            {#if sub.type === "dot" || sub.type === "semaphore"}
+              <DotSemaphore subroutine={sub} entries={data.entries_map?.get(sub.id)} />
+            {:else if sub.type === "torch"}
+              <Torch subroutine={sub} entries={data.entries_map?.get(sub.id)} />
+            {:else}
+              {`<${sub.type}>`} not implemented yet
+            {/if}
+          {/each}
         </div>
       {/each}
     </div>
