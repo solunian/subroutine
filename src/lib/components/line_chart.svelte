@@ -3,6 +3,7 @@
   import NoData from "./no_data.svelte";
   import type { Tables } from "$lib/types/database.types";
   import { time } from "$lib/state/time.svelte";
+  import { SvelteDate } from "svelte/reactivity";
 
   interface DataPoint {
     time: Date;
@@ -16,7 +17,7 @@
   }: { type: string; entries?: Tables<"entries">[]; aspect_ratio?: number } = $props();
 
   const margin = { left: 40, top: 25, right: 40, bottom: 20 };
-  const ranges = ["1W", "1M", "3M", "YTD", "1Y", "ALL"];
+  const ranges = ["1H", "1D", "1W", "1M", "3M", "YTD", "1Y", "ALL"];
 
   let current_range = $state("1W");
   // dynamic width of the parent container
@@ -45,23 +46,29 @@
   let date_range = $derived.by(() => {
     let start = time.now;
     switch (current_range) {
+      case "1H":
+        start = new SvelteDate(time.now.getTime() - 60 * 60 * 1000);
+        break;
+      case "1D":
+        start = new SvelteDate(time.now.getTime() - 24 * 60 * 60 * 1000);
+        break;
       case "1W":
-        start = new Date(time.now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        start = new SvelteDate(time.now.getTime() - 7 * 24 * 60 * 60 * 1000);
         break;
       case "1M":
-        start = new Date(time.now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        start = new SvelteDate(time.now.getTime() - 30 * 24 * 60 * 60 * 1000);
         break;
       case "3M":
-        start = new Date(time.now.getTime() - 90 * 24 * 60 * 60 * 1000);
+        start = new SvelteDate(time.now.getTime() - 90 * 24 * 60 * 60 * 1000);
         break;
       case "YTD":
-        start = new Date(time.now.getFullYear(), 0, 1);
+        start = new SvelteDate(time.now.getFullYear(), 0, 1);
         break;
       case "1Y":
-        start = new Date(time.now.getTime() - 365 * 24 * 60 * 60 * 1000);
+        start = new SvelteDate(time.now.getTime() - 365 * 24 * 60 * 60 * 1000);
         break;
       case "ALL":
-        start = new Date(processed_entries.at(0)?.created_at ?? 0);
+        start = new SvelteDate(processed_entries.at(0)?.created_at ?? 0);
         break;
     }
     return { start, end: time.now };
@@ -227,7 +234,7 @@
   {/if}
 </div>
 
-<div class="relative w-full space-y-4 font-mono" bind:clientWidth={containter_width}>
+<div class="relative w-full space-y-2 font-mono" bind:clientWidth={containter_width}>
   {#if containter_width > 0}
     {#if entries.length > 0}
       <svg {width} {height}>
@@ -276,7 +283,7 @@
         </g>
       </svg>
 
-      <div class="flex justify-start gap-2 overflow-x-scroll sm:justify-center">
+      <div class="flex gap-2 overflow-x-scroll">
         {#each ranges as range_select (range_select)}
           <button
             class={[
@@ -289,6 +296,17 @@
       </div>
     {:else}
       <NoData {height} />
+      <div class="flex gap-2 overflow-x-scroll">
+        {#each ranges as range_select (range_select)}
+          <button
+            class={[
+              "px-2",
+              current_range === range_select &&
+                "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black",
+            ]}
+            onclick={() => (current_range = range_select)}>{range_select}</button>
+        {/each}
+      </div>
     {/if}
   {/if}
 </div>

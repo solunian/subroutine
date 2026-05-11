@@ -33,10 +33,10 @@
 
 <div
   class={[
-    "flex flex-col gap-2 border bg-white/0 p-2 transition",
+    "flex flex-col gap-2 border p-2 transition",
     torch_on && "border-amber-500 bg-amber-100 dark:bg-amber-900",
   ]}>
-  <h2 class="text-xl">{subroutine.title} {`<${subroutine.type}>`}</h2>
+  <h2 class="text-xl">{`<${subroutine.type}>`} {subroutine.title}</h2>
 
   <div class="px-3 py-2 text-center font-mono text-2xl">
     {hrs.toString().padStart(2, "0")}:{min.toString().padStart(2, "0")}:{sec

@@ -1,6 +1,7 @@
 <script lang="ts">
   import DotSemaphore from "$lib/components/dot_semaphore.svelte";
   import Torch from "$lib/components/torch.svelte";
+  import TypeIdenticon from "$lib/components/type_identicon.svelte";
   import UsernameGoto from "$lib/components/username_goto.svelte";
   import type { PageProps } from "./$types";
 
@@ -35,7 +36,9 @@
     <hr />
 
     {#each grouped_subroutines.keys() as subtype (subtype)}
-      <h2 class="text-xl">{subtype}</h2>
+      <h2 class="flex items-center gap-2 text-xl">
+        <TypeIdenticon type={subtype} /><span>{subtype}</span>
+      </h2>
       <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {#each grouped_subroutines.get(subtype) as sub (sub.id)}
           {#if sub.type === "dot" || sub.type === "semaphore"}
