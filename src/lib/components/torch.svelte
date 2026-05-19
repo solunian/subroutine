@@ -2,6 +2,7 @@
   import type { Tables } from "$lib/types/database.types";
   import { time } from "$lib/state/time.svelte";
   import { enhance } from "$app/forms";
+  import NumberFlow from "@number-flow/svelte";
   let {
     subroutine,
     entries = [],
@@ -39,9 +40,15 @@
   <h2 class="text-xl">{`<${subroutine.type}>`} {subroutine.title}</h2>
 
   <div class="px-3 py-2 text-center font-mono text-2xl">
-    {hrs.toString().padStart(2, "0")}:{min.toString().padStart(2, "0")}:{sec
-      .toString()
-      .padStart(2, "0")}
+    <NumberFlow trend={+1} format={{ minimumIntegerDigits: 2 }} value={hrs} />:<NumberFlow
+      trend={+1}
+      digits={{ 1: { max: 5 } }}
+      format={{ minimumIntegerDigits: 2 }}
+      value={min} />:<NumberFlow
+      trend={+1}
+      digits={{ 1: { max: 5 } }}
+      format={{ minimumIntegerDigits: 2 }}
+      value={sec} />
   </div>
 
   <form method="POST" action="/?/append" use:enhance>

@@ -4,6 +4,7 @@
   import type { Tables } from "$lib/types/database.types";
   import { time } from "$lib/state/time.svelte";
   import { SvelteDate } from "svelte/reactivity";
+  import NumberFlow from "@number-flow/svelte";
 
   interface DataPoint {
     time: Date;
@@ -213,24 +214,34 @@
   function handle_mouse_leave() {
     tooltip = null;
   }
+
+  let current_diplay_value = $derived.by(() => {
+    if (tooltip_data) {
+      return tooltip_data.data.value;
+    }
+    if (view_data.length > 0) {
+      return view_data[view_data.length - 1].value;
+    }
+  });
 </script>
 
-<div class="flex justify-between border px-3 py-2 font-mono text-2xl">
-  {#if tooltip_data}
-    <div class="space-x-2">
-      <span>{tooltip_data.data.value}</span>
-    </div>
+<div class="flex items-center justify-between border px-3 py-2 font-mono text-2xl">
+  <span class="flex h-8 items-center">
+    {#if current_diplay_value !== undefined}
+      <NumberFlow value={current_diplay_value} />
+    {:else}
+      ∅
+    {/if}
+  </span>
 
+  {#if tooltip_data}
     <span>
       {tooltip_data.data.time.getFullYear()}-{(tooltip_data.data.time.getMonth() + 1)
         .toString()
         .padStart(2, "0")}-{tooltip_data.data.time.getDate().toString().padStart(2, "0")}
     </span>
   {:else if view_data.length > 0}
-    <span>{view_data[view_data.length - 1].value}</span>
     <span class="text-gray-500">{average.toFixed(2)}</span>
-  {:else}
-    <span>∅</span>
   {/if}
 </div>
 
