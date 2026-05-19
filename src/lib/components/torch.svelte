@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Tables } from "$lib/types/database.types";
-  import { time } from "$lib/state/time.svelte";
+  import { now } from "$lib/state/time.svelte";
   import { enhance } from "$app/forms";
   import NumberFlow from "@number-flow/svelte";
   let {
@@ -21,7 +21,7 @@
     }
 
     if (entries.length % 2 !== 0) {
-      result += time.now.getTime() - new Date(entries[entries.length - 1].created_at).getTime();
+      result += now.getTime() - new Date(entries[entries.length - 1].created_at).getTime();
     }
 
     return result;

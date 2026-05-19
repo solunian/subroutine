@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { time } from "$lib/state/time.svelte";
+  import { now } from "$lib/state/time.svelte";
   import NumberFlow from "@number-flow/svelte";
 </script>
 
@@ -8,27 +8,27 @@
     <NumberFlow
       trend={+1}
       format={{ minimumIntegerDigits: 2, useGrouping: false }}
-      value={time.now.getFullYear()} />-<NumberFlow
+      value={now.getFullYear()} />-<NumberFlow
       trend={+1}
       format={{ minimumIntegerDigits: 2, useGrouping: false }}
-      value={time.now.getMonth() + 1} />-<NumberFlow
+      value={now.getMonth() + 1} />-<NumberFlow
       trend={+1}
       format={{ minimumIntegerDigits: 2, useGrouping: false }}
-      value={time.now.getDate()} />
+      value={now.getDate()} />
   </span>
   <span class="border border-l-0 bg-transparent px-2 py-1">
     <NumberFlow
       trend={+1}
       digits={{ 1: { max: 2 } }}
       format={{ minimumIntegerDigits: 2 }}
-      value={time.now.getHours()} />:<NumberFlow
+      value={now.getHours()} />:<NumberFlow
       trend={+1}
       digits={{ 1: { max: 5 } }}
       format={{ minimumIntegerDigits: 2 }}
-      value={time.now.getMinutes()} />:<NumberFlow
+      value={now.getMinutes()} />:<NumberFlow
       trend={+1}
       digits={{ 1: { max: 5 } }}
       format={{ minimumIntegerDigits: 2 }}
-      value={time.now.getSeconds()} />
+      value={now.getSeconds()} />
   </span>
 </div>

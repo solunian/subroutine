@@ -2,8 +2,7 @@
   import * as d3 from "d3";
   import NoData from "./no_data.svelte";
   import type { Tables } from "$lib/types/database.types";
-  import { time } from "$lib/state/time.svelte";
-  import { SvelteDate } from "svelte/reactivity";
+  import { now } from "$lib/state/time.svelte";
   import NumberFlow from "@number-flow/svelte";
 
   interface DataPoint {
@@ -45,34 +44,34 @@
   });
 
   let date_range = $derived.by(() => {
-    let start = time.now;
+    let start = new Date(now.getTime());
     switch (current_range) {
       case "1H":
-        start = new SvelteDate(time.now.getTime() - 60 * 60 * 1000);
+        start = new Date(now.getTime() - 60 * 60 * 1000);
         break;
       case "1D":
-        start = new SvelteDate(time.now.getTime() - 24 * 60 * 60 * 1000);
+        start = new Date(now.getTime() - 24 * 60 * 60 * 1000);
         break;
       case "1W":
-        start = new SvelteDate(time.now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        start = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
         break;
       case "1M":
-        start = new SvelteDate(time.now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        start = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
         break;
       case "3M":
-        start = new SvelteDate(time.now.getTime() - 90 * 24 * 60 * 60 * 1000);
+        start = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
         break;
       case "YTD":
-        start = new SvelteDate(time.now.getFullYear(), 0, 1);
+        start = new Date(now.getFullYear(), 0, 1);
         break;
       case "1Y":
-        start = new SvelteDate(time.now.getTime() - 365 * 24 * 60 * 60 * 1000);
+        start = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
         break;
       case "ALL":
-        start = new SvelteDate(processed_entries.at(0)?.created_at ?? 0);
+        start = new Date(processed_entries.at(0)?.created_at ?? 0);
         break;
     }
-    return { start, end: time.now };
+    return { start, end: new Date(now.getTime()) };
   });
 
   let view_data = $derived.by(() => {
