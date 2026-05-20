@@ -6,7 +6,8 @@
   let {
     subroutine,
     entries = [],
-  }: { subroutine: Tables<"subroutines">; entries?: Tables<"entries">[] } = $props();
+    href,
+  }: { subroutine: Tables<"subroutines">; entries?: Tables<"entries">[]; href: string } = $props();
 
   let torch_on = $derived(entries.length % 2 !== 0);
 
@@ -37,7 +38,7 @@
     "flex flex-col gap-2 border p-2 transition",
     torch_on && "border-amber-500 bg-amber-100 dark:bg-amber-900",
   ]}>
-  <h2 class="text-xl">{`<${subroutine.type}>`} {subroutine.title}</h2>
+  <h2 class="text-xl">{`<${subroutine.type}>`} <a {href}>{subroutine.title}</a></h2>
 
   <div class="px-3 py-2 text-center font-mono text-2xl">
     <NumberFlow trend={+1} format={{ minimumIntegerDigits: 2 }} value={hrs} />:<NumberFlow
@@ -51,8 +52,15 @@
       value={sec} />
   </div>
 
-  <form method="POST" action="/?/append" use:enhance>
-    <input hidden name="subroutine_id" bind:value={subroutine.id} />
+  <form
+    method="POST"
+    action="/?/append"
+    use:enhance={() => {
+      return async ({ update }) => {
+        await update({ reset: false });
+      };
+    }}>
+    <input hidden name="subroutine_id" value={subroutine.id} />
     <button class="w-full border-0! bg-black/10 px-2 text-lg dark:bg-white/10"
       >{torch_on ? "torch off" : "torch on"}</button>
   </form>

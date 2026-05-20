@@ -35,7 +35,16 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
     entries_map.set(subroutines[i].id, sub_entries[i] ?? []);
   }
 
-  return { subroutines, entries_map };
+  const username_res = await supabase
+    .from("profiles")
+    .select("username")
+    .eq("id", session.user.id)
+    .single();
+  if (username_res.error) {
+    error(username_res.status, username_res.error.message);
+  }
+
+  return { username: username_res.data.username, subroutines, entries_map };
 };
 
 export const actions: Actions = {

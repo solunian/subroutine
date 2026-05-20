@@ -61,7 +61,6 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
   }
 
   return {
-    session,
     username: params.username,
     profile: profile_res.data,
     subroutines,

@@ -6,14 +6,15 @@
   let {
     subroutine,
     entries = [],
-  }: { subroutine: Tables<"subroutines">; entries?: Tables<"entries">[] } = $props();
+    href,
+  }: { subroutine: Tables<"subroutines">; entries?: Tables<"entries">[]; href: string } = $props();
 </script>
 
 <div class="flex flex-col gap-2 border p-2">
   <div>
     <h2 class="overflow-x-scroll text-xl whitespace-nowrap">
       {`<${subroutine.type}>`}
-      {subroutine.title}
+      <a {href}>{subroutine.title}</a>
     </h2>
     <!-- <div>{sub.description}</div> -->
   </div>
@@ -21,8 +22,15 @@
   <LineChart type={subroutine.type} {entries} />
 
   {#if subroutine.type === "dot"}
-    <form method="POST" action="/?/append" use:enhance>
-      <input hidden name="subroutine_id" bind:value={subroutine.id} />
+    <form
+      method="POST"
+      action="/?/append"
+      use:enhance={() => {
+        return async ({ update }) => {
+          await update({ reset: false });
+        };
+      }}>
+      <input hidden name="subroutine_id" value={subroutine.id} />
       <button class="w-full border-0! bg-black/10 px-2 text-lg dark:bg-white/10">dot</button>
     </form>
   {/if}

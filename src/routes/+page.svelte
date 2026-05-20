@@ -34,7 +34,10 @@
     {#if grouped_subroutines.has("torch")}
       <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {#each grouped_subroutines.get("torch") as sub (sub.id)}
-          <Torch subroutine={sub} entries={data.entries_map?.get(sub.id)} />
+          <Torch
+            subroutine={sub}
+            entries={data.entries_map?.get(sub.id)}
+            href="/@{data.username}/{sub.id}" />
         {/each}
       </div>
     {/if}
@@ -48,9 +51,15 @@
       <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {#each grouped_subroutines.get(subtype) as sub (sub.id)}
           {#if sub.type === "dot" || sub.type === "semaphore"}
-            <DotSemaphore subroutine={sub} entries={data.entries_map?.get(sub.id)} />
+            <DotSemaphore
+              subroutine={sub}
+              entries={data.entries_map?.get(sub.id)}
+              href="/@{data.username}/{sub.id}" />
           {:else if sub.type === "torch"}
-            <Torch subroutine={sub} entries={data.entries_map?.get(sub.id)} />
+            <Torch
+              subroutine={sub}
+              entries={data.entries_map?.get(sub.id)}
+              href="/@{data.username}/{sub.id}" />
           {:else}
             {`<${sub.type}>`} not implemented yet
           {/if}
