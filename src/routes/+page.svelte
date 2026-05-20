@@ -4,9 +4,15 @@
   import TypeIdenticon from "$lib/components/type_identicon.svelte";
   import UsernameGoto from "$lib/components/username_goto.svelte";
   import type { PageProps } from "./$types";
+  import type { Database } from "$lib/types/database.types";
 
   let { data }: PageProps = $props();
 
+  const subtype_display_order: Database["public"]["Enums"]["subroutine_type"][] = [
+    "dot",
+    "semaphore",
+    "torch",
+  ];
   let grouped_subroutines = $derived(Map.groupBy(data.subroutines ?? [], (r) => r.type));
 </script>
 
@@ -35,7 +41,7 @@
 
     <hr />
 
-    {#each grouped_subroutines.keys() as subtype (subtype)}
+    {#each subtype_display_order as subtype (subtype)}
       <h2 class="flex items-center gap-2 text-xl">
         <TypeIdenticon type={subtype} /><span>{subtype}</span>
       </h2>

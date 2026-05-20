@@ -43,7 +43,7 @@ export const actions: Actions = {
     const fdata = await request.formData();
 
     // data validation
-    const created_at = new Date().toISOString();
+    const current_timestamp = new Date().toISOString();
     const subroutine_id = v.safeParse(TrimNormalStrSchema, fdata.get("subroutine_id"));
 
     if (!subroutine_id.success) {
@@ -60,18 +60,27 @@ export const actions: Actions = {
       redirect(303, "/");
     }
 
-    const new_sub = await supabase
+    const updated_at_sub = await supabase
+      .from("subroutines")
+      .update({ updated_at: current_timestamp })
+      .eq("id", subroutine_id.output);
+
+    if (updated_at_sub.error) {
+      return fail(updated_at_sub.status, { message: updated_at_sub.error.message });
+    }
+
+    const new_entry = await supabase
       .from("entries")
       .insert({
-        created_at,
+        created_at: current_timestamp,
         subroutine_id: subroutine_id.output,
         user_id: session.user.id,
       })
       .select()
       .single();
 
-    if (new_sub.error) {
-      return fail(new_sub.status, { message: new_sub.error.message });
+    if (new_entry.error) {
+      return fail(new_entry.status, { message: new_entry.error.message });
     }
   },
 };
