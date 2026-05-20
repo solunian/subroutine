@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
 
   // if logged in...
 
-  // load subroutine
+  // load subroutine and entries
   const sub_res = await supabase
     .from("subroutines")
     .select("*")
@@ -45,26 +45,22 @@ export const actions: Actions = {
     }
 
     const fdata = await request.formData();
-    const other_id_vbot = v.safeParse(TrimNormalStrSchema, fdata.get("other_id"));
-    if (!other_id_vbot.success) {
+    const sub_id_vbot = v.safeParse(TrimNormalStrSchema, fdata.get("subroutine_id"));
+    if (!sub_id_vbot.success) {
       return fail(400, {
         errors: {
-          other_id: other_id_vbot.issues && v.summarize(other_id_vbot.issues),
+          other_id: sub_id_vbot.issues && v.summarize(sub_id_vbot.issues),
         },
       });
     }
 
-    const user_id = session.user.id;
-    const other_id = other_id_vbot.output;
-    const del_res = await supabase
-      .from("relationships")
-      .delete()
-      .or(
-        `and(requester_id.eq.${user_id},requestee_id.eq.${other_id}),and(requester_id.eq.${other_id},requestee_id.eq.${user_id})`
-      );
+    const sub_id = sub_id_vbot.output;
+    const del_res = await supabase.from("subroutines").delete().eq("id", sub_id);
 
     if (del_res.error) {
       return fail(del_res.status, { message: del_res.error.message });
     }
+
+    redirect(303, "/");
   },
 };
