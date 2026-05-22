@@ -73,7 +73,7 @@ export const actions: Actions = {
   request_relation: async ({ request, locals: { safeGetSession, supabase } }) => {
     const { session } = await safeGetSession();
     if (!session) {
-      redirect(303, "/");
+      redirect(303, "/signin");
     }
 
     const fdata = await request.formData();
@@ -95,11 +95,13 @@ export const actions: Actions = {
     if (req_res.error) {
       return fail(req_res.status, { message: req_res.error.message });
     }
+
+    return { form_name: "request_relation" };
   },
   delete_relation: async ({ request, locals: { safeGetSession, supabase } }) => {
     const { session } = await safeGetSession();
     if (!session) {
-      redirect(303, "/");
+      redirect(303, "/signin");
     }
 
     const fdata = await request.formData();
@@ -124,5 +126,7 @@ export const actions: Actions = {
     if (del_res.error) {
       return fail(del_res.status, { message: del_res.error.message });
     }
+
+    return { form_name: "delete_relation" };
   },
 };

@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
   const { session } = await safeGetSession();
 
   if (!session) {
-    redirect(303, "/");
+    redirect(303, "/signin");
   }
 };
 
@@ -19,8 +19,15 @@ export const actions: Actions = {
     const created_at = new Date().toISOString();
     const type = v.safeParse(SubroutineType, fdata.get("type"));
     const title = v.safeParse(TrimNormalStrSchema, fdata.get("title"));
-    const description = v.safeParse(v.nullable(NormalStrSchema), fdata.get("description") || null);
-    const deadline = v.safeParse(v.nullable(DateTimeSchema), fdata.get("deadline") || null);
+    const description = v.safeParse(
+      v.optional(NormalStrSchema),
+      fdata.get("description") ?? undefined
+    );
+    // datetime is default empty string ""
+    const deadline = v.safeParse(
+      v.optional(DateTimeSchema),
+      fdata.get("deadline") === "" ? undefined : (fdata.get("deadline") ?? undefined)
+    );
 
     if (!type.success || !title.success || !description.success || !deadline.success) {
       return fail(400, {

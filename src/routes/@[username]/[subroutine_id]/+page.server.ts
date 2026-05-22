@@ -1,13 +1,16 @@
 import { error, fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import * as v from "valibot";
-import { TrimNormalStrSchema } from "$lib/schemas";
+import { DateTimeSchema, NormalStrSchema, TrimNormalStrSchema } from "$lib/schemas";
 
-export const load: PageServerLoad = async ({ params, locals: { safeGetSession, supabase } }) => {
+export const load: PageServerLoad = async ({
+  url,
+  params,
+  locals: { safeGetSession, supabase },
+}) => {
   const { session } = await safeGetSession();
-
   if (!session) {
-    return;
+    redirect(303, `/signin?redirect=${url}`);
   }
 
   // if logged in...
@@ -38,10 +41,65 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
 };
 
 export const actions: Actions = {
+  edit_subroutine: async ({ request, locals: { safeGetSession, supabase } }) => {
+    const { session } = await safeGetSession();
+    if (!session) {
+      redirect(303, "/signin");
+    }
+
+    const fdata = await request.formData();
+    const subroutine_id = v.safeParse(NormalStrSchema, fdata.get("subroutine_id"));
+    const title = v.safeParse(v.optional(TrimNormalStrSchema), fdata.get("title") ?? undefined);
+    const description = v.safeParse(
+      v.optional(NormalStrSchema),
+      fdata.get("description") ?? undefined
+    );
+    // const location = v.safeParse(NormalStrSchema, fdata.get("location"));
+    const ascii_art = v.safeParse(v.optional(NormalStrSchema), fdata.get("ascii_art") ?? undefined);
+    // datetime is default empty string ""
+    const deadline = v.safeParse(
+      v.optional(DateTimeSchema),
+      fdata.get("deadline") === "" ? undefined : (fdata.get("deadline") ?? undefined)
+    );
+
+    if (
+      !subroutine_id.success ||
+      !title.success ||
+      !description.success ||
+      !ascii_art.success ||
+      !deadline.success
+    ) {
+      return fail(400, {
+        errors: {
+          subroutine_id: subroutine_id.issues && v.summarize(subroutine_id.issues),
+          title: title.issues && v.summarize(title.issues),
+          description: description.issues && v.summarize(description.issues),
+          ascii_art: ascii_art.issues && v.summarize(ascii_art.issues),
+          deadline: deadline.issues && v.summarize(deadline.issues),
+        },
+      });
+    }
+
+    const edit_res = await supabase
+      .from("subroutines")
+      .update({
+        title: title.output,
+        description: description.output,
+        ascii_art: ascii_art.output,
+        deadline: deadline.output,
+      })
+      .eq("id", subroutine_id.output);
+
+    if (edit_res.error) {
+      return fail(edit_res.status, { message: edit_res.error.message });
+    }
+
+    return { form_name: "edit_subroutine" };
+  },
   delete_subroutine: async ({ request, locals: { safeGetSession, supabase } }) => {
     const { session } = await safeGetSession();
     if (!session) {
-      redirect(303, "/");
+      redirect(303, "/signin");
     }
 
     const fdata = await request.formData();

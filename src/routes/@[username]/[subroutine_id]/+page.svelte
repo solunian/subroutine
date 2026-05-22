@@ -4,8 +4,8 @@
   let { data } = $props();
 </script>
 
-{#if data.subroutine}
-  {data.subroutine.title}
+{#if data.session}
+  <h1>{data.subroutine.title}</h1>
 
   <form
     method="POST"
