@@ -4,12 +4,14 @@ import type { Actions, PageServerLoad } from "./$types";
 import * as v from "valibot";
 import { EmailSchema, TrimNormalStrSchema } from "$lib/schemas";
 
-export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
+export const load: PageServerLoad = async ({ url, locals: { safeGetSession } }) => {
   const { session } = await safeGetSession();
+
+  const redirect_url = url.searchParams.get("redirect");
 
   // if the user is already logged in return them to the home page
   if (session) {
-    redirect(303, "/");
+    redirect(303, redirect_url ?? "/");
   }
 };
 
