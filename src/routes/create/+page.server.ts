@@ -3,11 +3,10 @@ import type { Actions, PageServerLoad } from "./$types";
 import * as v from "valibot";
 import { DateTimeSchema, NormalStrSchema, SubroutineType, TrimNormalStrSchema } from "$lib/schemas";
 
-export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
+export const load: PageServerLoad = async ({ url, locals: { safeGetSession } }) => {
   const { session } = await safeGetSession();
-
   if (!session) {
-    redirect(303, "/signin");
+    redirect(303, `/signin?redirect=${url}`);
   }
 };
 
@@ -42,15 +41,16 @@ export const actions: Actions = {
 
     // db queries
     const { session } = await safeGetSession();
-    if (!session) {
-      redirect(303, "/");
+    const user_id = (await supabase.auth.getUser()).data.user?.id;
+    if (!session || !user_id) {
+      redirect(303, "/signin");
     }
 
     const new_sub = await supabase
       .from("subroutines")
       .insert({
         created_at,
-        user_id: session.user.id,
+        user_id,
         type: type.output,
         title: title.output,
         description: description.output,
@@ -66,7 +66,7 @@ export const actions: Actions = {
       if (type.output === "dot") {
         const init_dot_res = await supabase.from("entries").insert({
           created_at,
-          user_id: session.user.id,
+          user_id,
           subroutine_id: new_sub.data.id,
           title: "init dot",
         });

@@ -5,15 +5,15 @@ import { TrimNormalStrSchema } from "$lib/schemas";
 
 export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession } }) => {
   const { session } = await safeGetSession();
-
-  if (!session) {
+  const user_id = (await supabase.auth.getUser()).data.user?.id;
+  if (!session || !user_id) {
     redirect(303, "/");
   }
 
   const { data: profile } = await supabase
     .from("profiles")
     .select("username, name, website, avatar_url")
-    .eq("id", session.user.id)
+    .eq("id", user_id)
     .single();
 
   return { session, profile };
@@ -22,8 +22,9 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 export const actions: Actions = {
   update: async ({ request, locals: { supabase, safeGetSession } }) => {
     const { session } = await safeGetSession();
-    if (!session) {
-      redirect(303, "/");
+    const user_id = (await supabase.auth.getUser()).data.user?.id;
+    if (!session || !user_id) {
+      redirect(303, "/signin");
     }
 
     const fdata = await request.formData();
@@ -45,7 +46,7 @@ export const actions: Actions = {
     }
 
     const { error } = await supabase.from("profiles").update({
-      id: session.user.id,
+      id: user_id,
       name: name.output ?? undefined,
       username: username.output ?? undefined,
       website: website.output ?? undefined,

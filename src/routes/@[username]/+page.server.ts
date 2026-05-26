@@ -6,6 +6,7 @@ import type { Tables } from "$lib/types/database.types";
 
 export const load: PageServerLoad = async ({ params, locals: { safeGetSession, supabase } }) => {
   const { session } = await safeGetSession();
+  const user_id = (await supabase.auth.getUser()).data.user?.id;
 
   // visible for anon
   const profile_res = await supabase
@@ -18,13 +19,12 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
     error(400, "invalid username");
   }
 
-  if (!session) {
+  if (!session || !user_id) {
     return { username: params.username, profile: profile_res.data };
   }
 
   // if logged in...
   // load relationship data
-  const user_id = session.user.id;
   const other_id = profile_res.data.id;
 
   const relationship_res = await supabase
@@ -60,19 +60,28 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
     entries_map.set(subroutines[i].id, sub_entries[i] ?? []);
   }
 
+  const num_friends = await supabase
+    .from("relationships")
+    .select("*", { count: "exact" })
+    .eq("status", "accepted")
+    .or(`requester_id.eq.${other_id},requestee_id.eq.${other_id}`);
+
   return {
+    user_id,
     username: params.username,
     profile: profile_res.data,
     subroutines,
     entries_map,
     relationship: relationship_res.data,
+    num_friends: num_friends.count,
   };
 };
 
 export const actions: Actions = {
   request_relation: async ({ request, locals: { safeGetSession, supabase } }) => {
     const { session } = await safeGetSession();
-    if (!session) {
+    const user_id = (await supabase.auth.getUser()).data.user?.id;
+    if (!session || !user_id) {
       redirect(303, "/signin");
     }
 
@@ -87,7 +96,7 @@ export const actions: Actions = {
     }
 
     const req_res = await supabase.from("relationships").insert({
-      requester_id: session.user.id,
+      requester_id: user_id,
       requestee_id: other_id.output,
       status: "pending",
     });
@@ -100,7 +109,8 @@ export const actions: Actions = {
   },
   delete_relation: async ({ request, locals: { safeGetSession, supabase } }) => {
     const { session } = await safeGetSession();
-    if (!session) {
+    const user_id = (await supabase.auth.getUser()).data.user?.id;
+    if (!session || !user_id) {
       redirect(303, "/signin");
     }
 
@@ -114,7 +124,6 @@ export const actions: Actions = {
       });
     }
 
-    const user_id = session.user.id;
     const other_id = other_id_vbot.output;
     const del_res = await supabase
       .from("relationships")
