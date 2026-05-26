@@ -327,7 +327,7 @@
 
     {Math.abs(trend_value).toFixed(2)}
     {#if !Number.isNaN(trend_percentage_delta) && Number.isFinite(trend_percentage_delta)}
-      ({trend_percentage_delta.toFixed(2)}%)
+      ({Math.abs(trend_percentage_delta).toFixed(2)}%)
     {/if}
   </span>
 </div>
