@@ -9,9 +9,9 @@
   let { data }: PageProps = $props();
 
   const subtype_display_order: Database["public"]["Enums"]["subroutine_type"][] = [
+    "torch",
     "dot",
     "semaphore",
-    "torch",
   ];
   let grouped_subroutines = $derived(Map.groupBy(data.subroutines ?? [], (r) => r.type));
 </script>
@@ -31,7 +31,7 @@
 
     <hr />
 
-    {#if grouped_subroutines.has("torch")}
+    <!-- {#if grouped_subroutines.has("torch")}
       <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {#each grouped_subroutines.get("torch") as sub (sub.id)}
           <Torch
@@ -42,7 +42,7 @@
       </div>
     {/if}
 
-    <hr />
+    <hr /> -->
 
     {#each subtype_display_order as subtype (subtype)}
       <h2 class="flex items-center gap-2 text-xl">

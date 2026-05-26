@@ -16,7 +16,7 @@
     aspect_ratio = 16 / 9, // Default to widescreen aspect ratio
   }: { type: string; entries?: Tables<"entries">[]; aspect_ratio?: number } = $props();
 
-  const margin = { left: 40, top: 25, right: 40, bottom: 20 };
+  const margin = { left: 50, top: 25, right: 50, bottom: 45 };
   const ranges = ["1H", "1D", "1W", "1M", "3M", "YTD", "1Y", "ALL"];
 
   let current_range = $state("1W");
@@ -222,9 +222,31 @@
       return view_data[view_data.length - 1].value;
     }
   });
+
+  let trend_value = $derived.by(() => {
+    if (view_data.length > 1) {
+      if (tooltip_data) {
+        return tooltip_data.data.value - view_data[0].value;
+      } else {
+        return view_data[view_data.length - 1].value - view_data[0].value;
+      }
+    }
+    return 0;
+  });
+
+  let trend_percentage_delta = $derived.by(() => {
+    if (view_data.length > 1) {
+      if (tooltip_data) {
+        return (tooltip_data.data.value / view_data[0].value - 1) * 100;
+      } else {
+        return (view_data[view_data.length - 1].value / view_data[0].value - 1) * 100;
+      }
+    }
+    return 0;
+  });
 </script>
 
-<div class="flex items-center justify-between border px-3 py-2 font-mono text-2xl">
+<div class="flex flex-col justify-between gap-1 px-3 py-2 font-mono text-2xl">
   <span class="flex h-8 items-center">
     {#if current_diplay_value !== undefined}
       <NumberFlow value={current_diplay_value} />
@@ -233,15 +255,58 @@
     {/if}
   </span>
 
-  {#if tooltip_data}
-    <span>
-      {tooltip_data.data.time.getFullYear()}-{(tooltip_data.data.time.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}-{tooltip_data.data.time.getDate().toString().padStart(2, "0")}
-    </span>
-  {:else if view_data.length > 0}
-    <span class="text-gray-500">{average.toFixed(2)}</span>
-  {/if}
+  <span
+    class={[
+      "flex items-center gap-2 text-base text-gray-500 transition",
+      trend_value > 0 && "text-green-500/90",
+      trend_value < 0 && "text-red-500/90",
+    ]}>
+    {#if trend_value > 0}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+      </svg>
+    {:else if trend_value < 0}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M2.25 6 9 12.75l4.286-4.286a11.948 11.948 0 0 1 4.306 6.43l.776 2.898m0 0 3.182-5.511m-3.182 5.51-5.511-3.181" />
+      </svg>
+    {:else}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+      </svg>
+    {/if}
+
+    {Math.abs(trend_value).toFixed(2)}
+    {#if !Number.isNaN(trend_percentage_delta) && Number.isFinite(trend_percentage_delta)}
+      ({trend_percentage_delta.toFixed(2)}%)
+    {/if}
+  </span>
 </div>
 
 <div class="relative w-full space-y-2 font-mono" bind:clientWidth={containter_width}>
@@ -267,7 +332,7 @@
 
           {#if tooltip_data}
             <g transform={`translate(${tooltip_data.x}, 0)`}>
-              <text text-anchor="middle" y="0" class=" fill-gray-500 text-base">
+              <text text-anchor="middle" y="0" class="fill-gray-500 text-sm">
                 {tooltip_data.data.time
                   .getHours()
                   .toString()
@@ -279,7 +344,12 @@
                   .toString()
                   .padStart(2, "0")}
               </text>
-              <line x1={0} y1={10} x2={1} y2={height} class="stroke-gray-500 stroke-1" />
+              <line x1={0} y1={10} x2={1} y2={height - 60} class="stroke-gray-500 stroke-1" />
+              <text text-anchor="middle" y={height - 40} class="fill-gray-500 text-sm">
+                {tooltip_data.data.time.getFullYear()}-{(tooltip_data.data.time.getMonth() + 1)
+                  .toString()
+                  .padStart(2, "0")}-{tooltip_data.data.time.getDate().toString().padStart(2, "0")}
+              </text>
             </g>
           {/if}
 
