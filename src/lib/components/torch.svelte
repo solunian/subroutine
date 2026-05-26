@@ -12,7 +12,7 @@
     subroutine: Tables<"subroutines">;
     entries?: Tables<"entries">[];
     href: string;
-    editable: boolean;
+    editable?: boolean;
   } = $props();
 
   let torch_on = $derived(entries.length % 2 !== 0);
