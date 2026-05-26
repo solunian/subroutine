@@ -16,7 +16,7 @@
     aspect_ratio = 16 / 9, // Default to widescreen aspect ratio
   }: { type: string; entries?: Tables<"entries">[]; aspect_ratio?: number } = $props();
 
-  const margin = { left: 50, top: 25, right: 50, bottom: 45 };
+  const margin = { left: 25, top: 25, right: 25, bottom: 25 };
   const ranges = ["1H", "1D", "1W", "1M", "3M", "YTD", "1Y", "ALL"];
 
   let current_range = $state("1W");
@@ -244,6 +244,29 @@
     }
     return 0;
   });
+
+  let text_anchor = $derived.by(() => {
+    if (!tooltip_data) return "middle";
+
+    const threshold = inner_width * 0.1; // 10% threshold from edges
+    if (tooltip_data.x < threshold) {
+      return "start";
+    } else if (tooltip_data.x > inner_width - threshold) {
+      return "end";
+    }
+    return "middle";
+  });
+
+  let anchor_x_offset = $derived.by(() => {
+    const offset = 15;
+    if (text_anchor === "start") {
+      return -offset;
+    } else if (text_anchor === "end") {
+      return offset;
+    } else {
+      return 0;
+    }
+  });
 </script>
 
 <div class="flex flex-col justify-between gap-1 px-3 py-2 font-mono text-2xl">
@@ -332,7 +355,11 @@
 
           {#if tooltip_data}
             <g transform={`translate(${tooltip_data.x}, 0)`}>
-              <text text-anchor="middle" y="0" class="fill-gray-500 text-sm">
+              <text
+                text-anchor={text_anchor}
+                x={anchor_x_offset}
+                y="0"
+                class="fill-gray-500 text-sm">
                 {tooltip_data.data.time
                   .getHours()
                   .toString()
@@ -345,7 +372,11 @@
                   .padStart(2, "0")}
               </text>
               <line x1={0} y1={10} x2={1} y2={height - 60} class="stroke-gray-500 stroke-1" />
-              <text text-anchor="middle" y={height - 40} class="fill-gray-500 text-sm">
+              <text
+                text-anchor={text_anchor}
+                x={anchor_x_offset}
+                y={height - 40}
+                class="fill-gray-500 text-sm">
                 {tooltip_data.data.time.getFullYear()}-{(tooltip_data.data.time.getMonth() + 1)
                   .toString()
                   .padStart(2, "0")}-{tooltip_data.data.time.getDate().toString().padStart(2, "0")}
