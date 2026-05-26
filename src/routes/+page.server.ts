@@ -1,7 +1,7 @@
 import { error, fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import * as v from "valibot";
-import { TrimNormalStrSchema } from "$lib/schemas";
+import { FinNumberSchema, TrimNormalStrSchema } from "$lib/schemas";
 import type { Tables } from "$lib/types/database.types";
 
 export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession } }) => {
@@ -54,11 +54,16 @@ export const actions: Actions = {
     // data validation
     const current_timestamp = new Date().toISOString();
     const subroutine_id = v.safeParse(TrimNormalStrSchema, fdata.get("subroutine_id"));
+    const subroutine_type = v.safeParse(
+      v.nullable(TrimNormalStrSchema),
+      fdata.get("subroutine_type")
+    );
 
-    if (!subroutine_id.success) {
+    if (!subroutine_id.success || !subroutine_type.success) {
       return fail(400, {
         errors: {
           subroutine_id: subroutine_id.issues && v.summarize(subroutine_id.issues),
+          subroutine_type: subroutine_type.issues && v.summarize(subroutine_type.issues),
         },
       });
     }
@@ -66,7 +71,24 @@ export const actions: Actions = {
     // db queries
     const { session } = await safeGetSession();
     if (!session) {
-      redirect(303, "/");
+      redirect(303, "/signin");
+    }
+
+    // custom data json for each subroutine
+    const custom_data_map = new Map();
+    if (subroutine_type.output) {
+      if (subroutine_type.output === "semaphore") {
+        const value = v.safeParse(FinNumberSchema, fdata.get("value"));
+        if (!value.success) {
+          return fail(400, {
+            errors: {
+              value: value.issues && v.summarize(value.issues),
+            },
+          });
+        }
+
+        custom_data_map.set("value", value.output);
+      }
     }
 
     const updated_at_sub = await supabase
@@ -84,6 +106,7 @@ export const actions: Actions = {
         created_at: current_timestamp,
         subroutine_id: subroutine_id.output,
         user_id: session.user.id,
+        data: custom_data_map.size === 0 ? null : Object.fromEntries(custom_data_map),
       })
       .select()
       .single();

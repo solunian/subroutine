@@ -7,7 +7,13 @@
     subroutine,
     entries = [],
     href,
-  }: { subroutine: Tables<"subroutines">; entries?: Tables<"entries">[]; href: string } = $props();
+    editable = false,
+  }: {
+    subroutine: Tables<"subroutines">;
+    entries?: Tables<"entries">[];
+    href: string;
+    editable: boolean;
+  } = $props();
 
   let torch_on = $derived(entries.length % 2 !== 0);
 
@@ -52,16 +58,18 @@
       value={sec} />
   </div>
 
-  <form
-    method="POST"
-    action="/?/append"
-    use:enhance={() => {
-      return async ({ update }) => {
-        await update({ reset: false });
-      };
-    }}>
-    <input hidden name="subroutine_id" value={subroutine.id} />
-    <button class="w-full border-0! bg-black/10 px-2 text-lg dark:bg-white/10"
-      >{torch_on ? "torch off" : "torch on"}</button>
-  </form>
+  {#if editable}
+    <form
+      method="POST"
+      action="/?/append"
+      use:enhance={() => {
+        return async ({ update }) => {
+          await update({ reset: false });
+        };
+      }}>
+      <input hidden name="subroutine_id" value={subroutine.id} />
+      <button class="w-full border-0! bg-black/10 px-2 text-lg dark:bg-white/10"
+        >{torch_on ? "torch off" : "torch on"}</button>
+    </form>
+  {/if}
 </div>

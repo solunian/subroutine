@@ -54,12 +54,14 @@
             <DotSemaphore
               subroutine={sub}
               entries={data.entries_map?.get(sub.id)}
-              href="/@{data.username}/{sub.id}" />
+              href="/@{data.username}/{sub.id}"
+              editable />
           {:else if sub.type === "torch"}
             <Torch
               subroutine={sub}
               entries={data.entries_map?.get(sub.id)}
-              href="/@{data.username}/{sub.id}" />
+              href="/@{data.username}/{sub.id}"
+              editable />
           {:else}
             {`<${sub.type}>`} not implemented yet
           {/if}

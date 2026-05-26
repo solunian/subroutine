@@ -23,3 +23,9 @@ export const TimestampSchema = v.pipe(TrimNormalStrSchema, v.isoTimestamp("inval
 export const SubroutineType = v.picklist(Constants.public.Enums.subroutine_type);
 
 export const RelationshipStatusType = v.picklist(Constants.public.Enums.relationship_status_type);
+
+export const FinNumberSchema = v.pipe(
+  TrimNormalStrSchema,
+  v.toNumber("invalid number"),
+  v.finite("invalid finite number")
+);
