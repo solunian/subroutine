@@ -25,7 +25,6 @@
     <h2 class="flex items-center gap-1 overflow-x-scroll text-xl whitespace-nowrap">
       <TypeIdenticon type={subroutine.type} /> <a {href}>{subroutine.title}</a>
     </h2>
-    <!-- <div>{sub.description}</div> -->
   </div>
 
   <LineChart type={subroutine.type} {entries} />
@@ -111,13 +110,4 @@
       {/if}
     </form>
   {/if}
-
-  <!-- {#if entries}
-    <div class="border p-2">
-      <h2>entries</h2>
-      {#each entries as entry (entry.id)}
-        <div>{new Date(entry.created_at)}</div>
-      {/each}
-    </div>
-  {/if} -->
 </div>

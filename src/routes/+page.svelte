@@ -30,23 +30,8 @@
       <a href="/signout" data-sveltekit-reload>/signout</a>
     </nav>
 
-    <hr />
-
-    <!-- {#if grouped_subroutines.has("torch")}
-      <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-        {#each grouped_subroutines.get("torch") as sub (sub.id)}
-          <Torch
-            subroutine={sub}
-            entries={data.entries_map?.get(sub.id)}
-            href="/@{data.username}/{sub.id}" />
-        {/each}
-      </div>
-    {/if}
-
-    <hr /> -->
-
     {#each subtype_display_order as subtype (subtype)}
-      <h2 class="flex items-center gap-2 text-xl">
+      <h2 class="flex items-center gap-2 p-2 text-xl">
         <TypeIdenticon type={subtype} /><span>{subtype}</span>
       </h2>
       <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">

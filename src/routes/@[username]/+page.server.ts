@@ -1,45 +1,25 @@
-import { error, fail, redirect, type Actions } from "@sveltejs/kit";
-import type { PageServerLoad } from "./$types";
-import * as v from "valibot";
 import { TrimNormalStrSchema } from "$lib/schemas";
+import { error, fail, redirect, type Actions } from "@sveltejs/kit";
+import * as v from "valibot";
+import type { PageServerLoad } from "./$types";
 import type { Tables } from "$lib/types/database.types";
 
-export const load: PageServerLoad = async ({ params, locals: { safeGetSession, supabase } }) => {
+export const load: PageServerLoad = async ({ parent, locals: { safeGetSession, supabase } }) => {
   const { session } = await safeGetSession();
   const user_id = (await supabase.auth.getUser()).data.user?.id;
 
-  // visible for anon
-  const profile_res = await supabase
-    .from("profiles")
-    .select("name, bio, id")
-    .eq("username", params.username)
-    .single();
-
-  if (profile_res.error) {
-    error(400, "invalid username");
-  }
-
   if (!session || !user_id) {
-    return { username: params.username, profile: profile_res.data };
+    return;
   }
 
-  // if logged in...
-  // load relationship data
-  const other_id = profile_res.data.id;
-
-  const relationship_res = await supabase
-    .from("relationships")
-    .select("*")
-    .or(
-      `and(requester_id.eq.${user_id},requestee_id.eq.${other_id}),and(requester_id.eq.${other_id},requestee_id.eq.${user_id})`
-    )
-    .maybeSingle();
+  // load relevant page data after the layout load
+  const layout_data = await parent();
 
   // load subroutines
   const sub_res = await supabase
     .from("subroutines")
     .select("*")
-    .eq("user_id", profile_res.data.id)
+    .eq("user_id", layout_data.profile.id)
     .order("created_at");
   if (sub_res.error) {
     error(sub_res.status, sub_res.error.message);
@@ -64,17 +44,9 @@ export const load: PageServerLoad = async ({ params, locals: { safeGetSession, s
     .from("relationships")
     .select("*", { count: "exact" })
     .eq("status", "accepted")
-    .or(`requester_id.eq.${other_id},requestee_id.eq.${other_id}`);
+    .or(`requester_id.eq.${layout_data.profile.id},requestee_id.eq.${layout_data.profile.id}`);
 
-  return {
-    user_id,
-    username: params.username,
-    profile: profile_res.data,
-    subroutines,
-    entries_map,
-    relationship: relationship_res.data,
-    num_friends: num_friends.count,
-  };
+  return { subroutines, entries_map, num_friends: num_friends.count ?? 0 };
 };
 
 export const actions: Actions = {

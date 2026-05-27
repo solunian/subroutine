@@ -8,3 +8,5 @@ export const to_24hrtime_str = (t: Date | SvelteDate) =>
 
 export const to_date_str = (t: Date | SvelteDate) =>
   `${t.getFullYear()}-${(t.getMonth() + 1).toString().padStart(2, "0")}-${t.getDate().toString().padStart(2, "0")}`;
+
+export const to_fulltime_str = (t: Date | SvelteDate) => `${to_date_str(t)} ${to_24hrtime_str(t)}`;

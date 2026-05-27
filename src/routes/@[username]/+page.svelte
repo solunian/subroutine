@@ -17,6 +17,8 @@
 
 <div class="flex flex-col gap-2">
   <header class="flex flex-col gap-1 p-4">
+    <div class="text-lg opacity-50">{data.profile.name}</div>
+
     <div class="flex items-center gap-4">
       <span class="flex items-center font-nova text-2xl">
         <svg
@@ -80,24 +82,22 @@
       </span>
     </div>
 
-    <div>{data.profile.name}</div>
+    <div class="flex flex-nowrap items-center gap-2 text-nowrap opacity-50">
+      <span>
+        {data.subroutines?.length ?? 0}
+        {(data.subroutines?.length ?? 0) !== 1 ? "subroutines" : "subroutine"}
+      </span>
+      <span>·</span>
+      <span>
+        {data.num_friends}
+        {data.num_friends !== 1 ? "friends" : "friend"}
+      </span>
+    </div>
 
     <!-- nullable -->
     {#if data.profile.bio}
       <div>{data.profile.bio}</div>
     {/if}
-
-    <div class="flex gap-4 opacity-50">
-      <span>
-        <span class="font-semibold">{data.subroutines?.length ?? 0}</span>
-        {(data.subroutines?.length ?? 0) !== 1 ? "subroutines" : "subroutine"}
-      </span>
-
-      <span>
-        <span class="font-semibold">{data.num_friends}</span>
-        {data.num_friends !== 1 ? "friends" : "friend"}
-      </span>
-    </div>
   </header>
 
   {#if data.session && data.subroutines && data.subroutines.length > 0}
