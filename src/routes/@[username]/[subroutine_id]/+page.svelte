@@ -59,21 +59,21 @@
     </div>
 
     {#if data.entries.length > 0}
-      <div class="bg-gray-500/20">
-        <h2 class="border-b p-3 text-xl">entries</h2>
+      <div class="bg-neutral-500/20">
+        <h2 class="border-b border-neutral-500/30 p-3 text-xl">entries</h2>
 
         <div>
           {#each data.entries.toReversed() as entry, idx (entry.id)}
             <form
               method="POST"
               action="?/delete_entry"
-              class="flex gap-4 px-2 py-2 even:bg-gray-500/10"
+              class="flex gap-4 px-2 py-2 even:bg-neutral-500/20"
               use:enhance={() => {
                 return async ({ update }) => {
                   await update({ reset: false });
                 };
               }}>
-              <span class="basis-1/12 text-gray-500/50">{data.entries.length - idx - 1}</span>
+              <span class="basis-1/12 text-neutral-500/50">{data.entries.length - idx - 1}</span>
               <div class="flex w-full basis-11/12 items-center justify-between gap-1">
                 <span>{to_fulltime_str(new Date(entry.created_at))}</span>
                 <span class="font-mono text-sm">{JSON.stringify(entry.data)}</span>

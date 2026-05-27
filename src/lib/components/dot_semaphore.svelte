@@ -19,7 +19,7 @@
   let sem_value = $derived(entries.at(-1)?.data?.value ?? 0);
 </script>
 
-<div class="flex flex-col gap-2 border border-gray-500 p-2">
+<div class="flex flex-col gap-2 border border-neutral-500/50 p-2">
   <div>
     <h2 class="flex items-center gap-1 overflow-x-scroll text-xl whitespace-nowrap">
       <TypeIdenticon type={subroutine.type} /> <a {href}>{subroutine.title}</a>

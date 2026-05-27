@@ -1,7 +1,7 @@
 <!-- pre-alpha, alpha, beta, release candidate, general availability -->
 
 <div
-  class="pleated-stripes flex h-7 w-full flex-col items-center justify-center border-b border-gray-300 py-1 text-gray-500">
+  class="pleated-stripes flex h-7 w-full flex-col items-center justify-center border-b border-neutral-300 py-1 text-neutral-500">
   <span>pre-alpha</span>
 </div>
 

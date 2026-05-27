@@ -55,7 +55,7 @@
 
 <div
   class={[
-    "flex flex-col gap-2 border border-gray-500 p-2 transition",
+    "flex flex-col gap-2 border border-neutral-500/50 p-2 transition",
     torch_on && "border-amber-500! bg-amber-100 dark:bg-amber-900",
   ]}>
   <h2 class="flex items-center gap-1 text-xl">
@@ -76,8 +76,10 @@
     </div>
     <span
       class={[
-        "flex items-center gap-2 text-base text-gray-500 transition",
+        "flex items-center gap-2 text-base transition",
         trend_value > 0 && "text-green-500/90",
+        trend_value === 0 && "text-neutral-500/90",
+        trend_value < 0 && "text-red-500/90",
       ]}>
       1W
 

@@ -281,8 +281,9 @@
 
   <span
     class={[
-      "flex items-center gap-2 text-base text-gray-500 transition",
+      "flex items-center gap-2 text-base transition",
       trend_value > 0 && "text-green-500/90",
+      trend_value === 0 && "text-neutral-500/90",
       trend_value < 0 && "text-red-500/90",
     ]}>
     {#if trend_value > 0}
@@ -350,7 +351,7 @@
               y1={y_scale(average)}
               x2={inner_width}
               y2={y_scale(average)}
-              class="stroke-gray-500 stroke-2 opacity-50"
+              class="stroke-neutral-500 stroke-2 opacity-50"
               stroke-dasharray="5,5" />
           {/if}
 
@@ -360,15 +361,15 @@
                 text-anchor={text_anchor}
                 x={anchor_x_offset}
                 y="0"
-                class="fill-gray-500 text-sm">
+                class="fill-neutral-500 text-sm">
                 {to_24hrtime_str(tooltip_data.data.time)}
               </text>
-              <line x1={0} y1={10} x2={1} y2={height - 60} class="stroke-gray-500 stroke-1" />
+              <line x1={0} y1={10} x2={1} y2={height - 60} class="stroke-neutral-500 stroke-1" />
               <text
                 text-anchor={text_anchor}
                 x={anchor_x_offset}
                 y={height - 40}
-                class="fill-gray-500 text-sm">
+                class="fill-neutral-500 text-sm">
                 {to_date_str(tooltip_data.data.time)}
               </text>
             </g>
