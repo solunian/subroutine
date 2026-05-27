@@ -4,6 +4,7 @@
   import type { Tables } from "$lib/types/database.types";
   import { now } from "$lib/state/time.svelte";
   import NumberFlow from "@number-flow/svelte";
+  import { to_24hrtime_str, to_date_str } from "$lib/helpers";
 
   interface DataPoint {
     time: Date;
@@ -360,16 +361,7 @@
                 x={anchor_x_offset}
                 y="0"
                 class="fill-gray-500 text-sm">
-                {tooltip_data.data.time
-                  .getHours()
-                  .toString()
-                  .padStart(2, "0")}:{tooltip_data.data.time
-                  .getMinutes()
-                  .toString()
-                  .padStart(2, "0")}:{tooltip_data.data.time
-                  .getSeconds()
-                  .toString()
-                  .padStart(2, "0")}
+                {to_24hrtime_str(tooltip_data.data.time)}
               </text>
               <line x1={0} y1={10} x2={1} y2={height - 60} class="stroke-gray-500 stroke-1" />
               <text
@@ -377,9 +369,7 @@
                 x={anchor_x_offset}
                 y={height - 40}
                 class="fill-gray-500 text-sm">
-                {tooltip_data.data.time.getFullYear()}-{(tooltip_data.data.time.getMonth() + 1)
-                  .toString()
-                  .padStart(2, "0")}-{tooltip_data.data.time.getDate().toString().padStart(2, "0")}
+                {to_date_str(tooltip_data.data.time)}
               </text>
             </g>
           {/if}
