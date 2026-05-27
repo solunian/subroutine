@@ -4,7 +4,7 @@
   import type { Tables } from "$lib/types/database.types";
   import { now } from "$lib/state/time.svelte";
   import NumberFlow from "@number-flow/svelte";
-  import { to_24hrtime_str, to_date_str } from "$lib/helpers";
+  import { round_to_fixed, to_24hrtime_str, to_date_str } from "$lib/helpers";
 
   interface DataPoint {
     time: Date;
@@ -326,9 +326,9 @@
       </svg>
     {/if}
 
-    {Math.abs(trend_value).toFixed(2)}
+    {round_to_fixed(Math.abs(trend_value), 2)}
     {#if !Number.isNaN(trend_percentage_delta) && Number.isFinite(trend_percentage_delta)}
-      ({Math.abs(trend_percentage_delta).toFixed(2)}%)
+      ({round_to_fixed(Math.abs(trend_percentage_delta), 2)}%)
     {/if}
   </span>
 </div>
