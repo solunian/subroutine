@@ -7,7 +7,7 @@
     class="flex aspect-video max-w-lg flex-col items-center gap-2 border p-16 text-center font-mono">
     <div>{page.status} error</div>
     {#if page.error}
-      <div>{'<"'}{page.error.message}{'">'}</div>
+      <div>{`<"${page.error.message}">`}</div>
     {/if}
     <div>._.</div>
   </div>
