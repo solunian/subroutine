@@ -3,6 +3,7 @@
   import { now } from "$lib/state/time.svelte";
   import { enhance } from "$app/forms";
   import NumberFlow from "@number-flow/svelte";
+  import TypeIdenticon from "./type_identicon.svelte";
   let {
     subroutine,
     entries = [],
@@ -41,10 +42,12 @@
 
 <div
   class={[
-    "flex flex-col gap-2 border p-2 transition",
+    "flex flex-col gap-2 border border-gray-500 p-2 transition",
     torch_on && "border-amber-500 bg-amber-100 dark:bg-amber-900",
   ]}>
-  <h2 class="text-xl">{`<${subroutine.type}>`} <a {href}>{subroutine.title}</a></h2>
+  <h2 class="flex items-center gap-1 text-xl">
+    <TypeIdenticon type={subroutine.type} /> <a {href}>{subroutine.title}</a>
+  </h2>
 
   <div class="px-3 py-2 text-center font-mono text-2xl">
     <NumberFlow trend={+1} format={{ minimumIntegerDigits: 2 }} value={hrs} />:<NumberFlow

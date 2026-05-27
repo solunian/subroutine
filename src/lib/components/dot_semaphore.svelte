@@ -1,7 +1,9 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import type { Tables } from "$lib/types/database.types";
+  import { preventDefault } from "svelte/legacy";
   import LineChart from "./line_chart.svelte";
+  import TypeIdenticon from "./type_identicon.svelte";
 
   let {
     subroutine,
@@ -14,13 +16,14 @@
     href: string;
     editable?: boolean;
   } = $props();
+
+  let sem_value = $derived(entries.at(-1)?.data?.value ?? 0);
 </script>
 
-<div class="flex flex-col gap-2 border p-2">
+<div class="flex flex-col gap-2 border border-gray-500 p-2">
   <div>
-    <h2 class="overflow-x-scroll text-xl whitespace-nowrap">
-      {`<${subroutine.type}>`}
-      <a {href}>{subroutine.title}</a>
+    <h2 class="flex items-center gap-1 overflow-x-scroll text-xl whitespace-nowrap">
+      <TypeIdenticon type={subroutine.type} /> <a {href}>{subroutine.title}</a>
     </h2>
     <!-- <div>{sub.description}</div> -->
   </div>
@@ -28,42 +31,85 @@
   <LineChart type={subroutine.type} {entries} />
 
   {#if editable}
-    {#if subroutine.type === "dot"}
-      <form
-        method="POST"
-        action="/?/append"
-        use:enhance={() => {
-          return async ({ update }) => {
-            await update({ reset: false });
-          };
-        }}>
+    <form
+      method="POST"
+      action="/?/append"
+      use:enhance={() => {
+        return async ({ update }) => {
+          await update({ reset: false });
+        };
+      }}>
+      {#if subroutine.type === "dot"}
         <input hidden name="subroutine_id" value={subroutine.id} />
         <button class="w-full border-0! bg-black/10 px-2 text-lg dark:bg-white/10">dot</button>
-      </form>
-    {:else if subroutine.type === "semaphore"}
-      <form
-        method="POST"
-        action="/?/append"
-        use:enhance={() => {
-          return async ({ update }) => {
-            await update({ reset: false });
-          };
-        }}>
+      {:else if subroutine.type === "semaphore"}
         <input hidden name="subroutine_id" value={subroutine.id} />
         <input hidden name="subroutine_type" value="semaphore" />
-        <div class="flex gap-2">
+        <div class="flex shrink-0 gap-2">
           <input
             name="value"
             type="number"
             step="any"
-            value={entries.at(-1)?.data.value ?? 0}
-            class="basis-3/4 py-2 text-center font-mono text-lg" />
-          <button class="w-full basis-1/4 border-0! bg-black/10 px-2 text-lg dark:bg-white/10">
-            v / p
+            bind:value={sem_value}
+            class="w-full basis-4/6 py-2 text-center font-mono text-xl" />
+          <div class="flex basis-1/6 flex-col gap-1">
+            <button
+              aria-label="increment"
+              onclick={() => sem_value++}
+              type="button"
+              class="flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+              </svg>
+            </button>
+            <button
+              aria-label="decrement"
+              type="button"
+              onclick={() => sem_value--}
+              class="flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+              </svg>
+            </button>
+          </div>
+          <button
+            aria-label="submit"
+            type="submit"
+            class="flex w-full shrink-0 basis-1/6 items-center justify-center border-0! bg-black/10 px-2 text-lg dark:bg-white/10">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+            </svg>
           </button>
         </div>
-      </form>
-    {/if}
+      {/if}
+    </form>
   {/if}
 
   <!-- {#if entries}

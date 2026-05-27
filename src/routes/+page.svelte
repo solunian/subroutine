@@ -24,6 +24,7 @@
   {#if data.session}
     <nav class="flex flex-wrap items-center justify-center gap-2 p-2 sm:justify-start">
       <UsernameGoto />
+      {#if data.username}<a href="/@{data.username}">[profile]</a>{/if}
       <a href="/create">/create</a>
       <a href="/settings">/settings</a>
       <a href="/signout" data-sveltekit-reload>/signout</a>

@@ -26,6 +26,22 @@ export const RelationshipStatusType = v.picklist(Constants.public.Enums.relation
 
 export const FinNumberSchema = v.pipe(
   TrimNormalStrSchema,
+  v.transform((input) => {
+    // If it's a blank string, throw an error
+    if (input.trim() === "") {
+      return new v.ValiError([
+        {
+          type: "string",
+          kind: "validation",
+          expected: "valid number string",
+          received: "empty string",
+          input,
+          message: "empty string is not a valid number",
+        },
+      ]);
+    }
+    return input;
+  }),
   v.toNumber("invalid number"),
   v.finite("invalid finite number")
 );
