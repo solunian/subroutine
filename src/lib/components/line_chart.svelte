@@ -385,7 +385,7 @@
         </g>
       </svg>
 
-      <div class="flex gap-2 overflow-x-scroll">
+      <div class="flex justify-center-safe gap-2 overflow-x-scroll">
         {#each ranges as range_select (range_select)}
           <button
             class={[
