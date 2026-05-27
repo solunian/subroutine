@@ -12,7 +12,7 @@
   }: {
     subroutine: Tables<"subroutines">;
     entries?: Tables<"entries">[];
-    href: string;
+    href?: string;
     editable?: boolean;
   } = $props();
 

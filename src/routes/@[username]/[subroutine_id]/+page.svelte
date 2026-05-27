@@ -1,5 +1,7 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
+  import DotSemaphore from "$lib/components/dot_semaphore.svelte";
+  import Torch from "$lib/components/torch.svelte";
   import TypeIdenticon from "$lib/components/type_identicon.svelte";
   import { to_date_str, to_fulltime_str } from "$lib/helpers";
 
@@ -7,7 +9,7 @@
 </script>
 
 {#if data.session}
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-4">
     <header class="flex flex-col gap-1 p-4">
       <a href="/@{data.username}" class="flex items-center font-nova text-xl opacity-50">
         <svg
@@ -42,19 +44,53 @@
       {/if}
     </header>
 
+    <div class="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-7 2xl:grid-cols-9">
+      <div class="col-span-3 md:col-start-2 lg:col-start-3 2xl:col-start-5">
+        {#if data.subroutine.type === "dot" || data.subroutine.type === "semaphore"}
+          <DotSemaphore editable subroutine={data.subroutine} entries={data.entries} />
+        {:else if data.subroutine.type === "torch"}
+          <Torch editable subroutine={data.subroutine} entries={data.entries} />
+        {:else}
+          <div class="flex aspect-video w-full items-center justify-center border font-mono">
+            not implemented yet -_-
+          </div>
+        {/if}
+      </div>
+    </div>
+
     {#if data.entries.length > 0}
       <div class="bg-gray-500/20">
         <h2 class="border-b p-3 text-xl">entries</h2>
 
         <div>
           {#each data.entries.toReversed() as entry, idx (entry.id)}
-            <div class="flex gap-4 px-2 py-2 even:bg-gray-500/10">
+            <form
+              method="POST"
+              action="?/delete_entry"
+              class="flex gap-4 px-2 py-2 even:bg-gray-500/10"
+              use:enhance={() => {
+                return async ({ update }) => {
+                  await update({ reset: false });
+                };
+              }}>
               <span class="basis-1/12 text-gray-500/50">{data.entries.length - idx - 1}</span>
-              <div class="flex w-full basis-11/12 justify-between gap-1">
+              <div class="flex w-full basis-11/12 items-center justify-between gap-1">
                 <span>{to_fulltime_str(new Date(entry.created_at))}</span>
-                <span>{JSON.stringify(entry.data)}</span>
+                <span class="font-mono text-sm">{JSON.stringify(entry.data)}</span>
               </div>
-            </div>
+              <input name="entry_id" value={entry.id} hidden />
+              <button aria-label="delete" type="submit" class="border-0!">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </form>
           {/each}
         </div>
       </div>

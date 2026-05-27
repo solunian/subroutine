@@ -101,10 +101,8 @@
   </header>
 
   {#if data.session && data.subroutines && data.subroutines.length > 0}
-    <hr />
-
     {#each subtype_display_order as subtype (subtype)}
-      <h2 class="flex items-center gap-2 text-xl">
+      <h2 class="flex items-center gap-1 text-xl">
         <TypeIdenticon type={subtype} /><span>{subtype}</span>
       </h2>
       <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">

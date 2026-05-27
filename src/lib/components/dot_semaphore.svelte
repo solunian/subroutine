@@ -1,7 +1,6 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import type { Tables } from "$lib/types/database.types";
-  import { preventDefault } from "svelte/legacy";
   import LineChart from "./line_chart.svelte";
   import TypeIdenticon from "./type_identicon.svelte";
 
@@ -13,7 +12,7 @@
   }: {
     subroutine: Tables<"subroutines">;
     entries?: Tables<"entries">[];
-    href: string;
+    href?: string;
     editable?: boolean;
   } = $props();
 

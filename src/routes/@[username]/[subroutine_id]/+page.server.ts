@@ -107,7 +107,7 @@ export const actions: Actions = {
     if (!sub_id_vbot.success) {
       return fail(400, {
         errors: {
-          other_id: sub_id_vbot.issues && v.summarize(sub_id_vbot.issues),
+          subroutine_id: sub_id_vbot.issues && v.summarize(sub_id_vbot.issues),
         },
       });
     }
@@ -120,5 +120,27 @@ export const actions: Actions = {
     }
 
     redirect(303, "/");
+  },
+  delete_entry: async ({ request, locals: { safeGetSession, supabase } }) => {
+    const { session } = await safeGetSession();
+    if (!session) {
+      redirect(303, "/signin");
+    }
+
+    const fdata = await request.formData();
+    const entry_id_vbot = v.safeParse(TrimNormalStrSchema, fdata.get("entry_id"));
+    if (!entry_id_vbot.success) {
+      return fail(400, {
+        errors: {
+          entry_id: entry_id_vbot.issues && v.summarize(entry_id_vbot.issues),
+        },
+      });
+    }
+
+    const del_res = await supabase.from("entries").delete().eq("id", entry_id_vbot.output);
+
+    if (del_res.error) {
+      return fail(del_res.status, { message: del_res.error.message });
+    }
   },
 };
