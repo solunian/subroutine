@@ -1,7 +1,7 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 import * as v from "valibot";
-import { TrimNormalStrSchema } from "$lib/schemas";
+import { TrimNormalStrSchema, URLSchema } from "$lib/schemas";
 
 export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession } }) => {
   const { session } = await safeGetSession();
@@ -29,30 +29,40 @@ export const actions: Actions = {
 
     const fdata = await request.formData();
 
-    const name = v.safeParse(v.nullable(TrimNormalStrSchema), fdata.get("name"));
-    const username = v.safeParse(v.nullable(TrimNormalStrSchema), fdata.get("username"));
-    const website = v.safeParse(v.nullable(TrimNormalStrSchema), fdata.get("website"));
-    const avatar_url = v.safeParse(v.nullable(TrimNormalStrSchema), fdata.get("avatar_url"));
+    const current_timestamp = new Date().toISOString();
 
-    if (!name.success || !username.success || !website.success || !avatar_url.success) {
+    const name = v.safeParse(v.optional(TrimNormalStrSchema), fdata.get("name") ?? undefined);
+    const username = v.safeParse(
+      v.optional(TrimNormalStrSchema),
+      fdata.get("username") ?? undefined
+    );
+    const website = v.safeParse(v.optional(URLSchema), fdata.get("website") ?? undefined);
+    // const avatar_url = v.safeParse(
+    //   v.optional(TrimNormalStrSchema),
+    //   fdata.get("avatar_url") ?? undefined
+    // );
+
+    if (!name.success || !username.success || !website.success) {
       return fail(400, {
         errors: {
           name: name.issues && v.summarize(name.issues),
           username: username.issues && v.summarize(username.issues),
           website: website.issues && v.summarize(website.issues),
-          avatar_url: avatar_url.issues && v.summarize(avatar_url.issues),
+          // avatar_url: avatar_url.issues && v.summarize(avatar_url.issues),
         },
       });
     }
 
-    const { error } = await supabase.from("profiles").update({
-      id: user_id,
-      name: name.output ?? undefined,
-      username: username.output ?? undefined,
-      website: website.output ?? undefined,
-      avatar_url: avatar_url.output ?? undefined,
-      updated_at: new Date().toISOString(),
-    });
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        name: name.output,
+        username: username.output,
+        website: website.output,
+        // avatar_url: avatar_url.output,
+        updated_at: current_timestamp,
+      })
+      .eq("id", user_id);
 
     if (error) {
       return fail(400, { message: error.message });
@@ -62,7 +72,7 @@ export const actions: Actions = {
       name: name.output,
       username: username.output,
       website: website.output,
-      avatar_url: avatar_url.output,
+      // avatar_url: avatar_url.output,
     };
   },
 };
