@@ -7,8 +7,8 @@
   // *removed from input* pattern={restricted_pattern}
 </script>
 
-<div class="relative inline-block">
-  <input {name} type={password_hidden ? "password" : "text"} {required} class="pr-10" />
+<div class="relative block">
+  <input {name} type={password_hidden ? "password" : "text"} {required} class="w-full py-1 pr-10" />
   <button
     type="button"
     class="absolute top-1/2 right-3 -translate-y-1/2 border-none stroke-black"
