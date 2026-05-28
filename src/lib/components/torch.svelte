@@ -2,7 +2,7 @@
   import type { Tables } from "$lib/types/database.types";
   import { now } from "$lib/state/time.svelte";
   import { enhance } from "$app/forms";
-  import NumberFlow from "@number-flow/svelte";
+  import NumberFlow, { NumberFlowGroup } from "@number-flow/svelte";
   import TypeIdenticon from "./type_identicon.svelte";
   import { get_n_days_date, round_to_fixed } from "$lib/helpers";
   let {
@@ -64,15 +64,17 @@
 
   <div class="flex flex-col items-center gap-1 px-3 py-2 font-mono text-2xl">
     <div>
-      <NumberFlow trend={+1} format={{ minimumIntegerDigits: 2 }} value={hrs} />:<NumberFlow
-        trend={+1}
-        digits={{ 1: { max: 5 } }}
-        format={{ minimumIntegerDigits: 2 }}
-        value={min} />:<NumberFlow
-        trend={+1}
-        digits={{ 1: { max: 5 } }}
-        format={{ minimumIntegerDigits: 2 }}
-        value={sec} />
+      <NumberFlowGroup>
+        <NumberFlow trend={+1} format={{ minimumIntegerDigits: 2 }} value={hrs} />:<NumberFlow
+          trend={+1}
+          digits={{ 1: { max: 5 } }}
+          format={{ minimumIntegerDigits: 2 }}
+          value={min} />:<NumberFlow
+          trend={+1}
+          digits={{ 1: { max: 5 } }}
+          format={{ minimumIntegerDigits: 2 }}
+          value={sec} />
+      </NumberFlowGroup>
     </div>
     <span
       class={[
