@@ -5,6 +5,7 @@
   import { onMount } from "svelte";
   import ReleaseStageBanner from "$lib/components/release_stage_banner.svelte";
   import TimeInfo from "$lib/components/time_info.svelte";
+  import { now } from "$lib/state/time.svelte.js";
 
   let { data, children } = $props();
   let { supabase, session } = $derived(data);
@@ -16,7 +17,14 @@
       }
     });
 
-    return () => data.subscription.unsubscribe();
+    const now_interval = setInterval(() => {
+      now.setTime(Date.now());
+    }, 100);
+
+    return () => {
+      data.subscription.unsubscribe();
+      clearInterval(now_interval);
+    };
   });
 </script>
 

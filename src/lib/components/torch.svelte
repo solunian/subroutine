@@ -21,7 +21,7 @@
 
   // in milliseconds
   let [total_duration, trend_value] = $derived.by(() => {
-    const one_week_ago = get_n_days_date(-7);
+    const one_week_ago = get_n_days_date(now, -7);
 
     let one_week_trend = 0;
     let total = 0;
