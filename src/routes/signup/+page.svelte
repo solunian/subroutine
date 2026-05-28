@@ -24,7 +24,7 @@
 </svelte:head>
 
 <div class="flex w-full justify-center py-16">
-  <div class="flex aspect-video w-md max-w-lg flex-col items-center gap-2 border p-8">
+  <div class="flex aspect-video w-md flex-col items-center gap-2 border p-8">
     <h1 class="flex items-center gap-1 py-2 font-nova text-3xl">signup</h1>
     <form class="flex flex-col gap-2" method="POST" use:enhance={submit}>
       {form?.message}

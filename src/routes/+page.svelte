@@ -60,5 +60,14 @@
       <a href="/signup">/signup</a>
       <a href="/magiclink">/magiclink</a>
     </div>
+
+    <div class="flex w-full justify-center py-16">
+      <div
+        class="flex aspect-video w-md flex-col items-center gap-2 border p-16 text-center font-mono">
+        <div>subroutine: a life tracker</div>
+        <div>counts, times, entries, graphs, trends, friends... simple stuff</div>
+        <div>._.</div>
+      </div>
+    </div>
   {/if}
 </main>
