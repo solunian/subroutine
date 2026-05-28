@@ -45,7 +45,7 @@
     </header>
 
     <div class="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-7 2xl:grid-cols-9">
-      <div class="col-span-3 md:col-start-2 lg:col-start-3 2xl:col-start-5">
+      <div class="col-span-3 md:col-start-2 lg:col-start-3 2xl:col-start-4">
         {#if data.subroutine.type === "dot" || data.subroutine.type === "semaphore"}
           <DotSemaphore editable subroutine={data.subroutine} entries={data.entries} />
         {:else if data.subroutine.type === "torch"}
