@@ -40,9 +40,9 @@ export const actions: Actions = {
     }
 
     // db queries
-    const { session } = await safeGetSession();
-    const user_id = (await supabase.auth.getUser()).data.user?.id;
-    if (!session || !user_id) {
+    const { session, user } = await safeGetSession();
+
+    if (!session || !user) {
       redirect(303, "/signin");
     }
 
@@ -50,7 +50,7 @@ export const actions: Actions = {
       .from("subroutines")
       .insert({
         created_at,
-        user_id,
+        user_id: user.id,
         type: type.output,
         title: title.output,
         description: description.output,
@@ -66,7 +66,7 @@ export const actions: Actions = {
       if (type.output === "dot") {
         const init_dot_res = await supabase.from("entries").insert({
           created_at,
-          user_id,
+          user_id: user.id,
           subroutine_id: new_sub.data.id,
           title: "init dot",
         });

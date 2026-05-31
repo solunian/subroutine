@@ -5,10 +5,9 @@ import type { PageServerLoad } from "./$types";
 import type { Tables } from "$lib/types/database.types";
 
 export const load: PageServerLoad = async ({ parent, locals: { safeGetSession, supabase } }) => {
-  const { session } = await safeGetSession();
-  const user_id = (await supabase.auth.getUser()).data.user?.id;
+  const { session, user } = await safeGetSession();
 
-  if (!session || !user_id) {
+  if (!session || !user) {
     return;
   }
 
@@ -51,9 +50,8 @@ export const load: PageServerLoad = async ({ parent, locals: { safeGetSession, s
 
 export const actions: Actions = {
   request_relation: async ({ request, locals: { safeGetSession, supabase } }) => {
-    const { session } = await safeGetSession();
-    const user_id = (await supabase.auth.getUser()).data.user?.id;
-    if (!session || !user_id) {
+    const { session, user } = await safeGetSession();
+    if (!session || !user) {
       redirect(303, "/signin");
     }
 
@@ -68,7 +66,7 @@ export const actions: Actions = {
     }
 
     const req_res = await supabase.from("relationships").insert({
-      requester_id: user_id,
+      requester_id: user.id,
       requestee_id: other_id.output,
       status: "pending",
     });
@@ -80,9 +78,9 @@ export const actions: Actions = {
     return { form_name: "request_relation" };
   },
   delete_relation: async ({ request, locals: { safeGetSession, supabase } }) => {
-    const { session } = await safeGetSession();
-    const user_id = (await supabase.auth.getUser()).data.user?.id;
-    if (!session || !user_id) {
+    const { session, user } = await safeGetSession();
+
+    if (!session || !user) {
       redirect(303, "/signin");
     }
 
@@ -101,7 +99,7 @@ export const actions: Actions = {
       .from("relationships")
       .delete()
       .or(
-        `and(requester_id.eq.${user_id},requestee_id.eq.${other_id}),and(requester_id.eq.${other_id},requestee_id.eq.${user_id})`
+        `and(requester_id.eq.${user.id},requestee_id.eq.${other_id}),and(requester_id.eq.${other_id},requestee_id.eq.${user.id})`
       );
 
     if (del_res.error) {

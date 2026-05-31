@@ -28,6 +28,17 @@
     <h1 class="flex items-center gap-1 py-2 font-nova text-3xl">signup</h1>
     <form class="flex flex-col gap-2" method="POST" use:enhance={submit}>
       {form?.message}
+      <div>
+        <label for="name">name</label>
+        <input name="name" type="text" required />
+        {form?.errors?.name}
+      </div>
+
+      <div>
+        <label for="username">username</label>
+        <input name="username" type="username" required />
+        {form?.errors?.username}
+      </div>
 
       <div>
         <label for="email">email address</label>

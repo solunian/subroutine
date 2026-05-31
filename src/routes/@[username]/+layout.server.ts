@@ -2,8 +2,7 @@ import { error } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "./$types";
 
 export const load: LayoutServerLoad = async ({ params, locals: { safeGetSession, supabase } }) => {
-  const { session } = await safeGetSession();
-  const user_id = (await supabase.auth.getUser()).data.user?.id;
+  const { session, user } = await safeGetSession();
 
   // visible for anon
   const profile_res = await supabase
@@ -16,7 +15,7 @@ export const load: LayoutServerLoad = async ({ params, locals: { safeGetSession,
     error(400, "invalid username");
   }
 
-  if (!session || !user_id) {
+  if (!session || !user) {
     return { username: params.username, profile: profile_res.data };
   }
 
@@ -28,12 +27,12 @@ export const load: LayoutServerLoad = async ({ params, locals: { safeGetSession,
     .from("relationships")
     .select("*")
     .or(
-      `and(requester_id.eq.${user_id},requestee_id.eq.${profile_user_id}),and(requester_id.eq.${profile_user_id},requestee_id.eq.${user_id})`
+      `and(requester_id.eq.${user.id},requestee_id.eq.${profile_user_id}),and(requester_id.eq.${profile_user_id},requestee_id.eq.${user.id})`
     )
     .maybeSingle();
 
   return {
-    user_id,
+    user_id: user.id,
     username: params.username,
     profile: profile_res.data,
     relationship: relationship_res.data,

@@ -5,11 +5,37 @@ export const NormalStrSchema = v.pipe(v.string("invalid string"), v.normalize())
 
 export const TrimNormalStrSchema = v.pipe(NormalStrSchema, v.trim());
 
+export function empty_to_null<TSchema extends v.BaseSchema<any, any, any>>(wrapped: TSchema) {
+  return v.pipe(
+    TrimNormalStrSchema,
+    v.transform((val) => (val === "" ? null : val)),
+    v.nullable(wrapped)
+  );
+}
+
+export function empty_to_undefined<TSchema extends v.BaseSchema<any, any, any>>(wrapped: TSchema) {
+  return v.pipe(
+    TrimNormalStrSchema,
+    v.transform((val) => (val === "" ? undefined : val)),
+    v.optional(wrapped)
+  );
+}
+
 export const EmailSchema = v.pipe(TrimNormalStrSchema, v.email("invalid email"));
 
 export const PasswordSchema = v.pipe(
   TrimNormalStrSchema,
-  v.minGraphemes(6, "invalid password: must have a length greater than 6")
+  v.minGraphemes(6, "invalid password: must have a length greater or equal to 6")
+);
+
+export const UsernameSchema = v.pipe(
+  TrimNormalStrSchema,
+  v.minGraphemes(3, "invalid username: must have a length greater or equal to 3"),
+  v.maxGraphemes(32, "invalid username: must have a length less than or equal to 32"),
+  v.regex(
+    /^(?!.*\.{2})[a-z0-9_.]+$/,
+    "invalid username: must only contain lowercase letters, numbers, underscores, and non-consecutive periods"
+  )
 );
 
 // idk why this didnt work for nullable() like with the TrimNormalStrSchema. wtf...

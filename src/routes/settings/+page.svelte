@@ -3,12 +3,8 @@
   import type { SubmitFunction } from "@sveltejs/kit";
 
   let { data, form } = $props();
-  let { session, profile } = $derived(data);
 
   let loading = $state(false);
-  let name: string = $derived(profile?.name ?? "");
-  let username: string = $derived(profile?.username ?? "");
-  let website: string = $derived(profile?.website ?? "");
 
   const submit: SubmitFunction = () => {
     loading = true;
@@ -45,24 +41,30 @@
 
       <div>
         <label for="email">email</label>
-        <input name="email" type="text" class="text-gray-500" value={session.user.email} disabled />
-      </div>
-
-      <div>
-        <label for="name">name</label>
-        <input name="name" type="text" value={form?.name ?? name} />
-        {form?.errors?.name}
+        <input name="email" type="text" class="text-gray-500" value={data.email} disabled />
       </div>
 
       <div>
         <label for="username">username</label>
-        <input name="username" type="text" value={form?.username ?? username} />
+        <input name="username" type="text" value={form?.username ?? data.profile?.username ?? ""} />
         {form?.errors?.username}
       </div>
 
       <div>
+        <label for="name">name</label>
+        <input name="name" type="text" value={form?.name ?? data.profile?.name ?? ""} />
+        {form?.errors?.name}
+      </div>
+
+      <div>
+        <label for="website">bio</label>
+        <textarea name="bio" value={form?.bio ?? data.profile?.bio ?? ""}></textarea>
+        {form?.errors?.bio}
+      </div>
+
+      <div>
         <label for="website">website</label>
-        <input name="website" type="url" value={form?.website ?? website} />
+        <input name="website" type="url" value={form?.website ?? data.profile?.website ?? ""} />
         {form?.errors?.website}
       </div>
 
@@ -78,7 +80,8 @@
 <style>
   @reference "tailwindcss";
 
-  input {
-    @apply w-full py-1;
+  input,
+  textarea {
+    @apply w-full p-1;
   }
 </style>

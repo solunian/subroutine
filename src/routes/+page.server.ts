@@ -5,16 +5,15 @@ import { FinNumberSchema, TrimNormalStrSchema } from "$lib/schemas";
 import type { Tables } from "$lib/types/database.types";
 
 export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession } }) => {
-  const { session } = await safeGetSession();
-  const user_id = (await supabase.auth.getUser()).data.user?.id;
-  if (!session || !user_id) {
+  const { session, user } = await safeGetSession();
+  if (!session || !user) {
     return;
   }
 
   const sub_res = await supabase
     .from("subroutines")
     .select("*")
-    .eq("user_id", user_id)
+    .eq("user_id", user.id)
     .order("created_at");
   if (sub_res.error) {
     error(sub_res.status, sub_res.error.message);
@@ -38,7 +37,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
   const username_res = await supabase
     .from("profiles")
     .select("username")
-    .eq("id", user_id)
+    .eq("id", user.id)
     .single();
   if (username_res.error) {
     error(username_res.status, username_res.error.message);
@@ -69,9 +68,8 @@ export const actions: Actions = {
     }
 
     // db queries
-    const { session } = await safeGetSession();
-    const user_id = (await supabase.auth.getUser()).data.user?.id;
-    if (!session || !user_id) {
+    const { session, user } = await safeGetSession();
+    if (!session || !user) {
       redirect(303, "/signin");
     }
 
@@ -106,7 +104,7 @@ export const actions: Actions = {
       .insert({
         created_at: current_timestamp,
         subroutine_id: subroutine_id.output,
-        user_id,
+        user_id: user.id,
         data: custom_data_map.size === 0 ? null : Object.fromEntries(custom_data_map),
       })
       .select()
