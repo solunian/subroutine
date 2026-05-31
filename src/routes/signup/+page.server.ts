@@ -57,8 +57,8 @@ export const actions: Actions = {
       password: password.output,
       options: {
         data: {
-          name,
-          username,
+          name: name.output,
+          username: username.output,
         },
       },
     });
