@@ -35,7 +35,7 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 
   const latest_gitcommit_res = await supabase
     .from("globals")
-    .select("*")
+    .select("value, updated_at")
     .eq("key", "latest_gitcommit_hash")
     .maybeSingle();
 
