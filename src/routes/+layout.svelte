@@ -68,8 +68,16 @@
 
     {@render children()}
   </div>
+
   <footer
-    class="mt-auto flex h-16 items-center justify-end bg-linear-to-b from-neutral-500/0 to-neutral-500/50 px-6 text-neutral-500/50">
+    class="mt-auto flex h-16 items-center justify-end gap-4 bg-linear-to-b from-neutral-500/0 to-neutral-500/50 px-6 text-neutral-500/50">
+    {#if data.latest_gitcommit?.value}
+      <a
+        href="https://github.com/solunian/subroutine/commit/{data.latest_gitcommit.value.hash}"
+        class="text-sm">
+        {data.latest_gitcommit.value.hash.slice(0, 7)}
+      </a>
+    {/if}
     <a href="https://github.com/solunian/subroutine" target="_blank"><GithubInvertocat /></a>
   </footer>
 </div>

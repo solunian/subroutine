@@ -59,14 +59,39 @@ export type Database = {
           },
         ];
       };
+      globals: {
+        Row: {
+          created_at: string;
+          id: string;
+          key: string;
+          updated_at: string;
+          value: any;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          key: string;
+          updated_at?: string;
+          value?: Json | null;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          key?: string;
+          updated_at?: string;
+          value?: Json | null;
+        };
+        Relationships: [];
+      };
       profiles: {
         Row: {
           avatar_url: string | null;
           bio: string | null;
           created_at: string;
+          email: string;
           id: string;
           name: string | null;
-          updated_at: string | null;
+          updated_at: string;
           username: string;
           website: string | null;
         };
@@ -74,9 +99,10 @@ export type Database = {
           avatar_url?: string | null;
           bio?: string | null;
           created_at?: string;
+          email: string;
           id: string;
           name?: string | null;
-          updated_at?: string | null;
+          updated_at?: string;
           username: string;
           website?: string | null;
         };
@@ -84,9 +110,10 @@ export type Database = {
           avatar_url?: string | null;
           bio?: string | null;
           created_at?: string;
+          email?: string;
           id?: string;
           name?: string | null;
-          updated_at?: string | null;
+          updated_at?: string;
           username?: string;
           website?: string | null;
         };

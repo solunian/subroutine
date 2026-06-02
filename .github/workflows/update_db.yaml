@@ -7,7 +7,7 @@ on:
   workflow_dispatch: # allows manual execution from the GitHub actions tab
 
 jobs:
-  update-data:
+  update-db:
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
