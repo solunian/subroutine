@@ -41,8 +41,21 @@
         class="flex flex-row items-stretch gap-1">
         {#if data.relationship && data.relationship.status === "accepted"}
           <button class="px-2" disabled>friended</button>
-        {:else if data.relationship && data.relationship.status === "pending" && data.relationship.requestee_id === data.profile.id}
-          <button class="px-2">requested</button>
+        {:else if data.relationship && data.relationship.status === "pending" && data.relationship.requester_id === data.user_id}
+          <button class="px-2" disabled>requested</button>
+        {:else if data.relationship && data.relationship.status === "pending" && data.relationship.requestee_id === data.user_id}
+          <form
+            method="POST"
+            action="?/update_relation"
+            use:enhance={() => {
+              return async ({ update }) => {
+                await update({ reset: false });
+              };
+            }}>
+            <input name="other_id" value={data.profile.id} hidden />
+            <input name="status" value="accepted" hidden />
+            <button class="h-full px-2" type="submit">confirm</button>
+          </form>
         {:else}
           <form
             method="POST"

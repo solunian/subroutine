@@ -1,4 +1,4 @@
-import { TrimNormalStrSchema } from "$lib/schemas";
+import { RelationshipStatusType, TrimNormalStrSchema } from "$lib/schemas";
 import { error, fail, redirect, type Actions } from "@sveltejs/kit";
 import * as v from "valibot";
 import type { PageServerLoad } from "./$types";
@@ -107,5 +107,38 @@ export const actions: Actions = {
     }
 
     return { form_name: "delete_relation" };
+  },
+  update_relation: async ({ request, locals: { safeGetSession, supabase } }) => {
+    const { session, user } = await safeGetSession();
+
+    if (!session || !user) {
+      redirect(303, "/signin");
+    }
+
+    const fdata = await request.formData();
+    const other_id_vbot = v.safeParse(TrimNormalStrSchema, fdata.get("other_id"));
+    const status_vbot = v.safeParse(RelationshipStatusType, fdata.get("status"));
+    if (!other_id_vbot.success || !status_vbot.success) {
+      return fail(400, {
+        errors: {
+          other_id: other_id_vbot.issues && v.summarize(other_id_vbot.issues),
+          status: status_vbot.issues && v.summarize(status_vbot.issues),
+        },
+      });
+    }
+
+    const other_id = other_id_vbot.output;
+    const update_res = await supabase
+      .from("relationships")
+      .update({ status: status_vbot.output })
+      .or(
+        `and(requester_id.eq.${user.id},requestee_id.eq.${other_id}),and(requester_id.eq.${other_id},requestee_id.eq.${user.id})`
+      );
+
+    if (update_res.error) {
+      return fail(update_res.status, { message: update_res.error.message });
+    }
+
+    return { form_name: "update_relation" };
   },
 };
