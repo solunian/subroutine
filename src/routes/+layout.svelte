@@ -6,6 +6,7 @@
   import ReleaseStageBanner from "$lib/components/release_stage_banner.svelte";
   import TimeInfo from "$lib/components/time_info.svelte";
   import { now } from "$lib/state/time.svelte.js";
+  import GithubInvertocat from "$lib/icons/github_invertocat.svelte";
 
   let { data, children } = $props();
   let { supabase, session } = $derived(data);
@@ -53,17 +54,22 @@
     }
   }} />
 
-<ReleaseStageBanner />
+<div class="flex min-h-screen flex-col">
+  <ReleaseStageBanner />
+  <div class="mb-4 px-4 py-2">
+    <header
+      class="flex flex-col items-center justify-between gap-2 py-2 font-nova text-4xl sm:flex-row">
+      <a href="/" class="flex items-center gap-2 pr-1">
+        <img src="/icons/favicon.png" alt="favicon" class="inline w-12" />subroutine
+      </a>
 
-<div class="px-4 py-2">
-  <header
-    class="flex flex-col items-center justify-between gap-2 py-2 font-nova text-4xl sm:flex-row">
-    <a href="/" class="flex items-center gap-2 pr-1">
-      <img src="/icons/favicon.png" alt="favicon" class="inline w-12" />subroutine
-    </a>
+      <TimeInfo />
+    </header>
 
-    <TimeInfo />
-  </header>
-
-  {@render children()}
+    {@render children()}
+  </div>
+  <footer
+    class="mt-auto flex h-16 items-center justify-end bg-linear-to-b from-neutral-500/0 to-neutral-500/50 px-6 text-neutral-500/50">
+    <a href="https://github.com/solunian/subroutine" target="_blank"><GithubInvertocat /></a>
+  </footer>
 </div>
