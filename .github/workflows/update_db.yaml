@@ -1,0 +1,29 @@
+name: supabase db update with repo data
+
+on:
+  push:
+    branches:
+      - main # triggers when code is merged into main
+  workflow_dispatch: # allows manual execution from the GitHub actions tab
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: setup node.js
+        uses: actions/setup-node@v4
+        with:
+          node-node: "20"
+
+      - name: install dependencies
+        run: npm install @supabase/supabase-js octokit
+
+      - name: execute update script
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        run: node .github/scripts/update_db.js
