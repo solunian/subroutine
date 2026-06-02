@@ -1,7 +1,7 @@
 <!-- src/routes/+layout.svelte -->
 <script lang="ts">
   import "../app.css";
-  import { invalidate } from "$app/navigation";
+  import { invalidate, invalidateAll } from "$app/navigation";
   import { onMount } from "svelte";
   import ReleaseStageBanner from "$lib/components/release_stage_banner.svelte";
   import TimeInfo from "$lib/components/time_info.svelte";
@@ -11,12 +11,14 @@
   let { supabase, session } = $derived(data);
 
   onMount(() => {
+    // supabase auth
     const { data } = supabase.auth.onAuthStateChange((event, _session) => {
       if (_session?.expires_at !== session?.expires_at) {
         invalidate("supabase:auth");
       }
     });
 
+    // now interval
     const now_interval = setInterval(() => {
       now.setTime(Date.now());
     }, 100);
@@ -31,6 +33,25 @@
 <svelte:head>
   <title>subroutine</title>
 </svelte:head>
+
+<!-- idle/browser offload invalidation -->
+
+<!-- watch for bfcache restores (ideal for mobile "back" navigation) -->
+<svelte:window
+  onpageshow={(e) => {
+    if (e.persisted) {
+      invalidateAll();
+    }
+  }} />
+
+<!-- watch for tab visibility changes (ideal for idle background tabs) -->
+<svelte:document
+  onvisibilitychange={() => {
+    // Triggered when the browser tab becomes visible again
+    if (document.visibilityState === "visible") {
+      invalidateAll(); // Reruns all active load functions
+    }
+  }} />
 
 <ReleaseStageBanner />
 
