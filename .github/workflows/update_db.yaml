@@ -16,7 +16,7 @@ jobs:
       - name: setup node.js
         uses: actions/setup-node@v6
         with:
-          node-node: "24"
+          node-version: "24"
 
       - name: install dependencies
         run: npm install @supabase/supabase-js octokit
