@@ -1,31 +1,36 @@
 import { createClient } from "@supabase/supabase-js";
-import { Octokit, App } from "octokit";
+import { execSync } from "node:child_process";
 
 const supabase_url = process.env.SUPABASE_URL;
 const supabase_key = process.env.SUPABASE_SECRET_KEY;
 const supabase = createClient(supabase_url, supabase_key);
 
-const github_token = process.env.ACCESS_TOKEN;
-const octokit = new Octokit({ auth: github_token });
-
 async function run() {
   try {
-    const response = await octokit.request("GET /repos/{owner}/{repo}/commits", {
-      owner: "solunian",
-      repo: "subroutine",
-      sha: "main",
-      per_page: 1, // we only need the most recent commit
-    });
+    // Get the last n commits with Hash and ISO Timestamp
+    const log_output = execSync('git log -n 1 --format="%H|%ai"', { encoding: "utf-8" });
 
-    const commit = response.data[0];
-    const hash = commit.sha;
-    const timestamp = commit.commit.author.date;
+    // Parse the output into snake_case properties
+    const git_commits = log_output
+      .trim()
+      .split("\n")
+      .map((line) => {
+        const [hash, timestamp] = line.split("|");
+        return {
+          hash,
+          timestamp,
+        };
+      });
+
+    const commit = git_commits[0];
+    const hash = commit.hash;
+    const timestamp = commit.timestamp;
 
     console.log("latest commit hash:", hash);
     console.log("timestamp:", timestamp);
 
     // UPDATE SUPABASE HERE
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("globals")
       .update({ value: { hash }, updated_at: timestamp })
       .eq("key", "latest_gitcommit_hash");
@@ -34,9 +39,9 @@ async function run() {
       console.error("failed to update data:", error);
       process.exit(1);
     }
-    console.log("successfully updated data:", data);
-  } catch (error) {
-    console.error("error fetching commits:", error);
+    console.log("successfully updated data");
+  } catch (script_error) {
+    console.error("error fetching commits:", script_error.message);
   }
 }
 

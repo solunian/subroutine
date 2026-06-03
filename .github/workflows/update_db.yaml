@@ -19,11 +19,10 @@ jobs:
           node-version: "24"
 
       - name: install dependencies
-        run: npm install @supabase/supabase-js octokit
+        run: npm install @supabase/supabase-js
 
       - name: execute update script
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: node .github/scripts/update_db.js
