@@ -1,4 +1,3 @@
-// src/routes/+layout.ts
 import { PUBLIC_SUPABASE_PUBLISHABLE_KEY, PUBLIC_SUPABASE_URL } from "$env/static/public";
 import type { Database } from "$lib/types/database.types";
 import type { LayoutLoad } from "./$types";
