@@ -16,7 +16,10 @@
     editable?: boolean;
   } = $props();
 
-  let sem_value = $derived(entries.at(-1)?.data?.value ?? 0);
+  // svelte-ignore state_referenced_locally
+  let optimistic_entries = $state(entries);
+  // svelte-ignore state_referenced_locally
+  let sem_value = $state(entries.at(-1)?.data?.value ?? 0);
 </script>
 
 <div class="flex flex-col gap-2 border border-neutral-500/50 p-2">
@@ -26,14 +29,35 @@
     </h2>
   </div>
 
-  <LineChart type={subroutine.type} {entries} />
+  <LineChart type={subroutine.type} entries={optimistic_entries} />
 
   {#if editable}
     <form
       method="POST"
       action="/?/append"
       use:enhance={() => {
-        return async ({ update }) => {
+        // optimistic update
+        const current_timestamp = new Date().toISOString();
+        optimistic_entries.push({
+          created_at: current_timestamp,
+          data: subroutine.type === "semaphore" ? { value: sem_value } : null,
+          id: current_timestamp,
+          subroutine_id: current_timestamp,
+          user_id: current_timestamp,
+          title: null,
+          description: null,
+          location: null,
+          ascii_art: null,
+        });
+        // console.log("optimistic DONE");
+
+        return async ({ result, update }) => {
+          if (result.type !== "success") {
+            optimistic_entries.pop();
+            // console.log("fail type:", result.type);
+          } else {
+            // console.log("DONE");
+          }
           await update({ reset: false });
         };
       }}>
