@@ -42,7 +42,7 @@
         // optimistic update
         optimistic_entries.push({
           created_at: new Date().toISOString(),
-          data: null,
+          data: subroutine.type === "semaphore" ? { value: sem_value } : null,
           id: "",
           subroutine_id: "",
           user_id: "",
