@@ -17,7 +17,9 @@
     editable?: boolean;
   } = $props();
 
-  let torch_on = $derived(entries.length % 2 !== 0);
+  // svelte-ignore state_referenced_locally
+  let optimistic_entries = $state(entries);
+  let torch_on = $derived(optimistic_entries.length % 2 !== 0);
 
   // in milliseconds
   let [total_duration, trend_value] = $derived.by(() => {
@@ -27,8 +29,11 @@
     let total = 0;
 
     // sum up all pairs
-    for (let i = 0; i < Math.floor(entries.length / 2) * 2; i += 2) {
-      const [start, end] = [new Date(entries[i].created_at), new Date(entries[i + 1].created_at)];
+    for (let i = 0; i < Math.floor(optimistic_entries.length / 2) * 2; i += 2) {
+      const [start, end] = [
+        new Date(optimistic_entries[i].created_at),
+        new Date(optimistic_entries[i + 1].created_at),
+      ];
 
       const diff = end.getTime() - start.getTime();
       total += diff;
@@ -39,8 +44,10 @@
     }
 
     // for last entry
-    if (entries.length % 2 !== 0) {
-      const last_entry_time = new Date(entries[entries.length - 1].created_at).getTime();
+    if (optimistic_entries.length % 2 !== 0) {
+      const last_entry_time = new Date(
+        optimistic_entries[optimistic_entries.length - 1].created_at
+      ).getTime();
       total += now.getTime() - last_entry_time;
       one_week_trend += now.getTime() - Math.max(last_entry_time, one_week_ago.getTime());
     }
@@ -122,8 +129,31 @@
       method="POST"
       action="/?/append"
       use:enhance={() => {
-        return async ({ update }) => {
+        // optimistic update
+        optimistic_entries.push({
+          created_at: new Date().toISOString(),
+          data: null,
+          id: "",
+          subroutine_id: "",
+          user_id: "",
+          title: null,
+          description: null,
+          location: null,
+          ascii_art: null,
+        });
+        // console.log("optimistic update");
+
+        return async ({ result, update }) => {
+          if (result.type === "error") {
+            optimistic_entries.pop();
+            // console.log(result.type, "(form submission failed)");
+          } else {
+            // console.log("success (form submitted)");
+          }
+
           await update({ reset: false });
+          optimistic_entries = entries;
+          // console.log("update state with fetched page data");
         };
       }}>
       <input hidden name="subroutine_id" value={subroutine.id} />

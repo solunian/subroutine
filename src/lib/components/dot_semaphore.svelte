@@ -37,28 +37,30 @@
       action="/?/append"
       use:enhance={() => {
         // optimistic update
-        const current_timestamp = new Date().toISOString();
         optimistic_entries.push({
-          created_at: current_timestamp,
-          data: subroutine.type === "semaphore" ? { value: sem_value } : null,
-          id: current_timestamp,
-          subroutine_id: current_timestamp,
-          user_id: current_timestamp,
+          created_at: new Date().toISOString(),
+          data: null,
+          id: "",
+          subroutine_id: "",
+          user_id: "",
           title: null,
           description: null,
           location: null,
           ascii_art: null,
         });
-        // console.log("optimistic DONE");
+        // console.log("optimistic update");
 
         return async ({ result, update }) => {
-          if (result.type !== "success") {
+          if (result.type === "error") {
             optimistic_entries.pop();
-            // console.log("fail type:", result.type);
+            // console.log(result.type, "(form submission failed)");
           } else {
-            // console.log("DONE");
+            // console.log("success (form submitted)");
           }
+
           await update({ reset: false });
+          optimistic_entries = entries;
+          // console.log("update state with fetched page data");
         };
       }}>
       {#if subroutine.type === "dot"}
