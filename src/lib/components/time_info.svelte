@@ -85,12 +85,12 @@
   </NumberFlowGroup>
 
   <div
-    class="time-info-panel pointer-events-none absolute top-full z-20 mt-2 min-w-72 border border-neutral-500/70 bg-neutral-100 p-3 text-left text-xs opacity-0 shadow-[4px_4px_0_rgb(0_0_0_/0.12)] transition-opacity sm:right-0 dark:bg-neutral-950 dark:shadow-[4px_4px_0_rgb(255_255_255_/0.08)]">
+    class="time-info-panel pointer-events-none absolute top-full z-20 mt-2 min-w-72 border border-neutral-500/50 bg-neutral-50 p-3 text-left text-sm opacity-0 shadow-[4px_4px_0_rgb(0_0_0_/0.12)] transition-opacity sm:right-0 dark:bg-neutral-950 dark:shadow-[4px_4px_0_rgb(255_255_255_/0.08)]">
     <div class="mb-2 text-neutral-500">remaining hours</div>
     <NumberFlowGroup>
       {#each duration_info as duration}
         <div
-          class="grid grid-cols-[4rem_1fr_3.5rem] items-baseline gap-3 border-t border-neutral-400/50 py-1.5 first:border-t-0 dark:border-neutral-700/70">
+          class="grid grid-cols-[3.5rem_1fr_3.5rem] items-baseline gap-3 border-t border-neutral-500 py-1.5 first:border-t-0 dark:border-neutral-700/70">
           <span class="text-neutral-500">{duration.label}</span>
           <span class="text-right">
             <NumberFlow format={{ maximumFractionDigits: 1 }} value={duration.remaining} />
