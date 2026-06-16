@@ -51,8 +51,10 @@ export const actions: Actions = {
     const fdata = await request.formData();
 
     // data validation
-    // const current_timestamp = new Date().toISOString();
-    const created_at = v.safeParse(TrimNormalStrSchema, fdata.get("created_at"));
+    const created_at = v.safeParse(
+      TrimNormalStrSchema,
+      fdata.get("created_at") ?? new Date().toISOString()
+    );
     const subroutine_id = v.safeParse(TrimNormalStrSchema, fdata.get("subroutine_id"));
     const subroutine_type = v.safeParse(
       v.nullable(TrimNormalStrSchema),

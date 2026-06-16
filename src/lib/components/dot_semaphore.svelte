@@ -3,7 +3,6 @@
   import ArrowLongRight from "$lib/icons/arrow_long_right.svelte";
   import ChevronDown from "$lib/icons/chevron_down.svelte";
   import ChevronUp from "$lib/icons/chevron_up.svelte";
-  import { now } from "$lib/state/time.svelte";
   import type { Tables } from "$lib/types/database.types";
   import LineChart from "./line_chart.svelte";
   import TypeIdenticon from "./type_identicon.svelte";
@@ -39,10 +38,13 @@
     <form
       method="POST"
       action="/?/append"
-      use:enhance={() => {
+      use:enhance={({ formData }) => {
+        const created_at = new Date().toISOString();
+        formData.append("created_at", created_at);
+
         // optimistic update
         optimistic_entries.push({
-          created_at: now.toISOString(),
+          created_at,
           data: subroutine.type === "semaphore" ? { value: sem_value } : null,
           id: "",
           subroutine_id: "",
@@ -68,11 +70,9 @@
         };
       }}>
       {#if subroutine.type === "dot"}
-        <input hidden name="created_at" value={now.toISOString()} />
         <input hidden name="subroutine_id" value={subroutine.id} />
         <button class="w-full border-0! bg-black/10 px-2 text-lg dark:bg-white/10">dot</button>
       {:else if subroutine.type === "semaphore"}
-        <input hidden name="created_at" value={now.toISOString()} />
         <input hidden name="subroutine_id" value={subroutine.id} />
         <input hidden name="subroutine_type" value="semaphore" />
         <div class="flex shrink-0 gap-2">
