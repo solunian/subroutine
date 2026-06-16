@@ -7,6 +7,7 @@
   import { now } from "$lib/state/time.svelte.js";
   import GithubInvertocat from "$lib/icons/github_invertocat.svelte";
   import { from_now } from "$lib/helpers";
+  import Hashtag from "$lib/icons/hashtag.svelte";
 
   let { data, children } = $props();
   let { supabase, session } = $derived(data);
@@ -75,18 +76,7 @@
       <a
         href="https://github.com/solunian/subroutine/commit/{data.latest_gitcommit.value.hash}"
         class="flex items-center gap-1">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="inline size-6">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5-3.9 19.5m-2.1-19.5-3.9 19.5" />
-        </svg>
+        <Hashtag />
 
         <div class="flex flex-col font-mono text-sm">
           <span>{data.latest_gitcommit.value.hash.slice(0, 7)} </span>

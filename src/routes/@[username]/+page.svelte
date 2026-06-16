@@ -3,6 +3,8 @@
   import DotSemaphore from "$lib/components/dot_semaphore.svelte";
   import Torch from "$lib/components/torch.svelte";
   import TypeIdenticon from "$lib/components/type_identicon.svelte";
+  import AtSymbol from "$lib/icons/at_symbol.svelte";
+  import XMark from "$lib/icons/x_mark.svelte";
   import type { Database } from "$lib/types/database.types";
 
   let { data } = $props();
@@ -21,18 +23,7 @@
 
     <div class="flex items-center gap-4">
       <span class="flex items-center font-nova text-2xl">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-          stroke="currentColor"
-          class="size-7">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
-        </svg>
+        <span class="size-7"><AtSymbol /></span>
         {data.username}
       </span>
 
@@ -81,15 +72,7 @@
           }}>
           <input name="other_id" value={data.profile.id} hidden />
           <button type="submit" title="remove" class="h-full px-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-            </svg>
+            <XMark />
           </button>
         </form>
       </span>

@@ -4,6 +4,8 @@
   import Torch from "$lib/components/torch.svelte";
   import TypeIdenticon from "$lib/components/type_identicon.svelte";
   import { to_date_str, to_fulltime_str } from "$lib/helpers";
+  import AtSymbol from "$lib/icons/at_symbol.svelte";
+  import XMark from "$lib/icons/x_mark.svelte";
 
   let { data } = $props();
 </script>
@@ -12,18 +14,7 @@
   <div class="flex flex-col gap-4">
     <header class="flex flex-col gap-1 p-4">
       <a href="/@{data.username}" class="flex items-center font-nova text-xl opacity-50">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-          stroke="currentColor"
-          class="size-5">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
-        </svg>
+        <span class="size-5"><AtSymbol /></span>
         {data.username}
       </a>
 
@@ -80,15 +71,7 @@
               </div>
               <input name="entry_id" value={entry.id} hidden />
               <button aria-label="delete" type="submit" class="border-0!">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
+                <XMark />
               </button>
             </form>
           {/each}
