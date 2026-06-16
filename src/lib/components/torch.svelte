@@ -111,7 +111,7 @@
       use:enhance={() => {
         // optimistic update
         optimistic_entries.push({
-          created_at: new Date().toISOString(),
+          created_at: now.toISOString(),
           data: null,
           id: "",
           subroutine_id: "",
@@ -136,6 +136,7 @@
           // console.log("update state with fetched page data");
         };
       }}>
+      <input hidden name="created_at" value={now.toISOString()} />
       <input hidden name="subroutine_id" value={subroutine.id} />
       <button class="w-full border-0! bg-black/10 px-2 text-lg dark:bg-white/10"
         >{torch_on ? "torch off" : "torch on"}</button>

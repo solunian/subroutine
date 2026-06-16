@@ -51,16 +51,18 @@ export const actions: Actions = {
     const fdata = await request.formData();
 
     // data validation
-    const current_timestamp = new Date().toISOString();
+    // const current_timestamp = new Date().toISOString();
+    const created_at = v.safeParse(TrimNormalStrSchema, fdata.get("created_at"));
     const subroutine_id = v.safeParse(TrimNormalStrSchema, fdata.get("subroutine_id"));
     const subroutine_type = v.safeParse(
       v.nullable(TrimNormalStrSchema),
       fdata.get("subroutine_type")
     );
 
-    if (!subroutine_id.success || !subroutine_type.success) {
+    if (!subroutine_id.success || !created_at.success || !subroutine_type.success) {
       return fail(400, {
         errors: {
+          created_at: created_at.issues && v.summarize(created_at.issues),
           subroutine_id: subroutine_id.issues && v.summarize(subroutine_id.issues),
           subroutine_type: subroutine_type.issues && v.summarize(subroutine_type.issues),
         },
@@ -92,7 +94,7 @@ export const actions: Actions = {
 
     const updated_at_sub = await supabase
       .from("subroutines")
-      .update({ updated_at: current_timestamp })
+      .update({ updated_at: created_at.output })
       .eq("id", subroutine_id.output);
 
     if (updated_at_sub.error) {
@@ -102,7 +104,7 @@ export const actions: Actions = {
     const new_entry = await supabase
       .from("entries")
       .insert({
-        created_at: current_timestamp,
+        created_at: created_at.output,
         subroutine_id: subroutine_id.output,
         user_id: user.id,
         data: custom_data_map.size === 0 ? null : Object.fromEntries(custom_data_map),
