@@ -1,5 +1,6 @@
 <!-- src/routes/account/Avatar.svelte -->
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import type { SupabaseClient } from "@supabase/supabase-js";
 
   interface Props {
@@ -23,6 +24,9 @@
       }
 
       const url = URL.createObjectURL(data);
+      if (avatar_url) {
+        URL.revokeObjectURL(avatar_url);
+      }
       avatar_url = url;
     } catch (error) {
       if (error instanceof Error) {
@@ -64,6 +68,12 @@
 
   $effect(() => {
     if (url) download_image(url);
+  });
+
+  onDestroy(() => {
+    if (avatar_url) {
+      URL.revokeObjectURL(avatar_url);
+    }
   });
 </script>
 

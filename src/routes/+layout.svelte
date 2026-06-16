@@ -12,6 +12,41 @@
   let { data, children } = $props();
   let { supabase, session } = $derived(data);
 
+  let now_interval: ReturnType<typeof setInterval> | undefined;
+
+  const update_now = () => {
+    now.setTime(Math.floor(Date.now() / 1000) * 1000);
+  };
+
+  const start_now_interval = () => {
+    update_now();
+    now_interval ??= setInterval(update_now, 1000);
+  };
+
+  const stop_now_interval = () => {
+    if (now_interval) {
+      clearInterval(now_interval);
+      now_interval = undefined;
+    }
+  };
+
+  const handle_visibility_change = () => {
+    if (document.visibilityState === "visible") {
+      start_now_interval();
+      invalidateAll();
+    } else {
+      stop_now_interval();
+    }
+  };
+
+  const handle_page_show = (event: PageTransitionEvent) => {
+    start_now_interval();
+
+    if (event.persisted) {
+      invalidateAll();
+    }
+  };
+
   onMount(() => {
     // supabase auth
     const { data } = supabase.auth.onAuthStateChange((event, _session) => {
@@ -20,14 +55,13 @@
       }
     });
 
-    // now interval
-    const now_interval = setInterval(() => {
-      now.setTime(Date.now());
-    }, 100);
+    if (document.visibilityState === "visible") {
+      start_now_interval();
+    }
 
     return () => {
       data.subscription.unsubscribe();
-      clearInterval(now_interval);
+      stop_now_interval();
     };
   });
 </script>
@@ -36,24 +70,8 @@
   <title>subroutine</title>
 </svelte:head>
 
-<!-- idle/browser offload invalidation -->
-
-<!-- watch for bfcache restores (ideal for mobile "back" navigation) -->
-<svelte:window
-  onpageshow={(e) => {
-    if (e.persisted) {
-      invalidateAll();
-    }
-  }} />
-
-<!-- watch for tab visibility changes (ideal for idle background tabs) -->
-<svelte:document
-  onvisibilitychange={() => {
-    // Triggered when the browser tab becomes visible again
-    if (document.visibilityState === "visible") {
-      invalidateAll(); // Reruns all active load functions
-    }
-  }} />
+<svelte:window onpageshow={handle_page_show} />
+<svelte:document onvisibilitychange={handle_visibility_change} />
 
 <div class="flex min-h-screen flex-col">
   <ReleaseStageBanner />
