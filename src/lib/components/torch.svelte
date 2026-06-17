@@ -24,9 +24,11 @@
   let torch_on = $derived(optimistic_entries.length % 2 !== 0);
 
   // in milliseconds
-  let [total_duration, trend_value] = $derived.by(() => {
-    const one_week_ago = get_n_days_date(now, -7);
+  let [total_duration, day_trend_value, week_trend_value] = $derived.by(() => {
+    const day_start_time = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const one_week_ago_time = get_n_days_date(now, -7);
 
+    let one_day_trend = 0;
     let one_week_trend = 0;
     let total = 0;
 
@@ -40,8 +42,11 @@
       const diff = end.getTime() - start.getTime();
       total += diff;
 
-      if (one_week_ago < end) {
-        one_week_trend += end.getTime() - Math.max(start.getTime(), one_week_ago.getTime());
+      if (day_start_time < end) {
+        one_day_trend += end.getTime() - Math.max(start.getTime(), day_start_time.getTime());
+      }
+      if (one_week_ago_time < end) {
+        one_week_trend += end.getTime() - Math.max(start.getTime(), one_week_ago_time.getTime());
       }
     }
 
@@ -51,10 +56,11 @@
         optimistic_entries[optimistic_entries.length - 1].created_at
       ).getTime();
       total += now.getTime() - last_entry_time;
-      one_week_trend += now.getTime() - Math.max(last_entry_time, one_week_ago.getTime());
+      one_day_trend += now.getTime() - Math.max(last_entry_time, day_start_time.getTime());
+      one_week_trend += now.getTime() - Math.max(last_entry_time, one_week_ago_time.getTime());
     }
 
-    return [total, one_week_trend];
+    return [total, one_day_trend, one_week_trend];
   });
 
   let hrs = $derived(Math.trunc(total_duration / 1000 / 60 / 60));
@@ -85,23 +91,40 @@
           value={sec} />
       </NumberFlowGroup>
     </div>
-    <span
+    <div
       class={[
         "flex items-center gap-2 text-base transition",
-        trend_value > 0 && "text-green-500/90",
-        trend_value === 0 && "text-neutral-500/90",
-        trend_value < 0 && "text-red-500/90",
+        week_trend_value > 0 && "text-green-500/90",
+        week_trend_value === 0 && "text-neutral-500/90",
+        week_trend_value < 0 && "text-red-500/90",
       ]}>
-      1W
+      1D
 
-      {#if trend_value > 0}
+      {#if week_trend_value > 0}
         <ArrowTrendingUp />
       {:else}
         <ArrowLongRight />
       {/if}
 
-      {round_to_fixed(Math.abs(trend_value) / (1000 * 60 * 60), 2)} hrs
-    </span>
+      {round_to_fixed(Math.abs(day_trend_value) / (1000 * 60 * 60), 2)} hrs
+    </div>
+    <div
+      class={[
+        "flex items-center gap-2 text-base transition",
+        week_trend_value > 0 && "text-green-500/90",
+        week_trend_value === 0 && "text-neutral-500/90",
+        week_trend_value < 0 && "text-red-500/90",
+      ]}>
+      1W
+
+      {#if week_trend_value > 0}
+        <ArrowTrendingUp />
+      {:else}
+        <ArrowLongRight />
+      {/if}
+
+      {round_to_fixed(Math.abs(week_trend_value) / (1000 * 60 * 60), 2)} hrs
+    </div>
   </div>
 
   {#if editable}

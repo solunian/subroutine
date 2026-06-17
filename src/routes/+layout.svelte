@@ -20,7 +20,7 @@
 
   const start_now_interval = () => {
     update_now();
-    now_interval ??= setInterval(update_now, 1000);
+    now_interval ??= setInterval(update_now, 500);
   };
 
   const stop_now_interval = () => {
