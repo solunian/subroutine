@@ -23,6 +23,11 @@
   let optimistic_entries = $state(entries);
   // svelte-ignore state_referenced_locally
   let sem_value = $state(entries.at(-1)?.data?.value ?? 0);
+
+  $effect(() => {
+    optimistic_entries = entries;
+    sem_value = entries.at(-1)?.data?.value ?? 0;
+  });
 </script>
 
 <div class="flex flex-col gap-2 border border-neutral-500/50 p-2">
@@ -65,7 +70,6 @@
           }
 
           await update({ reset: false });
-          optimistic_entries = entries;
           // console.log("update state with fetched page data");
         };
       }}>

@@ -1,25 +1,30 @@
 // src/hooks.server.ts
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from "$env/static/public";
+import type { Database } from "$lib/types/database.types";
 import { createServerClient } from "@supabase/ssr";
 import type { Handle } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
-  event.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY, {
-    cookies: {
-      getAll: () => event.cookies.getAll(),
-      /**
-       * Note: You have to add the `path` variable to the
-       * set and remove method due to sveltekit's cookie API
-       * requiring this to be set, setting the path to `/`
-       * will replicate previous/standard behaviour (https://kit.svelte.dev/docs/types#public-types-cookies)
-       */
-      setAll: (cookiesToSet) => {
-        cookiesToSet.forEach(({ name, value, options }) => {
-          event.cookies.set(name, value, { ...options, path: "/" });
-        });
+  event.locals.supabase = createServerClient<Database>(
+    PUBLIC_SUPABASE_URL,
+    PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+    {
+      cookies: {
+        getAll: () => event.cookies.getAll(),
+        /**
+         * Note: You have to add the `path` variable to the
+         * set and remove method due to sveltekit's cookie API
+         * requiring this to be set, setting the path to `/`
+         * will replicate previous/standard behaviour (https://kit.svelte.dev/docs/types#public-types-cookies)
+         */
+        setAll: (cookiesToSet) => {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            event.cookies.set(name, value, { ...options, path: "/" });
+          });
+        },
       },
-    },
-  });
+    }
+  );
 
   /**
    * Unlike `supabase.auth.getSession`, which is unsafe on the server because it

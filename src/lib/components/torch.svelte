@@ -21,6 +21,10 @@
 
   // svelte-ignore state_referenced_locally
   let optimistic_entries = $state(entries);
+  $effect(() => {
+    optimistic_entries = entries;
+  });
+
   let torch_on = $derived(optimistic_entries.length % 2 !== 0);
 
   // in milliseconds
@@ -158,7 +162,6 @@
           }
 
           await update({ reset: false });
-          optimistic_entries = entries;
           // console.log("update state with fetched page data");
         };
       }}>
