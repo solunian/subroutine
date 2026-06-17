@@ -93,7 +93,7 @@
       const last_entries = entries.filter((e) => new Date(e.created_at) < date_range.start);
       if (last_entries.length > 0) {
         const last_entry = last_entries[last_entries.length - 1];
-        const value = type === "dot" ? last_entries.length : last_entry.data.value;
+        const value = type === "dot" ? last_entries.length - 1 : last_entry.data.value;
 
         data.push({ time: date_range.start, value });
         data.push({ time: date_range.end, value });

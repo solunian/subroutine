@@ -94,13 +94,13 @@
     <div
       class={[
         "flex items-center gap-2 text-base transition",
-        week_trend_value > 0 && "text-green-500/90",
-        week_trend_value === 0 && "text-neutral-500/90",
-        week_trend_value < 0 && "text-red-500/90",
+        day_trend_value > 0 && "text-green-500/90",
+        day_trend_value === 0 && "text-neutral-500/90",
+        day_trend_value < 0 && "text-red-500/90",
       ]}>
       1D
 
-      {#if week_trend_value > 0}
+      {#if day_trend_value > 0}
         <ArrowTrendingUp />
       {:else}
         <ArrowLongRight />
