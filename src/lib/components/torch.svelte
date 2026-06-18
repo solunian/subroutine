@@ -64,7 +64,8 @@
       one_week_trend += now.getTime() - Math.max(last_entry_time, one_week_ago_time.getTime());
     }
 
-    return [total, one_day_trend, one_week_trend];
+    // clamp trend values to be non-negative only
+    return [total, Math.max(0, one_day_trend), Math.max(0, one_week_trend)];
   });
 
   let hrs = $derived(Math.trunc(total_duration / 1000 / 60 / 60));
@@ -98,16 +99,14 @@
     <div
       class={[
         "flex items-center gap-2 text-base transition",
-        day_trend_value > 0 && "text-green-500/90",
-        day_trend_value === 0 && "text-neutral-500/90",
-        day_trend_value < 0 && "text-red-500/90",
+        day_trend_value <= 0 ? "text-neutral-500/90" : "text-green-500/90",
       ]}>
       1D
 
-      {#if day_trend_value > 0}
-        <ArrowTrendingUp />
-      {:else}
+      {#if day_trend_value === 0}
         <ArrowLongRight />
+      {:else}
+        <ArrowTrendingUp />
       {/if}
 
       {round_to_fixed(Math.abs(day_trend_value) / (1000 * 60 * 60), 2)} hrs
@@ -115,9 +114,7 @@
     <div
       class={[
         "flex items-center gap-2 text-base transition",
-        week_trend_value > 0 && "text-green-500/90",
-        week_trend_value === 0 && "text-neutral-500/90",
-        week_trend_value < 0 && "text-red-500/90",
+        week_trend_value <= 0 ? "text-neutral-500/90" : "text-green-500/90",
       ]}>
       1W
 

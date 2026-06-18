@@ -15,7 +15,7 @@
   let now_interval: ReturnType<typeof setInterval> | undefined;
 
   const update_now = () => {
-    now.setTime(Math.floor(Date.now() / 1000) * 1000);
+    now.setTime(Date.now());
   };
 
   const start_now_interval = () => {
