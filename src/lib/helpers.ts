@@ -18,8 +18,8 @@ export const round_to_fixed = (x: number, decimals: number) => {
   const rounded = Math.round(x * shifts) / shifts;
 
   if (rounded === 0 && x > 0) {
-    // prevent 0.00, forces to +-0.01 to show a change
-    return (Math.sign(x) / shifts).toFixed(2);
+    // prevent 0.0 for positive values that round down to zero
+    return (Math.sign(x) / shifts).toFixed(decimals);
   } else {
     return rounded.toFixed(decimals);
   }
