@@ -1,7 +1,15 @@
 <script lang="ts">
   import { round_to_fixed } from "$lib/helpers";
-  import { now } from "$lib/state/time.svelte";
+  import { now, update_now } from "$lib/state/time.svelte";
   import NumberFlow, { NumberFlowGroup } from "@number-flow/svelte";
+  import { onMount } from "svelte";
+
+  let mounted = $state(false);
+
+  onMount(() => {
+    update_now();
+    mounted = true;
+  });
 
   const hours_between = (start: Date, end: Date) =>
     (end.getTime() - start.getTime()) / (1000 * 60 * 60);
@@ -54,7 +62,10 @@
 </script>
 
 <div
-  class="time-info relative flex justify-center from-white/50 to-black/50 text-right font-mono text-base">
+  class={[
+    "group relative flex justify-center from-white/50 to-black/50 text-right font-mono text-base transition duration-220 ease-[cubic-bezier(0.16,1,0.3,1)]",
+    mounted ? "blur-0 opacity-100" : "opacity-0 blur-xs",
+  ]}>
   <NumberFlowGroup>
     <span class="border bg-transparent px-2 py-1">
       <NumberFlow
@@ -86,7 +97,7 @@
   </NumberFlowGroup>
 
   <div
-    class="time-info-panel pointer-events-none absolute top-full z-20 mt-2 min-w-72 border border-neutral-500/50 bg-neutral-50 p-3 text-left text-sm opacity-0 shadow-[4px_4px_0_rgb(0_0_0_/0.12)] transition-opacity sm:right-0 dark:bg-neutral-950 dark:shadow-[4px_4px_0_rgb(255_255_255_/0.08)]">
+    class="pointer-events-none absolute top-full z-20 mt-2 min-w-72 border border-neutral-500/50 bg-neutral-50 p-3 text-left text-sm opacity-0 shadow-[4px_4px_0_rgb(0_0_0_/0.12)] transition-opacity group-hover:opacity-100 sm:right-0 dark:bg-neutral-950 dark:shadow-[4px_4px_0_rgb(255_255_255_/0.08)]">
     <div class="mb-2 text-neutral-500">remaining hours</div>
     <NumberFlowGroup>
       {#each duration_info as duration}
@@ -106,9 +117,3 @@
     </NumberFlowGroup>
   </div>
 </div>
-
-<style>
-  .time-info:hover .time-info-panel {
-    opacity: 1;
-  }
-</style>

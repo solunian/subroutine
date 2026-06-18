@@ -1,34 +1,26 @@
 <script lang="ts">
   import "../app.css";
+  import { browser } from "$app/environment";
   import { invalidate, invalidateAll } from "$app/navigation";
   import { onMount } from "svelte";
   import ReleaseStageBanner from "$lib/components/release_stage_banner.svelte";
   import TimeInfo from "$lib/components/time_info.svelte";
-  import { now } from "$lib/state/time.svelte.js";
+  import {
+    now,
+    start_now_interval,
+    stop_now_interval,
+    update_now,
+  } from "$lib/state/time.svelte.js";
   import GithubInvertocat from "$lib/icons/github_invertocat.svelte";
   import { from_now } from "$lib/helpers";
   import Hashtag from "$lib/icons/hashtag.svelte";
 
+  if (!browser) {
+    update_now();
+  }
+
   let { data, children } = $props();
   let { supabase, session } = $derived(data);
-
-  let now_interval: ReturnType<typeof setInterval> | undefined;
-
-  const update_now = () => {
-    now.setTime(Date.now());
-  };
-
-  const start_now_interval = () => {
-    update_now();
-    now_interval ??= setInterval(update_now, 500);
-  };
-
-  const stop_now_interval = () => {
-    if (now_interval) {
-      clearInterval(now_interval);
-      now_interval = undefined;
-    }
-  };
 
   const handle_visibility_change = () => {
     if (document.visibilityState === "visible") {
@@ -78,11 +70,12 @@
   <div class="mb-4 px-4 py-2">
     <header
       class="flex flex-col items-center justify-between gap-2 py-2 font-nova text-4xl sm:flex-row">
-      <a href="/" class="flex items-center gap-2 pr-1">
+      <a href="/" class="flex h-12 items-center gap-2 pr-1">
         <img src="/icons/favicon.png" alt="favicon" class="inline w-12" />subroutine
       </a>
-
-      <TimeInfo />
+      <div class="hidden sm:block">
+        <TimeInfo />
+      </div>
     </header>
 
     {@render children()}
