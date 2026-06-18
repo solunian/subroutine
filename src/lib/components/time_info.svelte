@@ -86,7 +86,7 @@
   </NumberFlowGroup>
 
   <div
-    class="time-info-panel pointer-events-none absolute top-full z-20 mt-2 min-w-72 border border-neutral-500/50 bg-neutral-50 p-3 text-left text-sm opacity-100 shadow-[4px_4px_0_rgb(0_0_0_/0.12)] transition-opacity sm:right-0 dark:bg-neutral-950 dark:shadow-[4px_4px_0_rgb(255_255_255_/0.08)]">
+    class="time-info-panel pointer-events-none absolute top-full z-20 mt-2 min-w-72 border border-neutral-500/50 bg-neutral-50 p-3 text-left text-sm opacity-0 shadow-[4px_4px_0_rgb(0_0_0_/0.12)] transition-opacity sm:right-0 dark:bg-neutral-950 dark:shadow-[4px_4px_0_rgb(255_255_255_/0.08)]">
     <div class="mb-2 text-neutral-500">remaining hours</div>
     <NumberFlowGroup>
       {#each duration_info as duration}
