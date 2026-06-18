@@ -27,7 +27,7 @@
 
       <div>
         <label for="email">email</label>
-        <input name="email" type="text" class="text-gray-500" value={data.email} disabled />
+        <input name="email" type="text" class="text-neutral-500" value={data.email} disabled />
       </div>
 
       <div>
