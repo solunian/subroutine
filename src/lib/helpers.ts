@@ -12,6 +12,7 @@ export const to_fulltime_str = (t: Date) => `${to_date_str(t)} ${to_24hrtime_str
 export const get_n_days_date = (date: Date, n: number) =>
   new Date(date.getTime() + n * 24 * 60 * 60 * 1000);
 
+// prevents 0 values if non-zero but would round down to 0.
 export const round_to_fixed = (x: number, decimals: number) => {
   const shifts = Math.pow(10, decimals);
   const rounded = Math.round(x * shifts) / shifts;
