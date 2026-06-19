@@ -22,23 +22,31 @@
   };
 
   const duration_info = $derived.by(() => {
-    const start_of_year = new Date(now.getFullYear(), 0, 1);
-    const end_of_year = new Date(now.getFullYear() + 1, 0, 1);
-    const start_of_month = new Date(now.getFullYear(), now.getMonth(), 1);
-    const end_of_month = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const end_of_day = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     const start_of_week = start_of_monday_week(now);
-
     const end_of_week = new Date(start_of_week);
     end_of_week.setDate(start_of_week.getDate() + 7);
+    const start_of_month = new Date(now.getFullYear(), now.getMonth(), 1);
+    const end_of_month = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const start_of_year = new Date(now.getFullYear(), 0, 1);
+    const end_of_year = new Date(now.getFullYear() + 1, 0, 1);
 
+    const day_total = 24;
+    const day_remaining = hours_between(now, end_of_day);
     const week_remaining = hours_between(now, end_of_week);
-    const week_total = hours_between(start_of_week, end_of_week);
+    const week_total = 24 * 7;
     const month_remaining = hours_between(now, end_of_month);
     const month_total = hours_between(start_of_month, end_of_month);
     const year_remaining = hours_between(now, end_of_year);
     const year_total = hours_between(start_of_year, end_of_year);
 
     return [
+      {
+        label: "day",
+        remaining: round_to_fixed(day_remaining, 1),
+        total: day_total,
+        percent: round_to_fixed((day_remaining / day_total) * 100, 1),
+      },
       {
         label: "week",
         remaining: round_to_fixed(week_remaining, 1),
