@@ -4,7 +4,7 @@
   import { enhance } from "$app/forms";
   import NumberFlow, { NumberFlowGroup } from "@number-flow/svelte";
   import TypeIdenticon from "./type_identicon.svelte";
-  import { get_n_days_date, round_to_fixed } from "$lib/helpers";
+  import { from_now, get_n_days_date, round_to_fixed } from "$lib/helpers";
   import ArrowTrendingUp from "$lib/icons/arrow_trending_up.svelte";
   import ArrowLongRight from "$lib/icons/arrow_long_right.svelte";
   let {
@@ -95,6 +95,14 @@
           format={{ minimumIntegerDigits: 2 }}
           value={sec} />
       </NumberFlowGroup>
+    </div>
+    <div class="bg-neutral-500/50 px-2 py-1 text-sm">
+      last torch
+      {#if entries.length > 0}
+        {from_now(now, new Date(entries[entries.length - 1].created_at))}
+      {:else}
+        never
+      {/if}
     </div>
     <div
       class={[
