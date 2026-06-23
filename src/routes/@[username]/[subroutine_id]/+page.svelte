@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
+  import ActivityGrid from "$lib/components/activity_grid.svelte";
   import DotSemaphore from "$lib/components/dot_semaphore.svelte";
   import Torch from "$lib/components/torch.svelte";
   import TypeIdenticon from "$lib/components/type_identicon.svelte";
@@ -47,6 +48,10 @@
           </div>
         {/if}
       </div>
+    </div>
+
+    <div class="justify-center-safe lg:flex">
+      <ActivityGrid entries={data.entries} subroutine_type={data.subroutine.type} />
     </div>
 
     {#if data.entries.length > 0}

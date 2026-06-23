@@ -7,10 +7,25 @@ export const to_24hrtime_str = (t: Date) =>
 export const to_date_str = (t: Date) =>
   `${t.getFullYear()}-${(t.getMonth() + 1).toString().padStart(2, "0")}-${t.getDate().toString().padStart(2, "0")}`;
 
+export const to_duration_str = (ms: number) => {
+  const total_sec = Math.ceil(ms / 1000);
+  const hr = Math.floor(total_sec / 3600);
+  const min = Math.floor(total_sec / 60) % 60;
+  const sec = total_sec % 60;
+
+  return `${hr.toString().padStart(2, "0")}:${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
+};
+
 export const to_fulltime_str = (t: Date) => `${to_date_str(t)} ${to_24hrtime_str(t)}`;
 
 export const get_n_days_date = (date: Date, n: number) =>
   new Date(date.getTime() + n * 24 * 60 * 60 * 1000);
+
+export const get_day_start = (date: Date) =>
+  new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+export const get_next_day = (date: Date) =>
+  new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
 
 // prevents 0 values if non-zero but would round down to 0.
 export const round_to_fixed = (x: number, decimals: number) => {

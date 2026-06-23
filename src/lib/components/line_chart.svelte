@@ -335,7 +335,7 @@
         </g>
       </svg>
 
-      <div class="flex justify-center-safe gap-2 overflow-x-scroll">
+      <div class="flex justify-center-safe gap-2 overflow-x-auto">
         {#each ranges as range_select (range_select)}
           <button
             class={[
@@ -348,7 +348,7 @@
       </div>
     {:else}
       <NoData {height} />
-      <div class="flex gap-2 overflow-x-scroll">
+      <div class="flex gap-2 overflow-x-auto">
         {#each ranges as range_select (range_select)}
           <button
             class={[
