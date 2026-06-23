@@ -96,7 +96,7 @@
           value={sec} />
       </NumberFlowGroup>
     </div>
-    <div class="bg-neutral-500/50 px-2 py-1 text-sm">
+    <div class="bg-neutral-500/10 px-2 py-1 text-sm">
       last torch
       {#if entries.length > 0}
         {from_now(now, new Date(entries[entries.length - 1].created_at))}
