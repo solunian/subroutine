@@ -48,7 +48,7 @@
         class="grid gap-3 border-b border-current px-5 py-5 sm:grid-cols-[9rem_1fr] sm:gap-6 sm:px-7">
         <div>
           <label for="type">type</label>
-          <p class="text-sm text-neutral-500">tracking mode</p>
+          <p class="text-sm text-neutral-500">subroutine type</p>
         </div>
         <div class="flex gap-2">
           <select
@@ -134,7 +134,7 @@
         <button
           type="submit"
           disabled={loading}
-          class="inline-flex min-h-9 min-w-42 items-center justify-center bg-black px-4 py-2 text-sm text-white disabled:cursor-wait disabled:opacity-50 dark:bg-white dark:text-black">
+          class="flex h-8 w-full items-center justify-center border-0! bg-black/10 px-4 py-1 dark:bg-white/10">
           {#if success}
             <SuccessCheckmark />
             <span class="sr-only">created</span>

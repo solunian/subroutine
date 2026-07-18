@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
+  import CircularSpinner from "$lib/components/circular_spinner.svelte";
   import Cog from "$lib/icons/cog.svelte";
   import type { SubmitFunction } from "@sveltejs/kit";
 
@@ -54,10 +55,22 @@
         {form?.errors?.website}
       </div>
 
-      <div class="flex gap-1 py-2">
-        <button type="submit" disabled={loading} class="border px-2 py-1"
-          >{loading ? "loading" : "update"}</button>
-        <a href="/signout" data-sveltekit-reload class="border px-2 py-1">/signout</a>
+      <div class="flex justify-between gap-2 py-2">
+        <button
+          type="submit"
+          disabled={loading}
+          class="flex w-full items-center justify-center border-0! bg-black/10 px-4 py-1 dark:bg-white/10">
+          {#if loading}
+            <CircularSpinner />
+            <span class="sr-only">updating...</span>
+          {:else}
+            update
+          {/if}
+        </button>
+        <a
+          href="/signout"
+          data-sveltekit-reload
+          class="w-full bg-black/10 px-4 py-1 text-center dark:bg-white/10">/signout</a>
       </div>
     </form>
   </div>
