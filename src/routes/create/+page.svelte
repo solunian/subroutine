@@ -55,7 +55,7 @@
             name="type"
             bind:value={selected_type}
             required
-            class="w-full border border-neutral-400 bg-transparent p-2 outline-none focus:border-current dark:border-neutral-600">
+            class="w-full border border-neutral-500/50 bg-transparent p-2 outline-none focus:border-current">
             <option value="" class="">--- select type ---</option>
             {#each Constants.public.Enums.subroutine_type as sub_type (sub_type)}
               <option value={sub_type}>{sub_type}</option>
@@ -82,7 +82,7 @@
             name="title"
             type="text"
             required
-            class="w-full border border-neutral-400 bg-transparent p-2 outline-none focus:border-current dark:border-neutral-600" />
+            class="w-full border border-neutral-500/50 bg-transparent p-2 outline-none focus:border-current" />
           {#if form?.errors?.title}
             <p class="mt-2 font-mono text-xs text-red-600 dark:text-red-400">
               {form.errors.title}
@@ -101,7 +101,7 @@
           <textarea
             name="description"
             rows="4"
-            class="w-full resize-y border border-neutral-400 bg-transparent p-2 outline-none focus:border-current dark:border-neutral-600"
+            class="w-full resize-y border border-neutral-500/50 bg-transparent p-2 outline-none focus:border-current"
           ></textarea>
           {#if form?.errors?.description}
             <p class="mt-2 font-mono text-xs text-red-600 dark:text-red-400">
@@ -121,7 +121,7 @@
             id="deadline"
             name="deadline"
             type="datetime-local"
-            class="w-full border border-neutral-400 bg-transparent p-2 outline-none focus:border-current dark:border-neutral-600" />
+            class="w-full border border-neutral-500/50 bg-transparent p-2 outline-none focus:border-current" />
           {#if form?.errors?.deadline}
             <p class="mt-2 font-mono text-xs text-red-600 dark:text-red-400">
               {form.errors.deadline}

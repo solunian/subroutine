@@ -81,7 +81,7 @@
 
   input,
   textarea {
-    @apply w-full border border-neutral-400 bg-transparent p-2 outline-none focus:border-current dark:border-neutral-600;
+    @apply w-full border border-neutral-500/50 bg-transparent p-2 outline-none focus:border-current;
   }
 
   textarea {
