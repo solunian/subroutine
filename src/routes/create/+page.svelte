@@ -25,8 +25,9 @@
 </script>
 
 <main class="mx-auto w-full max-w-3xl py-8 sm:py-14">
-  <section class="border border-current">
-    <header class="flex items-start justify-between gap-6 border-b border-current p-5 sm:p-7">
+  <section class="border border-neutral-500/50">
+    <header
+      class="flex items-start justify-between gap-6 border-b border-neutral-500/50 p-5 sm:p-7">
       <div>
         <h1 class="font-nova text-3xl sm:text-4xl">/create</h1>
         <p class="mt-2 max-w-lg text-neutral-500">
@@ -37,15 +38,14 @@
     </header>
 
     {#if form?.message}
-      <p
-        class="border-b border-current bg-red-500/10 px-5 py-3 text-sm text-red-700 dark:text-red-300">
+      <p class="border-b bg-red-500/10 px-5 py-3 text-sm text-red-700 dark:text-red-300">
         {form.message}
       </p>
     {/if}
 
     <form method="POST" use:enhance={submit}>
       <div
-        class="grid gap-3 border-b border-current px-5 py-5 sm:grid-cols-[9rem_1fr] sm:gap-6 sm:px-7">
+        class="grid gap-3 border-b border-neutral-500/50 px-5 py-5 sm:grid-cols-[9rem_1fr] sm:gap-6 sm:px-7">
         <div>
           <label for="type">type</label>
           <p class="text-sm text-neutral-500">subroutine type</p>
@@ -64,14 +64,15 @@
           {#if form?.errors?.type}
             <p class="mt-2 font-mono text-xs text-red-600 dark:text-red-400">{form.errors.type}</p>
           {/if}
-          <span class="inline-flex aspect-square h-full items-center justify-center border p-2">
+          <span
+            class="inline-flex aspect-square h-full items-center justify-center border border-neutral-500/50 p-2">
             <TypeIdenticon type={selected_type} />
           </span>
         </div>
       </div>
 
       <div
-        class="grid gap-3 border-b border-current px-5 py-5 sm:grid-cols-[9rem_1fr] sm:gap-6 sm:px-7">
+        class="grid gap-3 border-b border-neutral-500/50 px-5 py-5 sm:grid-cols-[9rem_1fr] sm:gap-6 sm:px-7">
         <div>
           <label for="title">title</label>
           <p class="text-sm text-neutral-500">required</p>
@@ -81,7 +82,7 @@
             name="title"
             type="text"
             required
-            class="w-full border border-neutral-400 bg-transparent p-2 outline-none placeholder:text-neutral-400 focus:border-current dark:border-neutral-600" />
+            class="w-full border border-neutral-400 bg-transparent p-2 outline-none focus:border-current dark:border-neutral-600" />
           {#if form?.errors?.title}
             <p class="mt-2 font-mono text-xs text-red-600 dark:text-red-400">
               {form.errors.title}
@@ -91,7 +92,7 @@
       </div>
 
       <div
-        class="grid gap-3 border-b border-current px-5 py-5 sm:grid-cols-[9rem_1fr] sm:gap-6 sm:px-7">
+        class="grid gap-3 border-b border-neutral-500/50 px-5 py-5 sm:grid-cols-[9rem_1fr] sm:gap-6 sm:px-7">
         <div>
           <label for="description">description</label>
           <p class="text-sm text-neutral-500">optional</p>
@@ -100,7 +101,7 @@
           <textarea
             name="description"
             rows="4"
-            class="w-full resize-y border border-neutral-400 bg-transparent p-2 outline-none placeholder:text-neutral-400 focus:border-current dark:border-neutral-600"
+            class="w-full resize-y border border-neutral-400 bg-transparent p-2 outline-none focus:border-current dark:border-neutral-600"
           ></textarea>
           {#if form?.errors?.description}
             <p class="mt-2 font-mono text-xs text-red-600 dark:text-red-400">
@@ -130,7 +131,7 @@
       </div>
 
       <footer
-        class="flex items-center justify-end gap-2 border-t border-current bg-neutral-500/5 p-4 sm:px-7">
+        class="flex items-center justify-end gap-2 border-t border-neutral-500/50 p-4 sm:px-7">
         <button
           type="submit"
           disabled={loading}

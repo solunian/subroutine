@@ -23,3 +23,11 @@
     {/if}
   </button>
 </div>
+
+<style>
+  @reference "tailwindcss";
+
+  input {
+    @apply w-full border border-neutral-400 bg-transparent p-2 outline-none focus:border-current dark:border-neutral-600;
+  }
+</style>

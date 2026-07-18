@@ -380,32 +380,22 @@
             onmouseleave={handle_mouse_leave} />
         </g>
       </svg>
-
-      <div class="flex justify-center-safe gap-2 overflow-x-auto">
-        {#each ranges as range_select (range_select)}
-          <button
-            class={[
-              "px-2",
-              current_range === range_select &&
-                "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black",
-            ]}
-            onclick={() => (current_range = range_select)}>{range_select}</button>
-        {/each}
-      </div>
     {:else}
       <NoData {height} />
-      <div class="flex gap-2 overflow-x-auto">
-        {#each ranges as range_select (range_select)}
-          <button
-            class={[
-              "px-2",
-              current_range === range_select &&
-                "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black",
-            ]}
-            onclick={() => (current_range = range_select)}>{range_select}</button>
-        {/each}
-      </div>
     {/if}
+
+    <div class="flex justify-center-safe gap-2 overflow-x-auto">
+      {#each ranges as range_select (range_select)}
+        <button
+          class={[
+            "px-2 transition ease-out",
+            current_range === range_select
+              ? "border-neutral-500 bg-neutral-500/25"
+              : "border-neutral-500/0 bg-neutral-500/15",
+          ]}
+          onclick={() => (current_range = range_select)}>{range_select}</button>
+      {/each}
+    </div>
   {/if}
 </div>
 

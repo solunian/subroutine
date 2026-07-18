@@ -26,8 +26,8 @@
 </svelte:head>
 
 <div class="flex w-full justify-center py-16">
-  <div class="flex aspect-video w-md flex-col items-center gap-2 border p-8">
-    <h1 class="flex items-center gap-1 py-2 font-nova text-3xl">signup</h1>
+  <div class="flex w-md flex-col items-center gap-2 border border-neutral-500/50 p-8">
+    <h1 class="flex items-center gap-1 py-2 font-nova text-3xl">/signup</h1>
     <form class="flex flex-col gap-4" method="POST" use:enhance={submit}>
       {form?.message}
       <div>
@@ -75,8 +75,7 @@
 <style>
   @reference "tailwindcss";
 
-  input,
-  button {
-    @apply w-full py-1;
+  input {
+    @apply w-full border border-neutral-400 bg-transparent p-2 outline-none focus:border-current dark:border-neutral-600;
   }
 </style>

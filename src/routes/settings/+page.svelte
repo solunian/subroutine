@@ -18,10 +18,10 @@
 </script>
 
 <div class="flex w-full justify-center py-16">
-  <div class="flex aspect-video w-md flex-col items-center gap-2 border p-8">
-    <h1 class="flex items-center gap-1 py-2 font-nova text-3xl">
-      <span class="size-8"><Cog /></span>
-      Settings
+  <div class="flex w-lg flex-col items-center gap-2 border border-neutral-500/50 p-8">
+    <h1 class="flex w-full items-center gap-2 py-2 font-nova text-3xl sm:text-4xl">
+      <span class="size-10 animate-[spin_7s_linear_infinite]"><Cog /></span>
+      <span>/settings</span>
     </h1>
     <form method="POST" action="?/update" use:enhance={submit} class="flex w-full flex-col gap-2">
       {form?.message}
@@ -81,6 +81,10 @@
 
   input,
   textarea {
-    @apply w-full p-1;
+    @apply w-full border border-neutral-400 bg-transparent p-2 outline-none focus:border-current dark:border-neutral-600;
+  }
+
+  textarea {
+    @apply resize-y;
   }
 </style>
