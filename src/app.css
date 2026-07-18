@@ -13,14 +13,12 @@ body {
 }
 
 input,
-select {
-  @apply border pl-1;
-}
-
-textarea {
+select,
+textarea,
+button {
   @apply border;
 }
 
 button {
-  @apply border hover:cursor-pointer;
+  @apply hover:cursor-pointer;
 }
