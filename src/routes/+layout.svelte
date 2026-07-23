@@ -2,6 +2,7 @@
   import "../app.css";
   import { browser } from "$app/environment";
   import { invalidate, invalidateAll } from "$app/navigation";
+  import { resolve } from "$app/paths";
   import { onMount } from "svelte";
   import ReleaseStageBanner from "$lib/components/release_stage_banner.svelte";
   import TimeInfo from "$lib/components/time_info.svelte";
@@ -14,6 +15,7 @@
   import GithubInvertocat from "$lib/icons/github_invertocat.svelte";
   import { from_now } from "$lib/helpers";
   import Hashtag from "$lib/icons/hashtag.svelte";
+  import ThemeToggle from "$lib/components/theme_toggle.svelte";
 
   if (!browser) {
     update_now();
@@ -70,7 +72,7 @@
   <div class="mb-4 px-4 py-2">
     <header
       class="flex flex-col items-center justify-between gap-2 py-2 font-nova text-4xl sm:flex-row">
-      <a href="/" class="flex h-12 items-center gap-2 pr-1">
+      <a href={resolve("/")} class="flex h-12 items-center gap-2 pr-1">
         <img src="/icons/favicon.png" alt="favicon" class="inline w-12" />subroutine
       </a>
       <div class="hidden sm:block">
@@ -82,7 +84,10 @@
   </div>
 
   <footer
-    class="mt-auto flex h-24 items-center justify-end gap-6 bg-linear-to-b from-neutral-500/0 to-neutral-500/25 px-6 text-neutral-500/50">
+    class="mt-auto flex h-24 items-center gap-6 bg-linear-to-b from-neutral-500/0 to-neutral-500/25 px-6 text-neutral-500">
+    <span class="mr-auto">
+      <ThemeToggle />
+    </span>
     {#if data.latest_gitcommit?.value}
       <a
         href="https://github.com/solunian/subroutine/commit/{data.latest_gitcommit.value.hash}"
