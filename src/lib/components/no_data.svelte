@@ -42,8 +42,8 @@
       to bottom,
       rgba(255, 255, 255, 0),
       rgba(255, 255, 255, 0) 50%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.2)
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0.05)
     );
     background-size: 100% 8px;
     animation: scroll-lines 16s linear infinite;
