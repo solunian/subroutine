@@ -1,6 +1,7 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import CircularSpinner from "$lib/components/circular_spinner.svelte";
+  import MarkdownTextarea from "$lib/components/markdown_textarea.svelte";
   import SuccessCheckmark from "$lib/components/success_checkmark.svelte";
   import TypeIdenticon from "$lib/components/type_identicon.svelte";
   import { Constants } from "$lib/types/database.types";
@@ -24,7 +25,7 @@
   };
 </script>
 
-<main class="mx-auto w-full max-w-3xl py-8 sm:py-14">
+<main class="mx-auto w-full max-w-5xl py-8 sm:py-14">
   <section class="border border-neutral-500/50">
     <header
       class="flex items-start justify-between gap-6 border-b border-neutral-500/50 p-5 sm:p-7">
@@ -98,11 +99,7 @@
           <p class="text-sm text-neutral-500">optional</p>
         </div>
         <div>
-          <textarea
-            name="description"
-            rows="4"
-            class="w-full resize-y border border-neutral-500/50 bg-transparent p-2 outline-none focus:border-current"
-          ></textarea>
+          <MarkdownTextarea id="description" name="description" rows={6} />
           {#if form?.errors?.description}
             <p class="mt-2 font-mono text-xs text-red-600 dark:text-red-400">
               {form.errors.description}
