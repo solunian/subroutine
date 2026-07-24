@@ -39,7 +39,7 @@
       {#if (grouped_subroutines.get(subtype) ?? []).length === 0}
         <div>._.</div>
       {:else}
-        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        <div class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {#each grouped_subroutines.get(subtype) as sub (sub.id)}
             {#if sub.type === "dot" || sub.type === "semaphore"}
               <DotSemaphore

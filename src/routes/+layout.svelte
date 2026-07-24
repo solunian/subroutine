@@ -18,7 +18,6 @@
   import Hashtag from "$lib/icons/hashtag.svelte";
   import ThemeToggle from "$lib/components/theme_toggle.svelte";
   import Bars3 from "$lib/icons/bars_3.svelte";
-  import AtSymbol from "$lib/icons/at_symbol.svelte";
   import NavIdenticon from "$lib/components/nav_identicon.svelte";
   import XMark from "$lib/icons/x_mark.svelte";
   import { fade } from "svelte/transition";
@@ -152,7 +151,7 @@
               title={sidebar_collapsed ? item.name : undefined}
               class={[
                 "flex h-10 flex-nowrap items-center gap-1 overflow-hidden px-2 transition-colors",
-                is_active(item.href) ? "bg-neutral-500/20" : "hover:bg-neutral-500/10",
+                is_active(item.href) ? "bg-neutral-500/15" : "hover:bg-neutral-500/10",
               ]}>
               <NavIdenticon type={item.name} />
               <span class={["text-nowrap", sidebar_collapsed && "sr-only"]}>
@@ -223,7 +222,7 @@
           aria-current={is_active(item.href) ? "page" : undefined}
           class={[
             "mx-2 flex h-10 items-center gap-1 bg-neutral-500/0 px-2 transition-colors",
-            is_active(item.href) ? "bg-neutral-500/20" : "hover:bg-neutral-500/10",
+            is_active(item.href) ? "bg-neutral-500/15" : "hover:bg-neutral-500/10",
           ]}
           onclick={() => (mobile_menu_open = false)}>
           <NavIdenticon type={item.name} />
