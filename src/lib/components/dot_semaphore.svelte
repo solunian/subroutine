@@ -85,20 +85,20 @@
             type="number"
             step="any"
             bind:value={sem_value}
-            class="w-full basis-4/6 py-2 text-center font-mono text-xl" />
+            class="50 w-full basis-4/6 border-neutral-500/50 bg-transparent p-2 py-2 text-center font-mono text-xl outline-none focus:border-current" />
           <div class="flex basis-1/6 flex-col gap-1">
             <button
               aria-label="increment"
               onclick={() => sem_value++}
               type="button"
-              class="flex items-center justify-center">
+              class="flex items-center justify-center border-neutral-500/50">
               <ChevronUp />
             </button>
             <button
               aria-label="decrement"
               type="button"
               onclick={() => sem_value--}
-              class="flex items-center justify-center">
+              class="flex items-center justify-center border-neutral-500/50">
               <ChevronDown />
             </button>
           </div>

@@ -5,13 +5,20 @@
   import UsernameGoto from "$lib/components/username_goto.svelte";
   import type { PageProps } from "./$types";
   import type { Database } from "$lib/types/database.types";
+  import Journal from "$lib/components/journal.svelte";
 
   let { data }: PageProps = $props();
 
   const subtype_display_order: Database["public"]["Enums"]["subroutine_type"][] = [
-    "torch",
     "dot",
     "semaphore",
+    "torch",
+    "journal",
+    "summit",
+    "nudge",
+    "ping",
+    "ledger",
+    "blaze",
   ];
   const app_features = [
     {
@@ -35,6 +42,7 @@
     ["...", "more in development"],
   ];
   const workflow = ["define a routine", "log entries", "review the trend", "adjust self"];
+
   let grouped_subroutines = $derived(Map.groupBy(data.subroutines ?? [], (r) => r.type));
 </script>
 
@@ -44,37 +52,41 @@
 
 <main class="flex flex-col gap-2">
   {#if data.session}
-    <nav class="flex flex-wrap items-center justify-center gap-2 p-2 sm:justify-start">
-      <UsernameGoto />
-      {#if data.username}<a href="/@{data.username}">[profile]</a>{/if}
-      <a href="/create">/create</a>
-      <a href="/settings">/settings</a>
-      <a href="/signout" data-sveltekit-reload>/signout</a>
-    </nav>
+    <div class="p-2 py-4"><UsernameGoto /></div>
 
     {#each subtype_display_order as subtype (subtype)}
       <h2 class="flex items-center gap-1 p-2 text-xl">
         <TypeIdenticon type={subtype} /><span>{subtype}</span>
       </h2>
-      <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-        {#each grouped_subroutines.get(subtype) as sub (sub.id)}
-          {#if sub.type === "dot" || sub.type === "semaphore"}
-            <DotSemaphore
-              subroutine={sub}
-              entries={data.entries_map?.get(sub.id)}
-              href="/@{data.username}/{sub.id}"
-              editable />
-          {:else if sub.type === "torch"}
-            <Torch
-              subroutine={sub}
-              entries={data.entries_map?.get(sub.id)}
-              href="/@{data.username}/{sub.id}"
-              editable />
-          {:else}
-            {`<${sub.type}>`} not implemented yet
-          {/if}
-        {/each}
-      </div>
+      {#if (grouped_subroutines.get(subtype) ?? []).length === 0}
+        <div>._.</div>
+      {:else}
+        <div class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          {#each grouped_subroutines.get(subtype) as sub (sub.id)}
+            {#if sub.type === "dot" || sub.type === "semaphore"}
+              <DotSemaphore
+                subroutine={sub}
+                entries={data.entries_map?.get(sub.id)}
+                href="/@{data.username}/{sub.id}"
+                editable />
+            {:else if sub.type === "torch"}
+              <Torch
+                subroutine={sub}
+                entries={data.entries_map?.get(sub.id)}
+                href="/@{data.username}/{sub.id}"
+                editable />
+            {:else if sub.type === "journal"}
+              <Journal
+                subroutine={sub}
+                entries={data.entries_map?.get(sub.id)}
+                href="/@{data.username}/{sub.id}"
+                editable />
+            {:else}
+              {`<${sub.type}>`} not implemented yet
+            {/if}
+          {/each}
+        </div>
+      {/if}
     {/each}
   {:else}
     <section class="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-4 sm:px-6">

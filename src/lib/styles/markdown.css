@@ -1,0 +1,214 @@
+.markdown :first-child {
+  margin-top: 0;
+}
+
+.markdown :last-child {
+  margin-bottom: 0;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4 {
+  margin: 1.25rem 0 0.5rem;
+  font-family: var(--font-nova);
+  line-height: 1.2;
+}
+
+.markdown h1 {
+  font-size: 1.875rem;
+}
+
+.markdown h2 {
+  font-size: 1.5rem;
+}
+
+.markdown h1,
+.markdown h2 {
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+}
+
+.markdown h3 {
+  font-size: 1.25rem;
+}
+
+.markdown p {
+  margin: 1rem 0;
+}
+
+.markdown ul,
+.markdown ol {
+  margin: 1rem 0;
+  padding-inline-start: 1.5rem;
+}
+
+.markdown ul {
+  list-style: disc;
+}
+
+.markdown ol {
+  list-style: decimal;
+}
+
+.markdown ul ul,
+.markdown ol ul {
+  list-style: circle;
+}
+
+.markdown li + li {
+  margin-top: 0.375rem;
+}
+
+.markdown li > p {
+  margin: 0.25rem 0;
+}
+
+.markdown li > ul,
+.markdown li > ol {
+  margin: 0.5rem 0;
+}
+
+/* One Light Pro */
+.markdown {
+  --hljs-background: #fafafa;
+  --hljs-foreground: #383a42;
+  --hljs-comment: #a0a1a7;
+  --hljs-keyword: #a626a4;
+  --hljs-section: #e45649;
+  --hljs-literal: #0184bb;
+  --hljs-string: #50a14f;
+  --hljs-variable: #986801;
+  --hljs-symbol: #4078f2;
+  --hljs-built-in: #c18401;
+
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.markdown pre {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--hljs-foreground);
+  background: var(--hljs-background);
+  padding: 0.75rem;
+}
+
+.markdown pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.markdown .hljs {
+  color: var(--hljs-foreground);
+  background: var(--hljs-background);
+}
+
+.markdown .hljs-comment,
+.markdown .hljs-quote {
+  color: var(--hljs-comment);
+  font-style: italic;
+}
+
+.markdown .hljs-doctag,
+.markdown .hljs-keyword,
+.markdown .hljs-formula {
+  color: var(--hljs-keyword);
+}
+
+.markdown .hljs-section,
+.markdown .hljs-name,
+.markdown .hljs-selector-tag,
+.markdown .hljs-deletion,
+.markdown .hljs-subst {
+  color: var(--hljs-section);
+}
+
+.markdown .hljs-literal {
+  color: var(--hljs-literal);
+}
+
+.markdown .hljs-string,
+.markdown .hljs-regexp,
+.markdown .hljs-addition,
+.markdown .hljs-attribute,
+.markdown .hljs-meta .hljs-string {
+  color: var(--hljs-string);
+}
+
+.markdown .hljs-attr,
+.markdown .hljs-variable,
+.markdown .hljs-template-variable,
+.markdown .hljs-type,
+.markdown .hljs-selector-class,
+.markdown .hljs-selector-attr,
+.markdown .hljs-selector-pseudo,
+.markdown .hljs-number {
+  color: var(--hljs-variable);
+}
+
+.markdown .hljs-symbol,
+.markdown .hljs-bullet,
+.markdown .hljs-link,
+.markdown .hljs-meta,
+.markdown .hljs-selector-id,
+.markdown .hljs-title {
+  color: var(--hljs-symbol);
+}
+
+.markdown .hljs-built_in,
+.markdown .hljs-title.class_,
+.markdown .hljs-class .hljs-title {
+  color: var(--hljs-built-in);
+}
+
+.markdown .hljs-emphasis {
+  font-style: italic;
+}
+
+.markdown .hljs-strong {
+  font-weight: bold;
+}
+
+.markdown .hljs-link {
+  text-decoration: underline;
+}
+
+.markdown img {
+  max-width: 100%;
+  height: auto;
+}
+
+.markdown table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* One Dark Pro */
+  .markdown {
+    --hljs-background: #282c34;
+    --hljs-foreground: #abb2bf;
+    --hljs-comment: #5c6370;
+    --hljs-keyword: #c678dd;
+    --hljs-section: #e06c75;
+    --hljs-literal: #56b6c2;
+    --hljs-string: #98c379;
+    --hljs-variable: #d19a66;
+    --hljs-symbol: #61aeee;
+    --hljs-built-in: #e6c07b;
+  }
+}
+.markdown a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.markdown hr {
+  margin: 1.25rem 0;
+  border-color: color-mix(in srgb, currentColor 30%, transparent);
+}

@@ -2,66 +2,36 @@
   let { height }: { height: number } = $props();
 </script>
 
-<div class="cute-tv-screen w-full" style="height: {height}px;">
-  <div class="noise"></div>
+<div
+  class="relative flex h-full w-full items-center justify-center overflow-hidden bg-purple-300/50"
+  style="height: {height}px;">
   <div class="scanlines"></div>
-  <div class="message">~ no data ~</div>
+
+  <!-- cute looking SMPTE style color bars like old tvs -->
+  <div class="message w-full max-w-xs">
+    <div class="flex h-4">
+      <span class="w-full bg-white/50"></span>
+      <span class="w-full bg-yellow-500/50"></span>
+      <span class="w-full bg-cyan-500/50"></span>
+      <span class="w-full bg-green-500/50"></span>
+      <span class="w-full bg-fuchsia-500/50"></span>
+      <span class="w-full bg-red-500/50"></span>
+      <span class="w-full bg-blue-500/50"></span>
+    </div>
+    <div class="bg-black px-4 text-center font-mono text-2xl font-bold text-white">no data</div>
+    <div class="flex h-4">
+      <span class="w-full bg-blue-500/50"></span>
+      <span class="w-full bg-black/50"></span>
+      <span class="w-full bg-fuchsia-500/50"></span>
+      <span class="w-full bg-black/50"></span>
+      <span class="w-full bg-cyan-500/50"></span>
+      <span class="w-full bg-black/50"></span>
+      <span class="w-full bg-white/50"></span>
+    </div>
+  </div>
 </div>
 
 <style>
-  /* 1. The Playful Container */
-  .cute-tv-screen {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    /* Swapped to a softer, dustier, less bright pastel gradient */
-    background: linear-gradient(135deg, #dbc2e8 0%, #dbc2e8 100%);
-    overflow: hidden;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  /* 2. The Softer Noise Layer */
-  .noise {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    right: -50%;
-    bottom: -50%;
-    width: 200%;
-    height: 200vh;
-    background: transparent
-      url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
-
-    opacity: 0.12;
-    mix-blend-mode: overlay;
-
-    animation: playful-jitter 0.4s infinite steps(4);
-    pointer-events: none;
-  }
-
-  /* 3. Chunky, slow jitter */
-  @keyframes playful-jitter {
-    0% {
-      transform: translate(0, 0);
-    }
-    25% {
-      transform: translate(1%, 2%);
-    }
-    50% {
-      transform: translate(-2%, 1%);
-    }
-    75% {
-      transform: translate(1%, -1%);
-    }
-    100% {
-      transform: translate(0, 0);
-    }
-  }
-
-  /* 4. Soft, scrolling scanlines */
   .scanlines {
     position: absolute;
     top: 0;
@@ -72,13 +42,12 @@
       to bottom,
       rgba(255, 255, 255, 0),
       rgba(255, 255, 255, 0) 50%,
-      rgba(255, 255, 255, 0.15) 50%,
-      rgba(255, 255, 255, 0.15)
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0.05)
     );
     background-size: 100% 8px;
-    animation: scroll-lines 8s linear infinite;
+    animation: scroll-lines 16s linear infinite;
     pointer-events: none;
-    z-index: 10;
   }
 
   @keyframes scroll-lines {
@@ -90,15 +59,7 @@
     }
   }
 
-  /* 5. Fun text styling (Updated) */
   .message {
-    font-family: "JetBrains Mono", sans-serif;
-    color: white;
-    font-size: 1.5rem; /* Reduced from 3rem */
-    font-weight: bold;
-    /* Softened the shadow to match the less bright background */
-    text-shadow: 2px 2px 0px #dbc2e8;
-    z-index: 20;
     animation: bounce 2s infinite ease-in-out;
   }
 

@@ -20,7 +20,10 @@
     aspect_ratio = 16 / 9, // Default to widescreen aspect ratio
   }: { type: string; entries?: Tables<"entries">[]; aspect_ratio?: number } = $props();
 
-  const margin = { left: 25, top: 25, right: 25, bottom: 25 };
+  const chart_id = $props.id();
+  const area_gradient_id = `${chart_id}-area-gradient`;
+
+  const margin = { left: 15, top: 25, right: 15, bottom: 25 };
   const ranges = ["1H", "1D", "1W", "1M", "3M", "YTD", "1Y", "ALL"];
   // Map of range labels to milliseconds offset from now
   const range_offsets: Record<string, number | null> = {
@@ -162,6 +165,20 @@
       .curve(curve)(view_data);
   });
 
+  let area_path = $derived.by(() => {
+    let curve = d3.curveMonotoneX;
+    if (type === "dot") {
+      curve = d3.curveStepAfter;
+    }
+
+    return d3
+      .area<DataPoint>()
+      .x((d) => x_scale(d.time))
+      .y0(Math.max(0, inner_height))
+      .y1((d) => y_scale(d.value))
+      .curve(curve)(view_data);
+  });
+
   let tooltip = $state<{ mouseX: number } | null>(null);
   let tooltip_data = $derived.by(() => {
     if (tooltip === null || view_data.length === 0) {
@@ -195,6 +212,19 @@
   let current_display_value = $derived(
     tooltip_data?.data.value ?? view_data[view_data.length - 1]?.value
   );
+
+  let selected_point = $derived.by(() => {
+    if (tooltip_data) return tooltip_data;
+
+    const data = view_data.at(-1);
+    if (!data) return null;
+
+    return {
+      x: x_scale(data.time),
+      y: y_scale(data.value),
+      data,
+    };
+  });
 
   let average = $derived.by(() => {
     if (view_data.length === 0) return 0;
@@ -288,8 +318,35 @@
   {#if containter_width > 0}
     {#if entries.length > 0}
       <svg {width} {height}>
+        <defs>
+          <linearGradient id={area_gradient_id} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--color-purple-400)" stop-opacity="0.32" />
+            <stop offset="100%" stop-color="var(--color-purple-400)" stop-opacity="0" />
+          </linearGradient>
+        </defs>
         <g transform={`translate(${margin.left}, ${margin.top})`}>
+          {#if tooltip_data}
+            <g transform={`translate(${tooltip_data.x}, 0)`}>
+              <text
+                text-anchor={text_anchor}
+                x={anchor_x_offset}
+                y="0"
+                class="fill-neutral-500 text-sm">
+                {to_24hrtime_str(tooltip_data.data.time)}
+              </text>
+              <line y1={10} y2={height - 60} class="stroke-neutral-500 stroke-1" />
+              <text
+                text-anchor={text_anchor}
+                x={anchor_x_offset}
+                y={height - 40}
+                class="fill-neutral-500 text-sm">
+                {to_date_str(tooltip_data.data.time)}
+              </text>
+            </g>
+          {/if}
+
           {#if view_data.length > 0}
+            <path d={area_path} fill={`url(#${area_gradient_id})`} />
             <path
               d={line_path}
               transform="translate(0, 0)"
@@ -303,26 +360,15 @@
               y2={y_scale(average)}
               class="stroke-neutral-500 stroke-2 opacity-50"
               stroke-dasharray="5,5" />
-          {/if}
 
-          {#if tooltip_data}
-            <g transform={`translate(${tooltip_data.x}, 0)`}>
-              <text
-                text-anchor={text_anchor}
-                x={anchor_x_offset}
-                y="0"
-                class="fill-neutral-500 text-sm">
-                {to_24hrtime_str(tooltip_data.data.time)}
-              </text>
-              <line x1={0} y1={10} x2={1} y2={height - 60} class="stroke-neutral-500 stroke-1" />
-              <text
-                text-anchor={text_anchor}
-                x={anchor_x_offset}
-                y={height - 40}
-                class="fill-neutral-500 text-sm">
-                {to_date_str(tooltip_data.data.time)}
-              </text>
-            </g>
+            {#if selected_point}
+              <g
+                class="pointer-events-none"
+                transform={`translate(${selected_point.x}, ${selected_point.y})`}>
+                <circle cx="0" cy="0" r="6" class="selected-point-pulse fill-purple-400/30" />
+                <circle cx="0" cy="0" r="3" class="fill-purple-500" />
+              </g>
+            {/if}
           {/if}
 
           <rect
@@ -334,31 +380,48 @@
             onmouseleave={handle_mouse_leave} />
         </g>
       </svg>
-
-      <div class="flex justify-center-safe gap-2 overflow-x-auto">
-        {#each ranges as range_select (range_select)}
-          <button
-            class={[
-              "px-2",
-              current_range === range_select &&
-                "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black",
-            ]}
-            onclick={() => (current_range = range_select)}>{range_select}</button>
-        {/each}
-      </div>
     {:else}
       <NoData {height} />
-      <div class="flex gap-2 overflow-x-auto">
-        {#each ranges as range_select (range_select)}
-          <button
-            class={[
-              "px-2",
-              current_range === range_select &&
-                "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black",
-            ]}
-            onclick={() => (current_range = range_select)}>{range_select}</button>
-        {/each}
-      </div>
     {/if}
+
+    <div class="flex justify-center-safe gap-2 overflow-x-auto">
+      {#each ranges as range_select (range_select)}
+        <button
+          class={[
+            "px-2 transition ease-out",
+            current_range === range_select
+              ? "border-neutral-500 bg-neutral-500/25"
+              : "border-neutral-500/0 bg-neutral-500/15",
+          ]}
+          onclick={() => (current_range = range_select)}>{range_select}</button>
+      {/each}
+    </div>
   {/if}
 </div>
+
+<style>
+  .selected-point-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: selected-point-pulse 1.8s ease-out infinite;
+  }
+
+  @keyframes selected-point-pulse {
+    0% {
+      opacity: 1;
+      transform: scale(0.5);
+    }
+    75%,
+    100% {
+      opacity: 0;
+      transform: scale(3);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .selected-point-pulse {
+      animation: none;
+      opacity: 0.8;
+    }
+  }
+</style>

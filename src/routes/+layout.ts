@@ -38,5 +38,10 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
     .eq("key", "latest_gitcommit_hash")
     .maybeSingle();
 
-  return { supabase, session, latest_gitcommit: latest_gitcommit_res.data };
+  return {
+    supabase,
+    session,
+    username: data.username,
+    latest_gitcommit: latest_gitcommit_res.data,
+  };
 };

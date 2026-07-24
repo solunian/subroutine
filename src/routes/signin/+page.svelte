@@ -1,6 +1,8 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
+  import CircularSpinner from "$lib/components/circular_spinner.svelte";
   import PasswordInput from "$lib/components/password_input.svelte";
+  import SuccessCheckmark from "$lib/components/success_checkmark.svelte";
   import type { PageProps, SubmitFunction } from "./$types";
 
   let { form }: PageProps = $props();
@@ -24,9 +26,9 @@
 </svelte:head>
 
 <div class="flex w-full justify-center py-16">
-  <div class="flex aspect-video w-md flex-col items-center gap-2 border p-8">
-    <h1 class="flex items-center gap-1 py-2 font-nova text-3xl">signin</h1>
-    <form class="flex flex-col gap-2" method="POST" use:enhance={submit}>
+  <div class="flex w-md flex-col items-center gap-2 border border-neutral-500/50 p-8">
+    <h1 class="flex items-center gap-1 py-2 font-nova text-3xl">/signin</h1>
+    <form class="flex flex-col gap-4" method="POST" use:enhance={submit}>
       {form?.message}
 
       <div>
@@ -41,11 +43,16 @@
         {form?.errors?.password}
       </div>
 
-      <button type="submit" disabled={loading}>
+      <button
+        type="submit"
+        disabled={loading}
+        class="flex h-8 w-full items-center justify-center border-0! bg-black/10 px-4 py-1 text-center dark:bg-white/10">
         {#if success}
-          success
+          <SuccessCheckmark />
+          <span class="sr-only">signed in!</span>
         {:else if loading}
-          loading
+          <CircularSpinner />
+          <span class="sr-only">signing in...</span>
         {:else}
           signin
         {/if}
@@ -57,8 +64,7 @@
 <style>
   @reference "tailwindcss";
 
-  input,
-  button {
-    @apply w-full py-1;
+  input {
+    @apply w-full border border-neutral-500/50 bg-transparent p-2 outline-none focus:border-current;
   }
 </style>

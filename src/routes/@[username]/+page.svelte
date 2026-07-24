@@ -101,7 +101,7 @@
       <h2 class="flex items-center gap-1 p-2 text-xl">
         <TypeIdenticon type={subtype} /><span>{subtype}</span>
       </h2>
-      <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+      <div class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {#each grouped_subroutines.get(subtype) as sub (sub.id)}
           {#if sub.type === "dot" || sub.type === "semaphore"}
             <DotSemaphore

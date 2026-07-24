@@ -2,6 +2,8 @@
 
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: "Lexend", sans-serif;
   --font-nova: "Nova Round", serif;
@@ -13,14 +15,16 @@ body {
 }
 
 input,
-select {
-  @apply border pl-1;
-}
-
-textarea {
+select,
+textarea,
+button {
   @apply border;
 }
 
 button {
-  @apply border hover:cursor-pointer;
+  @apply hover:cursor-pointer;
+}
+
+.font-mono {
+  font-variant-ligatures: none;
 }
