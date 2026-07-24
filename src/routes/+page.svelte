@@ -22,9 +22,6 @@
   ];
 
   let grouped_subroutines = $derived(Map.groupBy(data.subroutines ?? [], (r) => r.type));
-
-  const get_grouped_subroutines = (subtype: Database["public"]["Enums"]["subroutine_type"]) =>
-    grouped_subroutines.get(subtype) ?? [];
 </script>
 
 <svelte:head>
@@ -33,13 +30,7 @@
 
 <main class="flex flex-col gap-2">
   {#if data.session}
-    <nav class="flex flex-wrap items-center justify-center gap-2 p-2 sm:justify-start">
-      <UsernameGoto />
-      {#if data.username}<a href="/@{data.username}">[profile]</a>{/if}
-      <a href="/create">/create</a>
-      <a href="/settings">/settings</a>
-      <a href="/signout" data-sveltekit-reload>/signout</a>
-    </nav>
+    <div class="p-2 py-4"><UsernameGoto /></div>
 
     {#each subtype_display_order as subtype (subtype)}
       <h2 class="flex items-center gap-1 p-2 text-xl">
