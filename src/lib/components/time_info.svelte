@@ -71,11 +71,11 @@
 
 <div
   class={[
-    "group relative flex justify-center from-white/50 to-black/50 text-right font-mono text-base transition duration-220 ease-[cubic-bezier(0.16,1,0.3,1)]",
+    "group relative flex justify-center  from-white/50 to-black/50 text-right font-mono text-base transition duration-220 ease-[cubic-bezier(0.16,1,0.3,1)]",
     mounted ? "blur-0 opacity-100" : "opacity-0 blur-xs",
   ]}>
   <NumberFlowGroup>
-    <span class="border bg-transparent px-2 py-1">
+    <span class="border border-neutral-500/50 bg-transparent px-2 py-1">
       <NumberFlow
         trend={+1}
         format={{ minimumIntegerDigits: 2, useGrouping: false }}
@@ -87,7 +87,7 @@
         format={{ minimumIntegerDigits: 2, useGrouping: false }}
         value={now.getDate()} />
     </span>
-    <span class="border border-l-0 bg-transparent px-2 py-1">
+    <span class="border border-l-0 border-neutral-500/50 bg-transparent px-2 py-1">
       <NumberFlow
         trend={+1}
         digits={{ 1: { max: 2 } }}
