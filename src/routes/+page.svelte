@@ -5,15 +5,26 @@
   import UsernameGoto from "$lib/components/username_goto.svelte";
   import type { PageProps } from "./$types";
   import type { Database } from "$lib/types/database.types";
+  import Journal from "$lib/components/journal.svelte";
 
   let { data }: PageProps = $props();
 
   const subtype_display_order: Database["public"]["Enums"]["subroutine_type"][] = [
-    "torch",
     "dot",
     "semaphore",
+    "torch",
+    "journal",
+    "summit",
+    "nudge",
+    "ping",
+    "ledger",
+    "blaze",
   ];
+
   let grouped_subroutines = $derived(Map.groupBy(data.subroutines ?? [], (r) => r.type));
+
+  const get_grouped_subroutines = (subtype: Database["public"]["Enums"]["subroutine_type"]) =>
+    grouped_subroutines.get(subtype) ?? [];
 </script>
 
 <svelte:head>
@@ -34,25 +45,35 @@
       <h2 class="flex items-center gap-1 p-2 text-xl">
         <TypeIdenticon type={subtype} /><span>{subtype}</span>
       </h2>
-      <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-        {#each grouped_subroutines.get(subtype) as sub (sub.id)}
-          {#if sub.type === "dot" || sub.type === "semaphore"}
-            <DotSemaphore
-              subroutine={sub}
-              entries={data.entries_map?.get(sub.id)}
-              href="/@{data.username}/{sub.id}"
-              editable />
-          {:else if sub.type === "torch"}
-            <Torch
-              subroutine={sub}
-              entries={data.entries_map?.get(sub.id)}
-              href="/@{data.username}/{sub.id}"
-              editable />
-          {:else}
-            {`<${sub.type}>`} not implemented yet
-          {/if}
-        {/each}
-      </div>
+      {#if (grouped_subroutines.get(subtype) ?? []).length === 0}
+        <div>._.</div>
+      {:else}
+        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+          {#each grouped_subroutines.get(subtype) as sub (sub.id)}
+            {#if sub.type === "dot" || sub.type === "semaphore"}
+              <DotSemaphore
+                subroutine={sub}
+                entries={data.entries_map?.get(sub.id)}
+                href="/@{data.username}/{sub.id}"
+                editable />
+            {:else if sub.type === "torch"}
+              <Torch
+                subroutine={sub}
+                entries={data.entries_map?.get(sub.id)}
+                href="/@{data.username}/{sub.id}"
+                editable />
+            {:else if sub.type === "journal"}
+              <Journal
+                subroutine={sub}
+                entries={data.entries_map?.get(sub.id)}
+                href="/@{data.username}/{sub.id}"
+                editable />
+            {:else}
+              {`<${sub.type}>`} not implemented yet
+            {/if}
+          {/each}
+        </div>
+      {/if}
     {/each}
   {:else}
     <div>
