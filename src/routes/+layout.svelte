@@ -1,9 +1,10 @@
 <script lang="ts">
   import "../app.css";
   import { browser } from "$app/environment";
-  import { invalidate, invalidateAll } from "$app/navigation";
+  import { afterNavigate, invalidate, invalidateAll } from "$app/navigation";
   import { page } from "$app/state";
   import { onMount } from "svelte";
+  import type { Attachment } from "svelte/attachments";
   import ReleaseStageBanner from "$lib/components/release_stage_banner.svelte";
   import TimeInfo from "$lib/components/time_info.svelte";
   import {
@@ -30,6 +31,28 @@
   let { supabase, session } = $derived(data);
   let sidebar_collapsed = $state(false);
   let mobile_menu_open = $state(false);
+
+  // for maintaining scroll position between navs
+  let page_scroller: HTMLDivElement | undefined;
+
+  const attach_page_scroller: Attachment<HTMLDivElement> = (element) => {
+    page_scroller = element;
+
+    return () => {
+      page_scroller = undefined;
+    };
+  };
+
+  afterNavigate(({ from, to, type }) => {
+    if (type !== "popstate" && from?.url.pathname !== to?.url.pathname && !to?.url.hash) {
+      page_scroller?.scrollTo({ top: 0, left: 0 });
+    }
+  });
+
+  export const snapshot: import("./$types").Snapshot<number> = {
+    capture: () => page_scroller?.scrollTop ?? 0,
+    restore: (scroll_top) => page_scroller?.scrollTo({ top: scroll_top, left: 0 }),
+  };
 
   const nav_items = $derived([
     { name: "profile", href: data.username ? `/@${data.username}` : "/" },
@@ -150,7 +173,7 @@
       </aside>
     {/if}
 
-    <div class="flex min-w-0 flex-1 flex-col overflow-y-auto">
+    <div {@attach attach_page_scroller} class="flex min-w-0 flex-1 flex-col overflow-y-auto">
       <div class="mb-4 flex-1 px-4">
         {@render children()}
       </div>
