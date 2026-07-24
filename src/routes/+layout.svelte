@@ -132,7 +132,9 @@
                 is_active(item.href) ? "bg-neutral-500/20" : "hover:bg-neutral-500/10",
               ]}>
               <NavIdenticon type={item.name} />
-              <span class={sidebar_collapsed ? "sr-only" : undefined}>/{item.name}</span>
+              <span class={["text-nowrap", sidebar_collapsed && "sr-only"]}>
+                /{item.name}
+              </span>
             </a>
           {/each}
         </nav>
