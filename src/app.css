@@ -24,3 +24,7 @@ button {
 button {
   @apply hover:cursor-pointer;
 }
+
+.font-mono {
+  font-variant-ligatures: none;
+}
