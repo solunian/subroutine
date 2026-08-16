@@ -21,6 +21,7 @@
   import NavIdenticon from "$lib/components/nav_identicon.svelte";
   import XMark from "$lib/icons/x_mark.svelte";
   import { fade } from "svelte/transition";
+  import Sidebar from "$lib/icons/sidebar.svelte";
 
   if (!browser) {
     update_now();
@@ -139,10 +140,10 @@
     {#if session}
       <aside
         class={[
-          "hidden shrink-0 border-r border-neutral-500/50 transition-[width] sm:flex sm:flex-col",
+          "hidden shrink-0 border-r border-neutral-500/50  transition-[width] sm:flex sm:flex-col",
           sidebar_collapsed ? "w-15" : "w-48",
         ]}>
-        <nav class="flex flex-col gap-1 px-2 py-2">
+        <nav class="flex h-full flex-col gap-1 px-2 py-2">
           {#each nav_items as item (item.name)}
             <a
               href={item.href}
@@ -150,7 +151,7 @@
               aria-current={is_active(item.href) ? "page" : undefined}
               title={sidebar_collapsed ? item.name : undefined}
               class={[
-                "flex h-10 flex-nowrap items-center gap-1 overflow-hidden px-2 transition-colors",
+                "flex h-10 flex-nowrap items-center gap-1 overflow-hidden px-2 text-neutral-500/95 transition-colors hover:text-inherit",
                 is_active(item.href) ? "bg-neutral-500/15" : "hover:bg-neutral-500/10",
               ]}>
               <NavIdenticon type={item.name} />
@@ -159,16 +160,18 @@
               </span>
             </a>
           {/each}
-        </nav>
 
-        <button
-          type="button"
-          class="mt-auto flex h-11 items-center justify-center border-0! border-t! border-neutral-500/50"
-          aria-label={sidebar_collapsed ? "expand sidebar" : "collapse sidebar"}
-          aria-expanded={!sidebar_collapsed}
-          onclick={() => (sidebar_collapsed = !sidebar_collapsed)}>
-          <span aria-hidden="true">{sidebar_collapsed ? "->" : "<-"}</span>
-        </button>
+          <div class="mt-auto">
+            <button
+              type="button"
+              class="flex items-center border-0! border-neutral-500/50 px-2 py-2 text-neutral-500/95 transition-colors hover:bg-neutral-500/10 hover:text-inherit"
+              aria-label={sidebar_collapsed ? "expand sidebar" : "collapse sidebar"}
+              aria-expanded={!sidebar_collapsed}
+              onclick={() => (sidebar_collapsed = !sidebar_collapsed)}>
+              <Sidebar />
+            </button>
+          </div>
+        </nav>
       </aside>
     {/if}
 
