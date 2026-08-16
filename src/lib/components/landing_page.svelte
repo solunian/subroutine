@@ -34,7 +34,7 @@
   <div class="grid gap-6 border-b border-neutral-500/50 pt-4 pb-8">
     <div class="flex flex-col gap-5">
       <p class="text-xs sm:text-sm">goals & habits / time tracking / stats & trends</p>
-      <h1 class="max-w-3xl font-nova text-3xl font-semibold sm:text-5xl">a tracker for routines</h1>
+      <h1 class="max-w-3xl font-nova text-4xl sm:text-5xl">a tracker for routines</h1>
       <p class="max-w-2xl text-sm sm:text-base">
         subroutine helps define the things you care about, record what happened, and review the
         signal over time. counts, durations, charts, trends, journals, profiles, friends. simple
@@ -66,7 +66,7 @@
   <div class="grid gap-3 md:grid-cols-3">
     {#each app_features as feature (feature.label)}
       <article class="border border-neutral-500/50 p-4">
-        <h2 class="mb-3 font-nova text-xl font-semibold">{feature.label}</h2>
+        <h2 class="mb-3 font-nova text-2xl">{feature.label}</h2>
         <p class="text-sm">{feature.text}</p>
       </article>
     {/each}
@@ -74,7 +74,7 @@
 
   <div class="grid gap-6 border-t border-neutral-500/50 py-6 lg:grid-cols-2">
     <section>
-      <h2 class="mb-3 font-nova text-xl font-semibold">subroutine types</h2>
+      <h2 class="mb-3 font-nova text-2xl">subroutine types</h2>
       <div class="grid border border-neutral-500/50 text-sm">
         {#each subroutine_types as [type, description] (type)}
           <div class="grid grid-cols-[7rem_1fr] border-b border-neutral-500/50 last:border-b-0">
@@ -88,7 +88,7 @@
     </section>
 
     <section>
-      <h2 class="mb-3 font-nova text-xl font-semibold">workflow loop</h2>
+      <h2 class="mb-3 font-nova text-2xl">workflow loop</h2>
       <ol class="grid border border-neutral-500/50 text-sm">
         {#each workflow as item, index (item)}
           <li class="grid grid-cols-[3rem_1fr] border-b border-neutral-500/50 last:border-b-0">
