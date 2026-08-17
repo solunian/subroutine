@@ -16,8 +16,8 @@ export const load: PageServerLoad = async ({ parent, locals: { safeGetSession, s
   // load subroutines
   const sub_prom = supabase
     .from("subroutines")
-    .select("*, entries (*)")
-    .eq("user_id", user.id)
+    .select("*, profiles!inner(username), entries(*)")
+    .eq("profiles.username", layout_data.username)
     .order("created_at")
     .order("created_at", { referencedTable: "entries", ascending: true });
 
