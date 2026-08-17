@@ -42,19 +42,19 @@
             {#if sub.type === "dot" || sub.type === "semaphore"}
               <DotSemaphore
                 subroutine={sub}
-                entries={data.entries_map?.get(sub.id)}
+                entries={sub.entries}
                 href="/@{data.username}/{sub.id}"
                 editable />
             {:else if sub.type === "torch"}
               <Torch
                 subroutine={sub}
-                entries={data.entries_map?.get(sub.id)}
+                entries={sub.entries}
                 href="/@{data.username}/{sub.id}"
                 editable />
             {:else if sub.type === "journal"}
               <Journal
                 subroutine={sub}
-                entries={data.entries_map?.get(sub.id)}
+                entries={sub.entries}
                 href="/@{data.username}/{sub.id}"
                 editable />
             {:else}

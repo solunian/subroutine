@@ -2,7 +2,6 @@ import { RelationshipStatusType, TrimNormalStrSchema } from "$lib/schemas";
 import { error, fail, redirect, type Actions } from "@sveltejs/kit";
 import * as v from "valibot";
 import type { PageServerLoad } from "./$types";
-import type { Tables } from "$lib/types/database.types";
 
 export const load: PageServerLoad = async ({ parent, locals: { safeGetSession, supabase } }) => {
   const { session, user } = await safeGetSession();
@@ -15,37 +14,26 @@ export const load: PageServerLoad = async ({ parent, locals: { safeGetSession, s
   const layout_data = await parent();
 
   // load subroutines
-  const sub_res = await supabase
+  const sub_prom = supabase
     .from("subroutines")
-    .select("*")
-    .eq("user_id", layout_data.profile.id)
-    .order("created_at");
-  if (sub_res.error) {
-    error(sub_res.status, sub_res.error.message);
-  }
+    .select("*, entries (*)")
+    .eq("user_id", user.id)
+    .order("created_at")
+    .order("created_at", { referencedTable: "entries", ascending: true });
 
-  const entries_res = await Promise.all(
-    sub_res.data.map((sub) =>
-      supabase.from("entries").select("*").eq("subroutine_id", sub.id).order("created_at")
-    )
-  );
-
-  const subroutines = sub_res.data;
-  const entries_map = new Map<string, Tables<"entries">[]>();
-
-  // quietly errant subroutine with data fetch failed
-  const sub_entries = entries_res.map((entry_res) => entry_res.data);
-  for (let i = 0; i < subroutines.length; i++) {
-    entries_map.set(subroutines[i].id, sub_entries[i] ?? []);
-  }
-
-  const num_friends = await supabase
+  const num_friends_prom = supabase
     .from("relationships")
     .select("*", { count: "exact" })
     .eq("status", "accepted")
     .or(`requester_id.eq.${layout_data.profile.id},requestee_id.eq.${layout_data.profile.id}`);
 
-  return { subroutines, entries_map, num_friends: num_friends.count ?? 0 };
+  const [sub_res, num_friends_res] = await Promise.all([sub_prom, num_friends_prom]);
+
+  if (sub_res.error) {
+    error(sub_res.status, sub_res.error.message);
+  }
+
+  return { subroutines: sub_res.data, num_friends: num_friends_res.count ?? 0 };
 };
 
 export const actions: Actions = {

@@ -2,7 +2,6 @@ import { error, fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import * as v from "valibot";
 import { FinNumberSchema, TrimNormalStrSchema } from "$lib/schemas";
-import type { Tables } from "$lib/types/database.types";
 
 export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession } }) => {
   const { session, user } = await safeGetSession();
@@ -10,40 +9,24 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
     return;
   }
 
-  const sub_res = await supabase
+  const sub_prom = supabase
     .from("subroutines")
-    .select("*")
+    .select("*, entries (*)")
     .eq("user_id", user.id)
-    .order("created_at");
+    .order("created_at")
+    .order("created_at", { referencedTable: "entries", ascending: true });
+  const username_prom = supabase.from("profiles").select("username").eq("id", user.id).single();
+
+  const [sub_res, username_res] = await Promise.all([sub_prom, username_prom]);
+
   if (sub_res.error) {
     error(sub_res.status, sub_res.error.message);
   }
-
-  const entries_res = await Promise.all(
-    sub_res.data.map((sub) =>
-      supabase.from("entries").select("*").eq("subroutine_id", sub.id).order("created_at")
-    )
-  );
-
-  const subroutines = sub_res.data;
-  const entries_map = new Map<string, Tables<"entries">[]>();
-
-  // quietly errant subroutine with data fetch failed
-  const sub_entries = entries_res.map((entry_res) => entry_res.data);
-  for (let i = 0; i < subroutines.length; i++) {
-    entries_map.set(subroutines[i].id, sub_entries[i] ?? []);
-  }
-
-  const username_res = await supabase
-    .from("profiles")
-    .select("username")
-    .eq("id", user.id)
-    .single();
   if (username_res.error) {
     error(username_res.status, username_res.error.message);
   }
 
-  return { username: username_res.data.username, subroutines, entries_map };
+  return { subroutines: sub_res.data, username: username_res.data.username };
 };
 
 export const actions: Actions = {
