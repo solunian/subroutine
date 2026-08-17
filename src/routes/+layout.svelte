@@ -56,6 +56,7 @@
 
   const nav_items = $derived([
     { name: "profile", href: data.username ? `/@${data.username}` : "/" },
+    { name: "search", href: "/search" },
     { name: "create", href: "/create" },
     { name: "settings", href: "/settings" },
     { name: "signout", href: "/signout", reload: true },

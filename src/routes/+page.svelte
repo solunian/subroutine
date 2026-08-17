@@ -2,7 +2,6 @@
   import DotSemaphore from "$lib/components/dot_semaphore.svelte";
   import Torch from "$lib/components/torch.svelte";
   import TypeIdenticon from "$lib/components/type_identicon.svelte";
-  import UsernameGoto from "$lib/components/username_goto.svelte";
   import type { PageProps } from "./$types";
   import type { Database } from "$lib/types/database.types";
   import Journal from "$lib/components/journal.svelte";
@@ -29,10 +28,8 @@
   <title>subroutine</title>
 </svelte:head>
 
-<main class="flex flex-col gap-2">
+<main class="flex flex-col gap-2 py-2">
   {#if data.session}
-    <div class="p-2 py-4"><UsernameGoto /></div>
-
     {#each subtype_display_order as subtype (subtype)}
       <h2 class="flex items-center gap-1 p-2 text-xl">
         <TypeIdenticon type={subtype} /><span>{subtype}</span>
