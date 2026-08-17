@@ -67,17 +67,17 @@
     <div class="flex flex-col gap-2 p-5 sm:p-7">
       <label for="search-query" class="block text-neutral-500">query</label>
 
-      <div
-        class="flex w-full border border-neutral-500/50 transition-colors focus-within:border-inherit">
-        <span
-          aria-hidden="true"
-          class="flex aspect-square items-center justify-center border-r border-neutral-500/50 text-neutral-500">
-          {#if loading}
-            <CircularSpinner />
-          {:else}
-            <span class="size-5"><MagnifyingGlass /></span>
-          {/if}
-        </span>
+      <div class="flex border border-neutral-500/50 transition-colors focus-within:border-inherit">
+        <div class="aspect-square border-r border-neutral-500/50 p-2 text-neutral-500">
+          <div class="size-6">
+            {#if loading}
+              <CircularSpinner />
+            {:else}
+              <MagnifyingGlass />
+            {/if}
+          </div>
+        </div>
+
         <input
           id="search-query"
           type="text"
@@ -87,7 +87,7 @@
           spellcheck="false"
           aria-describedby="search-query-count"
           bind:value={() => search_query, update_search_query}
-          class="min-w-0 flex-1 border-0! bg-transparent px-3 py-2 outline-none placeholder:text-neutral-500/70" />
+          class="w-full border-0! px-3 py-2 outline-none placeholder:text-neutral-500/70" />
         <span
           id="search-query-count"
           class="flex items-center pr-3 font-mono text-xs text-neutral-500">
