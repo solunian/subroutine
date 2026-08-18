@@ -1,6 +1,7 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import CircularSpinner from "$lib/components/circular_spinner.svelte";
+  import DropSelect from "$lib/components/drop_select.svelte";
   import MarkdownTextarea from "$lib/components/markdown_textarea.svelte";
   import SuccessCheckmark from "$lib/components/success_checkmark.svelte";
   import TypeIdenticon from "$lib/components/type_identicon.svelte";
@@ -52,16 +53,12 @@
           <p class="text-sm text-neutral-500">subroutine type</p>
         </div>
         <div class="flex gap-2">
-          <select
+          <DropSelect
             name="type"
             bind:value={selected_type}
             required
-            class="w-full border border-neutral-500/50 bg-transparent p-2 outline-none focus:border-current">
-            <option value="" class="">--- select type ---</option>
-            {#each Constants.public.Enums.subroutine_type as sub_type (sub_type)}
-              <option value={sub_type}>{sub_type}</option>
-            {/each}
-          </select>
+            placeholder="--- select type ---"
+            options={Constants.public.Enums.subroutine_type} />
           {#if form?.errors?.type}
             <p class="mt-2 font-mono text-xs text-red-600 dark:text-red-400">{form.errors.type}</p>
           {/if}
