@@ -12,6 +12,13 @@ export const load: PageServerLoad = async ({ url, locals: { safeGetSession } }) 
   if (session) {
     redirect(303, redirect_url ?? "/");
   }
+
+  return {
+    message:
+      url.searchParams.get("reset") === "success"
+        ? "password reset. sign in with your new password."
+        : undefined,
+  };
 };
 
 export const actions: Actions = {

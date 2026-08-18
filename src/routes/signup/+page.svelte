@@ -68,6 +68,10 @@
           signup
         {/if}
       </button>
+
+      <div class="flex justify-center">
+        <a href="/signin" class="text-neutral-500/80">already have an account? signin</a>
+      </div>
     </form>
   </div>
 </div>
