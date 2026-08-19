@@ -8,6 +8,7 @@
   import ArrowTrendingUp from "$lib/icons/arrow_trending_up.svelte";
   import ArrowTrendingDown from "$lib/icons/arrow_trending_down.svelte";
   import ArrowLongRight from "$lib/icons/arrow_long_right.svelte";
+  import NullSet from "$lib/icons/null_set.svelte";
 
   interface DataPoint {
     time: Date;
@@ -288,7 +289,7 @@
     {#if current_display_value !== undefined}
       <NumberFlow value={current_display_value} />
     {:else}
-      ∅
+      <NullSet />
     {/if}
   </span>
 

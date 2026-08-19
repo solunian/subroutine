@@ -2,6 +2,7 @@
   import ArrowLeft from "$lib/icons/arrow_left.svelte";
   import ArrowRight from "$lib/icons/arrow_right.svelte";
   import AtSymbol from "$lib/icons/at_symbol.svelte";
+  import NullSet from "$lib/icons/null_set.svelte";
 
   let { data } = $props();
 
@@ -42,7 +43,7 @@
 
     {#if !data.friends}
       <div class="p-8 text-center sm:p-12">
-        <div class="mx-auto mb-4 size-8 text-neutral-500"><AtSymbol /></div>
+        <div class="mx-auto mb-4 size-8 text-neutral-500"><NullSet /></div>
         <h2 class="text-lg">friends list unavailable</h2>
         <p class="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-neutral-500">
           this list is only visible to @{data.username} and their friends.
@@ -50,7 +51,7 @@
       </div>
     {:else if data.friends.length === 0}
       <div class="p-8 text-center sm:p-12">
-        <div class="mx-auto mb-4 size-8 text-neutral-500"><AtSymbol /></div>
+        <div class="mx-auto mb-4 size-8 text-neutral-500"><NullSet /></div>
         <h2 class="text-lg">no friends yet</h2>
         <p class="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-neutral-500">
           new connections will appear here once friend requests are accepted.
