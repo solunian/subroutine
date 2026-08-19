@@ -179,7 +179,7 @@
       id={listbox_id}
       role="listbox"
       aria-label={ariaLabel}
-      class="absolute top-full right-0 left-0 z-20 mt-1 max-h-60 overflow-y-auto border border-neutral-500/50 bg-white dark:bg-black">
+      class="absolute top-full right-0 left-0 z-20 mt-1 max-h-60 overflow-y-auto border border-neutral-500/50 bg-white shadow-[4px_4px_0_rgb(0_0_0_/0.12)] dark:bg-black dark:shadow-[4px_4px_0_rgb(255_255_255_/0.08)]">
       {#each options as option, index (get_value(option))}
         <button
           id={`${listbox_id}-option-${index}`}
