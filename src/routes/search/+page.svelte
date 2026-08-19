@@ -1,5 +1,6 @@
 <script lang="ts">
   import CircularSpinner from "$lib/components/circular_spinner.svelte";
+  import ArrowRight from "$lib/icons/arrow_right.svelte";
   import MagnifyingGlass from "$lib/icons/magnifying_glass.svelte";
   import { onDestroy } from "svelte";
   import { cubicOut } from "svelte/easing";
@@ -96,18 +97,35 @@
       </div>
 
       {#if search_results.length > 0}
-        <div
+        <ul
           in:slide={{ duration: 150, easing: cubicOut }}
-          class="flex flex-col border border-neutral-500/50">
+          class="divide-y divide-neutral-500/25 border border-neutral-500/50">
           {#each search_results as res (res.username)}
-            <a
-              href="/@{res.username}"
-              class="flex gap-2 p-2 text-neutral-500 transition-colors even:bg-neutral-500/5 hover:bg-neutral-500/15 hover:text-inherit">
-              <span>@{res.username}</span>
-              <span>{res.name}</span>
-            </a>
+            <li>
+              <a
+                href="/@{res.username}"
+                aria-label="View @{res.username}'s profile"
+                class="group flex items-center gap-4 p-4 transition-colors hover:bg-neutral-500/10 sm:px-7">
+                <span
+                  class="flex size-10 shrink-0 items-center justify-center border border-neutral-500/50 font-nova text-lg text-neutral-500 transition-colors group-hover:border-current group-hover:text-inherit"
+                  aria-hidden="true">
+                  {(res.name || res.username).slice(0, 1).toUpperCase()}
+                </span>
+
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate">{res.name || res.username}</span>
+                  <span class="block truncate text-sm text-neutral-500">@{res.username}</span>
+                </span>
+
+                <span
+                  class="size-5 shrink-0 text-neutral-500 transition-transform group-hover:translate-x-1 group-hover:text-inherit"
+                  aria-hidden="true">
+                  <ArrowRight />
+                </span>
+              </a>
+            </li>
           {/each}
-        </div>
+        </ul>
       {/if}
     </div>
 
