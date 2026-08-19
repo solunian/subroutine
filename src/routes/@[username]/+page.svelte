@@ -105,11 +105,16 @@
         {#each grouped_subroutines.get(subtype) as sub (sub.id)}
           {#if sub.type === "dot" || sub.type === "semaphore"}
             <DotSemaphore
+              editable={data.is_self}
               subroutine={sub}
               entries={sub.entries}
               href="/@{data.username}/{sub.id}" />
           {:else if sub.type === "torch"}
-            <Torch subroutine={sub} entries={sub.entries} href="/@{data.username}/{sub.id}" />
+            <Torch
+              editable={data.is_self}
+              subroutine={sub}
+              entries={sub.entries}
+              href="/@{data.username}/{sub.id}" />
           {:else}
             {`<${sub.type}>`} not implemented yet
           {/if}

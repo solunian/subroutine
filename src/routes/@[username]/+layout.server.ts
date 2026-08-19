@@ -36,5 +36,6 @@ export const load: LayoutServerLoad = async ({ params, locals: { safeGetSession,
     username: params.username,
     profile: profile_res.data,
     relationship: relationship_res.data,
+    is_self: user.id === profile_user_id,
   };
 };
