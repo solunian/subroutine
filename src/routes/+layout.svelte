@@ -110,7 +110,7 @@
 <svelte:document onvisibilitychange={handle_visibility_change} />
 
 <div class="flex h-dvh flex-col overflow-hidden">
-  <!-- <ReleaseStageBanner /> -->
+  <ReleaseStageBanner />
 
   <header class="flex items-center justify-between gap-2 border-b border-neutral-500/50 px-4 py-2">
     <div class="flex items-center gap-3">
