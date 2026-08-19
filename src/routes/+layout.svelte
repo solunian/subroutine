@@ -55,16 +55,17 @@
   };
 
   const nav_items = $derived([
-    { name: "profile", href: data.username ? `/@${data.username}` : "/" },
-    { name: "search", href: "/search" },
-    { name: "create", href: "/create" },
-    { name: "settings", href: "/settings" },
-    { name: "signout", href: "/signout", reload: true },
+    { name: "/profile", href: data.username ? `/@${data.username}` : "" },
+    { name: ">/friends", href: data.username ? `/@${data.username}/friends` : "" },
+    { name: "/search", href: "/search" },
+    { name: "/create", href: "/create" },
+    { name: "/settings", href: "/settings" },
+    { name: "/signout", href: "/signout", reload: true },
   ]);
 
-  const is_active = (href: string) =>
-    page.url.pathname === href ||
-    (href.startsWith("/@") && page.url.pathname.startsWith(`${href}/`));
+  const is_active = (href: string) => {
+    return page.url.pathname === href;
+  };
 
   const handle_visibility_change = () => {
     if (document.visibilityState === "visible") {
@@ -155,9 +156,9 @@
                 "flex h-10 flex-nowrap items-center gap-1 overflow-hidden px-2 text-neutral-500/95 transition-colors hover:text-inherit",
                 is_active(item.href) ? "bg-neutral-500/15" : "hover:bg-neutral-500/10",
               ]}>
-              <NavIdenticon type={item.name} />
+              <NavIdenticon name={item.name} />
               <span class={["text-nowrap", sidebar_collapsed && "sr-only"]}>
-                /{item.name}
+                {item.name}
               </span>
             </a>
           {/each}
@@ -229,7 +230,7 @@
             is_active(item.href) ? "bg-neutral-500/15" : "hover:bg-neutral-500/10",
           ]}
           onclick={() => (mobile_menu_open = false)}>
-          <NavIdenticon type={item.name} />
+          <NavIdenticon name={item.name} />
           <span>/{item.name}</span>
         </a>
       {/each}

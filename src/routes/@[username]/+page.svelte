@@ -84,10 +84,10 @@
         {(data.subroutines?.length ?? 0) !== 1 ? "subroutines" : "subroutine"}
       </span>
       <span>·</span>
-      <span>
+      <a href="/@{data.username}/friends" class="transition-opacity hover:opacity-70">
         {data.num_friends}
         {data.num_friends !== 1 ? "friends" : "friend"}
-      </span>
+      </a>
     </div>
 
     <!-- nullable -->

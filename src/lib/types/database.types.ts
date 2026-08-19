@@ -4,7 +4,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.5";
+    PostgrestVersion: "14.5";
   };
   public: {
     Tables: {
@@ -152,22 +152,22 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "friends_requestee_id_fkey";
+            foreignKeyName: "relationships_blocked_by_fkey";
+            columns: ["blocked_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "relationships_requestee_id_fkey";
             columns: ["requestee_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "friends_requester_id_fkey";
+            foreignKeyName: "relationships_requester_id_fkey";
             columns: ["requester_id"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "relationships_blocked_by_fkey";
-            columns: ["blocked_by"];
             isOneToOne: false;
             referencedRelation: "profiles";
             referencedColumns: ["id"];

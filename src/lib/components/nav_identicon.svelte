@@ -5,20 +5,23 @@
   import MagnifyingGlass from "$lib/icons/magnifying_glass.svelte";
   import PlusCircle from "$lib/icons/plus_circle.svelte";
   import QuestionMarkCircle from "$lib/icons/question_mark_circle.svelte";
+  import Users from "$lib/icons/users.svelte";
 
-  let { type }: { type: string } = $props();
+  let { name }: { name: string } = $props();
 </script>
 
 <div class="inline-flex size-6 min-w-6 items-center justify-center">
-  {#if type === "profile"}
+  {#if name === "/profile"}
     <AtSymbol />
-  {:else if type === "search"}
+  {:else if name === ">/friends"}
+    <Users />
+  {:else if name === "/search"}
     <MagnifyingGlass />
-  {:else if type === "create"}
+  {:else if name === "/create"}
     <PlusCircle />
-  {:else if type === "settings"}
+  {:else if name === "/settings"}
     <Cog />
-  {:else if type === "signout"}
+  {:else if name === "/signout"}
     <ArrowRightStartOnRectangle />
   {:else}
     <QuestionMarkCircle />
