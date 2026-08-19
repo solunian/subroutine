@@ -24,10 +24,6 @@
   let grouped_subroutines = $derived(Map.groupBy(data.subroutines ?? [], (r) => r.type));
 </script>
 
-<svelte:head>
-  <title>subroutine</title>
-</svelte:head>
-
 <main class="flex flex-col gap-2 py-2">
   {#if data.session}
     {#each subtype_display_order as subtype (subtype)}

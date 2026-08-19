@@ -110,12 +110,12 @@
 <svelte:document onvisibilitychange={handle_visibility_change} />
 
 <div class="flex h-dvh flex-col overflow-hidden">
-  <ReleaseStageBanner />
+  <!-- <ReleaseStageBanner /> -->
 
   <header class="flex items-center justify-between gap-2 border-b border-neutral-500/50 px-4 py-2">
     <div class="flex items-center gap-3">
-      <a href="/" class="flex h-12 items-center gap-2 pr-1 font-nova text-4xl">
-        <img src="/icons/favicon.png" alt="favicon" class="inline w-12" />subroutine
+      <a href="/" class="flex h-8 items-center gap-2 pr-1 font-nova text-3xl sm:h-12 sm:text-4xl">
+        <img src="/icons/favicon.png" alt="favicon" class="inline w-8 sm:w-12" />subroutine
       </a>
     </div>
 
@@ -127,7 +127,7 @@
     {#if session}
       <button
         type="button"
-        class="flex size-10 flex-col items-center justify-center gap-1 border-neutral-500/50 sm:hidden"
+        class="flex size-8 flex-col items-center justify-center gap-1 border-neutral-500/50 sm:hidden sm:size-10"
         aria-label={mobile_menu_open ? "close navigation menu" : "open navigation menu"}
         aria-expanded={mobile_menu_open}
         aria-controls="mobile-navigation"
@@ -211,10 +211,10 @@
       id="mobile-navigation"
       aria-label="Main navigation"
       class="absolute z-10 flex h-dvh w-full flex-col gap-1 bg-transparent backdrop-blur-2xl sm:hidden">
-      <div class="item-center flex justify-between border-b border-neutral-500/50 px-4 py-3">
-        <span class="font-nova text-3xl">menu</span>
+      <div class="flex items-center justify-between border-b border-neutral-500/50 px-4 py-2">
+        <span class="h-8 font-nova text-3xl">menu</span>
         <button
-          class="w-fit border-0! bg-neutral-500/0 p-2 transition-colors hover:bg-neutral-500/10"
+          class="size-8 border-0! bg-neutral-500/0 p-1 transition-colors hover:bg-neutral-500/10"
           onclick={() => (mobile_menu_open = false)}>
           <XMark />
         </button>
