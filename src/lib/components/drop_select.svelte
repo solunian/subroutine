@@ -20,6 +20,7 @@
     required?: boolean;
     disabled?: boolean;
     ariaLabel?: string;
+    onchange?: (value: Value) => void;
   }
 
   const generated_id = $props.id();
@@ -34,6 +35,7 @@
     required = false,
     disabled = false,
     ariaLabel,
+    onchange,
   }: Props = $props();
 
   let open = $state(false);
@@ -89,6 +91,7 @@
     if (is_disabled(option)) return;
 
     value = get_value(option);
+    onchange?.(value);
     close_menu({ restore_focus: true });
   }
 

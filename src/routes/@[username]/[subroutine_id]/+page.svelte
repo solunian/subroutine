@@ -2,11 +2,11 @@
   import { enhance } from "$app/forms";
   import ActivityGrid from "$lib/components/activity_grid.svelte";
   import DotSemaphore from "$lib/components/dot_semaphore.svelte";
+  import Entries from "$lib/components/entries.svelte";
   import Torch from "$lib/components/torch.svelte";
   import TypeIdenticon from "$lib/components/type_identicon.svelte";
-  import { to_date_str, to_fulltime_str } from "$lib/helpers";
+  import { to_date_str } from "$lib/helpers";
   import AtSymbol from "$lib/icons/at_symbol.svelte";
-  import XMark from "$lib/icons/x_mark.svelte";
 
   let { data } = $props();
 </script>
@@ -57,35 +57,7 @@
       <ActivityGrid entries={data.entries} subroutine_type={data.subroutine.type} />
     </div>
 
-    {#if data.entries.length > 0}
-      <div class="bg-neutral-500/20">
-        <h2 class="border-b border-neutral-500/30 p-3 text-xl">entries</h2>
-
-        <div>
-          {#each data.entries.toReversed() as entry, idx (entry.id)}
-            <form
-              method="POST"
-              action="?/delete_entry"
-              class="flex gap-4 px-2 py-2 even:bg-neutral-500/20"
-              use:enhance={() => {
-                return async ({ update }) => {
-                  await update({ reset: false });
-                };
-              }}>
-              <span class="basis-1/12 text-neutral-500/50">{data.entries.length - idx - 1}</span>
-              <div class="flex w-full basis-11/12 items-center justify-between gap-1">
-                <span>{to_fulltime_str(new Date(entry.created_at))}</span>
-                <span class="font-mono text-sm">{JSON.stringify(entry.data)}</span>
-              </div>
-              <input name="entry_id" value={entry.id} hidden />
-              <button aria-label="delete" type="submit" class="border-0!">
-                <XMark />
-              </button>
-            </form>
-          {/each}
-        </div>
-      </div>
-    {/if}
+    <Entries entries={data.entries} editable={data.is_self} />
 
     <form
       method="POST"
