@@ -295,7 +295,7 @@
 
   <span
     class={[
-      "flex items-center gap-2 text-base transition",
+      "flex h-6 items-center gap-2 text-base transition",
       trend_value > 0 && "text-green-500/90",
       trend_value === 0 && "text-neutral-500/90",
       trend_value < 0 && "text-red-500/90",

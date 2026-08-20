@@ -133,7 +133,7 @@
         aria-expanded={mobile_menu_open}
         aria-controls="mobile-navigation"
         onclick={() => (mobile_menu_open = !mobile_menu_open)}>
-        <Bars3 />
+        <span class="h-6"><Bars3 /></span>
       </button>
     {/if}
   </header>
@@ -231,7 +231,7 @@
           ]}
           onclick={() => (mobile_menu_open = false)}>
           <NavIdenticon name={item.name} />
-          <span>/{item.name}</span>
+          <span>{item.name}</span>
         </a>
       {/each}
     </nav>

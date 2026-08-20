@@ -112,12 +112,12 @@
                 };
               }}>
               <span class="basis-1/12 text-neutral-500/50">{entry_number}</span>
-              <div class="flex w-full basis-11/12 items-center justify-between gap-1">
+              <div class="flex w-full items-center justify-between gap-1">
                 <span>{to_fulltime_str(new Date(entry.created_at))}</span>
                 <span class="font-mono text-sm">{JSON.stringify(entry.data)}</span>
               </div>
               <input name="entry_id" value={entry.id} hidden />
-              <button aria-label="delete entry" type="submit" class="border-0!">
+              <button aria-label="delete entry" type="submit" class="h-6 border-0!">
                 <XMark />
               </button>
             </form>

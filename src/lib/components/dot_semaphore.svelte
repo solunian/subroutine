@@ -92,21 +92,27 @@
               onclick={() => sem_value++}
               type="button"
               class="flex items-center justify-center border-neutral-500/50">
-              <ChevronUp />
+              <span class="h-6">
+                <ChevronUp />
+              </span>
             </button>
             <button
               aria-label="decrement"
               type="button"
               onclick={() => sem_value--}
               class="flex items-center justify-center border-neutral-500/50">
-              <ChevronDown />
+              <span class="h-6">
+                <ChevronDown />
+              </span>
             </button>
           </div>
           <button
             aria-label="submit"
             type="submit"
             class="flex w-full shrink-0 basis-1/6 items-center justify-center border-0! bg-black/10 px-2 text-lg dark:bg-white/10">
-            <ArrowLongRight />
+            <span class="h-6">
+              <ArrowLongRight />
+            </span>
           </button>
         </div>
       {/if}

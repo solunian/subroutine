@@ -111,11 +111,13 @@
       ]}>
       1D
 
-      {#if day_trend_value === 0}
-        <ArrowLongRight />
-      {:else}
-        <ArrowTrendingUp />
-      {/if}
+      <span class="h-6">
+        {#if day_trend_value === 0}
+          <ArrowLongRight />
+        {:else}
+          <ArrowTrendingUp />
+        {/if}
+      </span>
 
       {round_to_fixed(Math.abs(day_trend_value) / (1000 * 60 * 60), 2)} hrs
     </div>
@@ -126,11 +128,13 @@
       ]}>
       1W
 
-      {#if week_trend_value > 0}
-        <ArrowTrendingUp />
-      {:else}
-        <ArrowLongRight />
-      {/if}
+      <span class="h-6">
+        {#if week_trend_value === 0}
+          <ArrowLongRight />
+        {:else}
+          <ArrowTrendingUp />
+        {/if}
+      </span>
 
       {round_to_fixed(Math.abs(week_trend_value) / (1000 * 60 * 60), 2)} hrs
     </div>
