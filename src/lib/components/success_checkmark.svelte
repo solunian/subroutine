@@ -18,7 +18,12 @@
   };
 </script>
 
-<svg class="size-5" viewBox="0 0 24 24" fill="none" aria-hidden="true" in:pop_and_rotate>
+<svg
+  class="aspect-square h-full"
+  viewBox="0 0 24 24"
+  fill="none"
+  aria-hidden="true"
+  in:pop_and_rotate>
   <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3" opacity="0.5" />
   <path
     d="m8 12 2.6 2.6L16.5 9"

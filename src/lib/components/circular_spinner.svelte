@@ -1,5 +1,5 @@
 <svg
-  class="size-5 animate-spin motion-reduce:animate-none"
+  class="aspect-square h-full animate-spin motion-reduce:animate-none"
   viewBox="0 0 24 24"
   fill="none"
   aria-hidden="true">
