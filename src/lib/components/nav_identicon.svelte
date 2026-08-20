@@ -10,7 +10,7 @@
   let { name }: { name: string } = $props();
 </script>
 
-<div class="inline-flex size-6 min-w-6 items-center justify-center">
+<div class="h-6">
   {#if name === "/profile"}
     <AtSymbol />
   {:else if name === ">/friends"}

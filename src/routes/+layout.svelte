@@ -170,7 +170,9 @@
               aria-label={sidebar_collapsed ? "expand sidebar" : "collapse sidebar"}
               aria-expanded={!sidebar_collapsed}
               onclick={() => (sidebar_collapsed = !sidebar_collapsed)}>
-              <Sidebar />
+              <span class="h-6">
+                <Sidebar />
+              </span>
             </button>
           </div>
         </nav>
