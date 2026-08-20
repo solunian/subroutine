@@ -14,7 +14,7 @@
   <input {name} type={password_hidden ? "password" : "text"} {required} class="w-full py-1 pr-10" />
   <button
     type="button"
-    class="absolute top-1/2 right-3 -translate-y-1/2 border-none stroke-black"
+    class="absolute top-1/2 right-3 h-6 -translate-y-1/2 border-none text-neutral-500/80"
     onclick={() => (password_hidden = !password_hidden)}>
     {#if password_hidden}
       <EyeSlash />
