@@ -75,7 +75,7 @@
       }}>
       {#if subroutine.type === "dot"}
         <input hidden name="subroutine_id" value={subroutine.id} />
-        <button class="w-full border-0! bg-black/10 px-2 text-lg dark:bg-white/10">dot</button>
+        <button class="w-full bg-black/10 px-2 text-lg dark:bg-white/10">dot</button>
       {:else if subroutine.type === "semaphore"}
         <input hidden name="subroutine_id" value={subroutine.id} />
         <input hidden name="subroutine_type" value="semaphore" />
@@ -85,13 +85,13 @@
             type="number"
             step="any"
             bind:value={sem_value}
-            class="50 w-full basis-4/6 border-neutral-500/50 bg-transparent p-2 py-2 text-center font-mono text-xl outline-none focus:border-current" />
+            class="w-full basis-4/6 border border-neutral-500/50 bg-transparent p-2 py-2 text-center font-mono text-xl outline-none focus:border-current" />
           <div class="flex basis-1/6 flex-col gap-1">
             <button
               aria-label="increment"
               onclick={() => sem_value++}
               type="button"
-              class="flex items-center justify-center border-neutral-500/50">
+              class="flex items-center justify-center border border-neutral-500/50">
               <span class="h-6">
                 <ChevronUp />
               </span>
@@ -100,7 +100,7 @@
               aria-label="decrement"
               type="button"
               onclick={() => sem_value--}
-              class="flex items-center justify-center border-neutral-500/50">
+              class="flex items-center justify-center border border-neutral-500/50">
               <span class="h-6">
                 <ChevronDown />
               </span>
@@ -109,7 +109,7 @@
           <button
             aria-label="submit"
             type="submit"
-            class="flex w-full shrink-0 basis-1/6 items-center justify-center border-0! bg-black/10 px-2 text-lg dark:bg-white/10">
+            class="flex w-full shrink-0 basis-1/6 items-center justify-center bg-black/10 px-2 text-lg dark:bg-white/10">
             <span class="h-6">
               <ArrowLongRight />
             </span>

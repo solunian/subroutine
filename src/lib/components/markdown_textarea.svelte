@@ -323,7 +323,7 @@
     <button
       type="button"
       class={[
-        "w-full border-0! border-r! border-neutral-500/50 px-3 py-2 text-sm",
+        "w-full border-r border-neutral-500/50 px-3 py-2 text-sm",
         active_tab === "write" ? "bg-black/10 dark:bg-white/10" : "text-neutral-500",
       ]}
       aria-pressed={active_tab === "write"}
@@ -331,7 +331,7 @@
     <button
       type="button"
       class={[
-        "w-full border-0! border-neutral-500/50 px-3 py-2 text-sm",
+        "w-full border-neutral-500/50 px-3 py-2 text-sm",
         active_tab === "preview" ? "bg-black/10 dark:bg-white/10" : "text-neutral-500",
       ]}
       aria-pressed={active_tab === "preview"}
@@ -356,7 +356,7 @@
       onkeyup={update_editor_state}
       onpointerup={update_editor_state}
       onselect={update_editor_state}
-      class="block w-full grow resize-none overflow-hidden border-0! bg-transparent p-3 font-mono outline-none"
+      class="block w-full grow resize-none overflow-hidden bg-transparent p-3 font-mono outline-none"
     ></textarea>
     {#if emoji_menu_open}
       <div
@@ -373,7 +373,7 @@
             aria-selected={index === active_emoji_index}
             tabindex="-1"
             class={[
-              "flex w-full items-center gap-2 border-0! px-3 py-1.5 text-left text-sm",
+              "flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm",
               index === active_emoji_index && "bg-black/10 dark:bg-white/10",
             ]}
             onpointerdown={(event) => event.preventDefault()}

@@ -192,7 +192,7 @@
           disabled={is_disabled(option)}
           data-option-index={index}
           class={[
-            "flex w-full items-center justify-between gap-3 border-0! border-b! border-neutral-500/50 p-2 text-left outline-none last:border-b-0! hover:bg-black/10 focus:bg-black/10 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-white/10 dark:focus:bg-white/10",
+            "flex w-full items-center justify-between gap-3 border-b border-neutral-500/50 p-2 text-left outline-none last:border-b-0 hover:bg-black/10 focus:bg-black/10 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-white/10 dark:focus:bg-white/10",
             get_value(option) === value && "bg-neutral-500/20",
           ]}
           onclick={() => select_option(option)}

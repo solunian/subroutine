@@ -88,7 +88,7 @@
           spellcheck="false"
           aria-describedby="search-query-count"
           bind:value={() => search_query, update_search_query}
-          class="w-full border-0! px-3 py-2 outline-none placeholder:text-neutral-500/70" />
+          class="w-full px-3 py-2 outline-none placeholder:text-neutral-500/70" />
         <span
           id="search-query-count"
           class="flex items-center pr-3 font-mono text-xs text-neutral-500">

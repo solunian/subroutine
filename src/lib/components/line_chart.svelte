@@ -389,7 +389,7 @@
       {#each ranges as range_select (range_select)}
         <button
           class={[
-            "px-2 transition ease-out",
+            "border px-2 transition ease-out",
             current_range === range_select
               ? "border-neutral-500 bg-neutral-500/25"
               : "border-neutral-500/0 bg-neutral-500/15",

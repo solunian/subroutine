@@ -59,7 +59,7 @@
         <button
           type="submit"
           disabled={loading}
-          class="flex w-full items-center justify-center border-0! bg-black/10 px-4 py-1 dark:bg-white/10">
+          class="flex w-full items-center justify-center bg-black/10 px-4 py-1 dark:bg-white/10">
           {#if loading}
             <CircularSpinner />
             <span class="sr-only">updating...</span>

@@ -166,7 +166,7 @@
           <div class="mt-auto">
             <button
               type="button"
-              class="flex items-center border-0! border-neutral-500/50 px-2 py-2 text-neutral-500/95 transition-colors hover:bg-neutral-500/10 hover:text-inherit"
+              class="flex items-center border-neutral-500/50 px-2 py-2 text-neutral-500/95 transition-colors hover:bg-neutral-500/10 hover:text-inherit"
               aria-label={sidebar_collapsed ? "expand sidebar" : "collapse sidebar"}
               aria-expanded={!sidebar_collapsed}
               onclick={() => (sidebar_collapsed = !sidebar_collapsed)}>
@@ -217,7 +217,7 @@
       <div class="flex items-center justify-between border-b border-neutral-500/50 px-4 py-2">
         <span class="h-8 font-nova text-3xl">menu</span>
         <button
-          class="size-8 border-0! bg-neutral-500/0 p-1 transition-colors hover:bg-neutral-500/10"
+          class="size-8 bg-neutral-500/0 p-1 transition-colors hover:bg-neutral-500/10"
           onclick={() => (mobile_menu_open = false)}>
           <XMark />
         </button>

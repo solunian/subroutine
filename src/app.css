@@ -14,13 +14,6 @@ body {
   @apply dark:bg-black dark:text-white;
 }
 
-input,
-select,
-textarea,
-button {
-  @apply border;
-}
-
 button {
   @apply hover:cursor-pointer;
 }

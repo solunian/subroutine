@@ -129,7 +129,7 @@
         <button
           type="submit"
           disabled={loading}
-          class="flex h-8 w-full items-center justify-center border-0! bg-black/10 px-4 py-1 dark:bg-white/10">
+          class="flex h-8 w-full items-center justify-center bg-black/10 px-4 py-1 dark:bg-white/10">
           {#if success}
             <SuccessCheckmark />
             <span class="sr-only">created</span>

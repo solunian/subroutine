@@ -50,7 +50,7 @@
     <button
       type="button"
       class={[
-        "h-8 border-0! stroke-1 p-1.5 text-neutral-500 transition-colors",
+        "h-8  stroke-1 p-1.5 text-neutral-500 transition-colors",
         theme === option.value ? "bg-neutral-500/25" : "hover:bg-neutral-500/10",
       ]}
       aria-label="use {option.value} theme"

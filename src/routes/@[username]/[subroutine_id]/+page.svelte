@@ -68,7 +68,7 @@
         };
       }}>
       <input hidden name="subroutine_id" value={data.subroutine.id} />
-      <button type="submit" class="px-3 py-1 text-xl text-red-500/50">delete</button>
+      <button type="submit" class="border px-3 py-1 text-xl text-red-500/50">delete</button>
     </form>
   </div>
 {/if}

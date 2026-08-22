@@ -75,8 +75,8 @@
 
 <div
   class={[
-    "flex flex-col gap-2 border border-neutral-500/50 p-2 transition",
-    torch_on && "border-amber-500! bg-amber-100 dark:bg-amber-900",
+    "flex flex-col gap-2 border p-2 transition",
+    torch_on ? "border-amber-500 bg-amber-100 dark:bg-amber-900" : "border-neutral-500/50",
   ]}>
   <h2 class="flex items-center gap-1 text-xl">
     <TypeIdenticon type={subroutine.type} /> <a {href}>{subroutine.title}</a>
@@ -175,7 +175,7 @@
         };
       }}>
       <input hidden name="subroutine_id" value={subroutine.id} />
-      <button class="w-full border-0! bg-black/10 px-2 text-lg dark:bg-white/10"
+      <button class="w-full bg-black/10 px-2 text-lg dark:bg-white/10"
         >{torch_on ? "torch off" : "torch on"}</button>
     </form>
   {/if}

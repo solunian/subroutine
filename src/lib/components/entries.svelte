@@ -117,7 +117,7 @@
                 <span class="font-mono text-sm">{JSON.stringify(entry.data)}</span>
               </div>
               <input name="entry_id" value={entry.id} hidden />
-              <button aria-label="delete entry" type="submit" class="h-6 border-0!">
+              <button aria-label="delete entry" type="submit" class="h-6">
                 <XMark />
               </button>
             </form>
