@@ -18,7 +18,7 @@
       </a> -->
 
       <div class="flex flex-wrap items-end justify-between gap-2">
-        <h1 class="font-nova text-3xl sm:text-4xl">{">/friends"}</h1>
+        <h1 class="font-nova text-3xl sm:text-4xl">>/friends</h1>
 
         <div class="flex w-full gap-2">
           <div class=" text-neutral-500">

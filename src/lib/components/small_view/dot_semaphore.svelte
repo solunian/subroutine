@@ -4,8 +4,8 @@
   import ChevronDown from "$lib/icons/chevron_down.svelte";
   import ChevronUp from "$lib/icons/chevron_up.svelte";
   import type { Tables } from "$lib/types/database.types";
-  import LineChart from "./line_chart.svelte";
-  import TypeIdenticon from "./type_identicon.svelte";
+  import LineChart from "$lib/components/line_chart.svelte";
+  import TypeIdenticon from "$lib/components/type_identicon.svelte";
 
   let {
     username,
@@ -35,7 +35,8 @@
 <div class="flex flex-col gap-2 border border-neutral-500/50 p-2">
   <div>
     <h2 class="flex items-center gap-1 overflow-x-auto text-xl whitespace-nowrap">
-      <TypeIdenticon type={subroutine.type} /> <a {href}>{subroutine.title}</a>
+      <TypeIdenticon type={subroutine.type} />
+      <a href={href ?? `/@${username}/${subroutine.id}`}>{subroutine.title}</a>
     </h2>
   </div>
 

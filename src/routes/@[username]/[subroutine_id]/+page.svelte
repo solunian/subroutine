@@ -1,10 +1,8 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import ActivityGrid from "$lib/components/activity_grid.svelte";
-  import DotSemaphore from "$lib/components/dot_semaphore.svelte";
   import MyDropdownMenuContent from "$lib/components/ui/my_dropdown_menu_content.svelte";
   import Entries from "$lib/components/entries.svelte";
-  import Torch from "$lib/components/torch.svelte";
   import TypeIdenticon from "$lib/components/type_identicon.svelte";
   import { diff_days, from_now, to_date_str } from "$lib/helpers";
   import AtSymbol from "$lib/icons/at_symbol.svelte";
@@ -18,6 +16,7 @@
   import { now } from "$lib/state/time.svelte";
   import LockClosed from "$lib/icons/lock_closed.svelte";
   import Users from "$lib/icons/users.svelte";
+  import SubroutineSmallView from "$lib/components/subroutine_small_view.svelte";
 
   let { data } = $props();
 
@@ -157,23 +156,11 @@
     </header>
 
     <div class="max-w-5xl">
-      {#if data.subroutine.type === "dot" || data.subroutine.type === "semaphore"}
-        <DotSemaphore
-          editable={data.is_self}
-          username={data.username}
-          subroutine={data.subroutine}
-          entries={data.subroutine.entries} />
-      {:else if data.subroutine.type === "torch"}
-        <Torch
-          editable={data.is_self}
-          username={data.username}
-          subroutine={data.subroutine}
-          entries={data.subroutine.entries} />
-      {:else}
-        <div class="flex aspect-video w-full items-center justify-center border font-mono">
-          not implemented yet -_-
-        </div>
-      {/if}
+      <SubroutineSmallView
+        editable={data.is_self}
+        username={data.username}
+        subroutine={data.subroutine}
+        entries={data.subroutine.entries} />
     </div>
 
     <ActivityGrid entries={data.subroutine.entries} subroutine_type={data.subroutine.type} />

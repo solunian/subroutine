@@ -1,7 +1,6 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import DotSemaphore from "$lib/components/dot_semaphore.svelte";
-  import Torch from "$lib/components/torch.svelte";
+  import SubroutineSmallView from "$lib/components/subroutine_small_view.svelte";
   import TypeIdenticon from "$lib/components/type_identicon.svelte";
   import AtSymbol from "$lib/icons/at_symbol.svelte";
   import XMark from "$lib/icons/x_mark.svelte";
@@ -103,21 +102,11 @@
       </h2>
       <div class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {#each grouped_subroutines.get(subtype) as sub (sub.id)}
-          {#if sub.type === "dot" || sub.type === "semaphore"}
-            <DotSemaphore
-              editable={data.is_self}
-              subroutine={sub}
-              entries={sub.entries}
-              href="/@{data.username}/{sub.id}" />
-          {:else if sub.type === "torch"}
-            <Torch
-              editable={data.is_self}
-              subroutine={sub}
-              entries={sub.entries}
-              href="/@{data.username}/{sub.id}" />
-          {:else}
-            {`<${sub.type}>`} not implemented yet
-          {/if}
+          <SubroutineSmallView
+            username={data.username}
+            editable={data.is_self}
+            subroutine={sub}
+            entries={sub.entries} />
         {/each}
       </div>
     {/each}
