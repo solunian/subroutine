@@ -95,20 +95,22 @@
     {/if}
   </header>
 
-  {#if data.session && data.subroutines && data.subroutines.length > 0}
+  {#if data.session}
     {#each subtype_display_order as subtype (subtype)}
-      <h2 class="flex items-center gap-1 p-2 text-xl">
-        <TypeIdenticon type={subtype} /><span>{subtype}</span>
-      </h2>
-      <div class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-        {#each grouped_subroutines.get(subtype) as sub (sub.id)}
-          <SubroutineSmallView
-            username={data.username}
-            editable={data.is_self}
-            subroutine={sub}
-            entries={sub.entries} />
-        {/each}
-      </div>
+      {#if (grouped_subroutines.get(subtype) ?? []).length > 0}
+        <h2 class="flex items-center gap-1 p-2 text-xl">
+          <TypeIdenticon type={subtype} /><span>{subtype}</span>
+        </h2>
+        <div class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          {#each grouped_subroutines.get(subtype) as sub (sub.id)}
+            <SubroutineSmallView
+              editable
+              username={data.username}
+              subroutine={sub}
+              entries={sub.entries} />
+          {/each}
+        </div>
+      {/if}
     {/each}
   {/if}
 </div>
