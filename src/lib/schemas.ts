@@ -50,6 +50,8 @@ export const TimestampSchema = v.pipe(TrimNormalStrSchema, v.isoTimestamp("inval
 // supabase defined enums
 export const SubroutineType = v.picklist(Constants.public.Enums.subroutine_type);
 
+export const SubroutineVisibility = v.picklist(Constants.public.Enums.subroutine_visibility);
+
 export const RelationshipStatusType = v.picklist(Constants.public.Enums.relationship_status_type);
 
 export const FinNumberSchema = v.pipe(

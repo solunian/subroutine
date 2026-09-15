@@ -5,6 +5,8 @@
   import MarkdownTextarea from "$lib/components/markdown_textarea.svelte";
   import SuccessCheckmark from "$lib/components/success_checkmark.svelte";
   import TypeIdenticon from "$lib/components/type_identicon.svelte";
+  import LockClosed from "$lib/icons/lock_closed.svelte";
+  import Users from "$lib/icons/users.svelte";
   import { Constants } from "$lib/types/database.types";
   import type { Database } from "$lib/types/database.types";
   import type { PageProps, SubmitFunction } from "./$types";
@@ -84,6 +86,48 @@
           {#if form?.errors?.title}
             <p class="mt-2 font-mono text-xs text-red-600 dark:text-red-400">
               {form.errors.title}
+            </p>
+          {/if}
+        </div>
+      </div>
+
+      <div
+        class="grid gap-3 border-b border-neutral-500/50 px-5 py-5 sm:grid-cols-[9rem_1fr] sm:gap-6 sm:px-7">
+        <div>
+          <span id="visibility-label">visibility</span>
+          <p class="text-sm text-neutral-500">required</p>
+        </div>
+        <div>
+          <div
+            role="radiogroup"
+            aria-labelledby="visibility-label"
+            class="grid grid-cols-2 border border-neutral-500/50 focus-within:border-current">
+            {#each ["private", "friends"] as visibility (visibility)}
+              <label class="relative cursor-pointer first:border-r first:border-neutral-500/50">
+                <input
+                  type="radio"
+                  name="visibility"
+                  value={visibility}
+                  checked={visibility === "private"}
+                  required
+                  class="peer sr-only" />
+                <span
+                  class="flex items-center justify-center gap-2 p-2 text-neutral-500 transition-colors duration-200 peer-checked:bg-black/10 peer-checked:text-black hover:bg-black/5 dark:peer-checked:bg-white/10 dark:peer-checked:text-white dark:hover:bg-white/5">
+                  <span aria-hidden="true" class="size-5">
+                    {#if visibility === "private"}
+                      <LockClosed />
+                    {:else}
+                      <Users />
+                    {/if}
+                  </span>
+                  {visibility}
+                </span>
+              </label>
+            {/each}
+          </div>
+          {#if form?.errors?.visibility}
+            <p class="mt-2 font-mono text-xs text-red-600 dark:text-red-400">
+              {form.errors.visibility}
             </p>
           {/if}
         </div>

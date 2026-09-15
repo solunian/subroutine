@@ -1,7 +1,13 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 import * as v from "valibot";
-import { DateTimeSchema, NormalStrSchema, SubroutineType, TrimNormalStrSchema } from "$lib/schemas";
+import {
+  DateTimeSchema,
+  NormalStrSchema,
+  SubroutineType,
+  SubroutineVisibility,
+  TrimNormalStrSchema,
+} from "$lib/schemas";
 
 export const load: PageServerLoad = async ({ url, locals: { safeGetSession } }) => {
   const { session } = await safeGetSession();
@@ -17,6 +23,7 @@ export const actions: Actions = {
     // data validation
     const created_at = new Date().toISOString();
     const type = v.safeParse(SubroutineType, fdata.get("type"));
+    const visibility = v.safeParse(SubroutineVisibility, fdata.get("visibility"));
     const title = v.safeParse(TrimNormalStrSchema, fdata.get("title"));
     const description = v.safeParse(
       v.optional(NormalStrSchema),
@@ -28,10 +35,17 @@ export const actions: Actions = {
       fdata.get("deadline") === "" ? undefined : (fdata.get("deadline") ?? undefined)
     );
 
-    if (!type.success || !title.success || !description.success || !deadline.success) {
+    if (
+      !type.success ||
+      !visibility.success ||
+      !title.success ||
+      !description.success ||
+      !deadline.success
+    ) {
       return fail(400, {
         errors: {
           type: type.issues && v.summarize(type.issues),
+          visibility: visibility.issues && v.summarize(visibility.issues),
           title: title.issues && v.summarize(title.issues),
           description: description.issues && v.summarize(description.issues),
           deadline: deadline.issues && v.summarize(deadline.issues),
@@ -52,6 +66,7 @@ export const actions: Actions = {
         created_at,
         user_id: user.id,
         type: type.output,
+        visibility: visibility.output,
         title: title.output,
         description: description.output,
         deadline: deadline.output,

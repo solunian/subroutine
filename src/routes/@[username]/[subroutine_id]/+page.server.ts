@@ -7,6 +7,7 @@ import {
   empty_to_undefined,
   FinNumberSchema,
   NormalStrSchema,
+  SubroutineVisibility,
   TrimNormalStrSchema,
   UUIDSchema,
 } from "$lib/schemas";
@@ -66,6 +67,10 @@ export const actions: Actions = {
       v.optional(empty_to_null(NormalStrSchema)),
       fdata.get("description") ?? undefined
     );
+    const visibility = v.safeParse(
+      v.optional(SubroutineVisibility),
+      fdata.get("visibility") ?? undefined
+    );
     // const location = v.safeParse(NormalStrSchema, fdata.get("location"));
     // const ascii_art = v.safeParse(v.optional(NormalStrSchema), fdata.get("ascii_art") ?? undefined);
     // datetime is default empty string ""
@@ -79,6 +84,7 @@ export const actions: Actions = {
       !subroutine_id.success ||
       !title.success ||
       !description.success ||
+      !visibility.success ||
       !deadline.success
     ) {
       return fail(400, {
@@ -87,6 +93,7 @@ export const actions: Actions = {
           subroutine_id: subroutine_id.issues && v.summarize(subroutine_id.issues),
           title: title.issues && v.summarize(title.issues),
           description: description.issues && v.summarize(description.issues),
+          visibility: visibility.issues && v.summarize(visibility.issues),
           deadline: deadline.issues && v.summarize(deadline.issues),
         },
       });
@@ -102,6 +109,7 @@ export const actions: Actions = {
       .update({
         title: title.output,
         description: description.output,
+        visibility: visibility.output,
         deadline: deadline.output,
       })
       .eq("id", subroutine_id.output);

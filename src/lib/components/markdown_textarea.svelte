@@ -323,7 +323,7 @@
     <button
       type="button"
       class={[
-        "w-full border-r border-neutral-500/50 px-3 py-2 text-sm",
+        "w-full border-r border-neutral-500/50 px-3 py-2 transition-colors hover:bg-black/5 dark:hover:bg-white/5",
         active_tab === "write" ? "bg-black/10 dark:bg-white/10" : "text-neutral-500",
       ]}
       aria-pressed={active_tab === "write"}
@@ -331,7 +331,7 @@
     <button
       type="button"
       class={[
-        "w-full border-neutral-500/50 px-3 py-2 text-sm",
+        "w-full border-neutral-500/50 px-3 py-2 transition-colors hover:bg-black/5 dark:hover:bg-white/5",
         active_tab === "preview" ? "bg-black/10 dark:bg-white/10" : "text-neutral-500",
       ]}
       aria-pressed={active_tab === "preview"}

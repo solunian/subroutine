@@ -16,6 +16,8 @@
   import { DropdownMenu } from "bits-ui";
   import MyDialog from "$lib/components/ui/my_dialog.svelte";
   import { now } from "$lib/state/time.svelte";
+  import LockClosed from "$lib/icons/lock_closed.svelte";
+  import Users from "$lib/icons/users.svelte";
 
   let { data } = $props();
 
@@ -34,14 +36,14 @@
 {#if data.session}
   <div class="flex flex-col gap-4">
     <header class="flex flex-col gap-1 p-4">
-      <a href="/@{data.username}" class="flex items-center font-nova text-xl opacity-50">
+      <a href="/@{data.username}" class="flex w-fit items-center font-nova text-xl opacity-50">
         <span class="size-5"><AtSymbol /></span>
         {data.username}
       </a>
 
-      <div class="flex items-center gap-1 text-2xl">
-        <TypeIdenticon type={data.subroutine.type} />
-        <div class="flex gap-2">
+      <div class="flex items-center gap-3 text-2xl">
+        <span class="flex items-center gap-1">
+          <TypeIdenticon type={data.subroutine.type} />
           {#if !editing_title}
             <h1 class="h-8">{data.subroutine.title}</h1>
           {:else}
@@ -77,39 +79,73 @@
               </button>
             </form>
           {/if}
+        </span>
 
-          {#if data.is_self}
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger class="text-neutral-500">
-                <EllipsisHorizontal />
-              </DropdownMenu.Trigger>
-              <MyDropdownMenuContent align="start">
-                <DropdownMenu.Item>
-                  <button
-                    onclick={() => (editing_title = true)}
-                    class="flex min-w-40 items-center gap-2 p-2 text-left text-neutral-500 transition-colors duration-150 hover:bg-neutral-500/10 hover:text-current">
-                    <span class="size-5"><Pencil /></span> rename
-                  </button>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item>
-                  <button
-                    onclick={() => (opened_delete_dialog = true)}
-                    class="flex min-w-40 items-center gap-2 p-2 text-left text-neutral-500 transition-colors duration-150 hover:bg-neutral-500/10 hover:text-current">
-                    <span class="size-5"><Trash /></span> delete
-                  </button>
-                </DropdownMenu.Item>
-              </MyDropdownMenuContent>
-            </DropdownMenu.Root>
+        <span class="size-5 text-neutral-500">
+          {#if data.subroutine.visibility === "private"}
+            <LockClosed />
+          {:else if data.subroutine.visibility === "friends"}
+            <Users />
           {/if}
-        </div>
+        </span>
+
+        {#if data.is_self}
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger class="size-8 text-neutral-500">
+              <EllipsisHorizontal />
+            </DropdownMenu.Trigger>
+            <MyDropdownMenuContent align="start">
+              <DropdownMenu.Item>
+                <button
+                  onclick={() => (editing_title = true)}
+                  class="flex w-full min-w-40 items-center gap-2 p-2 text-left text-neutral-500 transition-colors duration-150 hover:bg-neutral-500/10 hover:text-current">
+                  <span class="size-5"><Pencil /></span> rename
+                </button>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item>
+                <form
+                  method="POST"
+                  action="?/update_subroutine"
+                  use:enhance={({ formData }) => {
+                    formData.append("timestamp", new Date().toISOString());
+
+                    return async ({ update }) => {
+                      await update({ reset: false });
+                    };
+                  }}>
+                  <input
+                    name="visibility"
+                    value={data.subroutine.visibility === "private" ? "friends" : "private"}
+                    hidden />
+                  <button
+                    type="submit"
+                    class="flex w-full min-w-40 items-center gap-2 p-2 pr-4 text-left text-neutral-500 transition-colors duration-150 hover:bg-neutral-500/10 hover:text-current">
+                    {#if data.subroutine.visibility === "private"}
+                      <span class="size-5"><Users /></span> make visible to friends
+                    {:else if data.subroutine.visibility === "friends"}
+                      <span class="size-5"><LockClosed /></span> make private
+                    {/if}
+                  </button>
+                </form>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item>
+                <button
+                  onclick={() => (opened_delete_dialog = true)}
+                  class="flex w-full min-w-40 items-center gap-2 p-2 text-left text-neutral-500 transition-colors duration-150 hover:bg-neutral-500/10 hover:text-current">
+                  <span class="size-5"><Trash /></span> delete
+                </button>
+              </DropdownMenu.Item>
+            </MyDropdownMenuContent>
+          </DropdownMenu.Root>
+        {/if}
       </div>
 
       <div class="flex flex-nowrap items-center gap-2 text-nowrap opacity-50">
         <span>{to_date_str(new Date(data.subroutine.created_at))}</span>
         <span>·</span>
-        <span>updated {from_now(now, new Date(data.subroutine.updated_at))}</span>
-        <span>·</span>
         <span>{data.entries.length} {(data.entries.length ?? 0) !== 1 ? "entries" : "entry"}</span>
+        <span>·</span>
+        <span>updated {from_now(now, new Date(data.subroutine.updated_at))}</span>
       </div>
 
       <!-- nullable -->

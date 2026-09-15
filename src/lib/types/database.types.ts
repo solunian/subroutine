@@ -184,6 +184,7 @@ export type Database = {
           type: Database["public"]["Enums"]["subroutine_type"];
           updated_at: string;
           user_id: string;
+          visibility: Database["public"]["Enums"]["subroutine_visibility"];
         };
         Insert: {
           created_at?: string;
@@ -194,6 +195,7 @@ export type Database = {
           type: Database["public"]["Enums"]["subroutine_type"];
           updated_at?: string;
           user_id: string;
+          visibility?: Database["public"]["Enums"]["subroutine_visibility"];
         };
         Update: {
           created_at?: string;
@@ -204,6 +206,7 @@ export type Database = {
           type?: Database["public"]["Enums"]["subroutine_type"];
           updated_at?: string;
           user_id?: string;
+          visibility?: Database["public"]["Enums"]["subroutine_visibility"];
         };
         Relationships: [
           {
@@ -235,6 +238,7 @@ export type Database = {
         | "ping"
         | "ledger"
         | "journal";
+      subroutine_visibility: "private" | "friends";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -373,6 +377,7 @@ export const Constants = {
         "ledger",
         "journal",
       ],
+      subroutine_visibility: ["private", "friends"],
     },
   },
 } as const;
