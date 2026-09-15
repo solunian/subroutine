@@ -22,6 +22,11 @@
   import XMark from "$lib/icons/x_mark.svelte";
   import { fade } from "svelte/transition";
   import Sidebar from "$lib/icons/sidebar.svelte";
+  import { DropdownMenu } from "bits-ui";
+  import MyDropdownMenuContent from "$lib/components/ui/my_dropdown_menu_content.svelte";
+  import ArrowRightStartOnRectangle from "$lib/icons/arrow_right_start_on_rectangle.svelte";
+  import Cog from "$lib/icons/cog.svelte";
+  import AtSymbol from "$lib/icons/at_symbol.svelte";
 
   if (!browser) {
     update_now();
@@ -55,6 +60,12 @@
   };
 
   const nav_items = $derived([
+    { name: "/search", href: "/search" },
+    { name: ">/friends", href: data.username ? `/@${data.username}/friends` : "" },
+    { name: "/create", href: "/create" },
+  ]);
+
+  const mobile_nav_items = $derived([
     { name: "/profile", href: data.username ? `/@${data.username}` : "" },
     { name: ">/friends", href: data.username ? `/@${data.username}/friends` : "" },
     { name: "/search", href: "/search" },
@@ -139,22 +150,22 @@
   </header>
 
   <div class="flex min-h-0 flex-1">
-    {#if session}
+    {#if session && data.username}
       <aside
         class={[
-          "hidden shrink-0 border-r border-neutral-500/50  transition-[width] sm:flex sm:flex-col",
-          sidebar_collapsed ? "w-15" : "w-48",
+          "hidden shrink-0 border-r border-neutral-500/50 transition-[width] sm:flex sm:flex-col",
+          sidebar_collapsed ? "w-15" : "w-60",
         ]}>
-        <nav class="flex h-full flex-col gap-1 px-2 py-2">
+        <nav class="flex h-full flex-col gap-1">
           {#each nav_items as item (item.name)}
             <a
               href={item.href}
-              data-sveltekit-reload={item.reload ? true : undefined}
               aria-current={is_active(item.href) ? "page" : undefined}
               title={sidebar_collapsed ? item.name : undefined}
               class={[
-                "flex h-10 flex-nowrap items-center gap-1 overflow-hidden px-2 text-neutral-500/95 transition-colors hover:text-inherit",
+                "mx-2 flex h-10 flex-nowrap items-center gap-1 overflow-hidden px-2 text-neutral-500/95 transition-colors first:mt-2 last:mb-2 hover:text-inherit",
                 is_active(item.href) ? "bg-neutral-500/15" : "hover:bg-neutral-500/10",
+                sidebar_collapsed && "w-fit",
               ]}>
               <NavIdenticon name={item.name} />
               <span class={["text-nowrap", sidebar_collapsed && "sr-only"]}>
@@ -163,17 +174,59 @@
             </a>
           {/each}
 
-          <div class="mt-auto">
-            <button
-              type="button"
-              class="flex items-center border-neutral-500/50 px-2 py-2 text-neutral-500/95 transition-colors hover:bg-neutral-500/10 hover:text-inherit"
-              aria-label={sidebar_collapsed ? "expand sidebar" : "collapse sidebar"}
-              aria-expanded={!sidebar_collapsed}
-              onclick={() => (sidebar_collapsed = !sidebar_collapsed)}>
-              <span class="h-6">
-                <Sidebar />
-              </span>
-            </button>
+          <button
+            type="button"
+            class="mx-2 mt-auto flex w-fit items-center border-neutral-500/50 px-2 py-2 text-neutral-500/95 transition-colors first:mt-2 last:mb-2 hover:bg-neutral-500/10 hover:text-inherit"
+            aria-label={sidebar_collapsed ? "expand sidebar" : "collapse sidebar"}
+            aria-expanded={!sidebar_collapsed}
+            onclick={() => (sidebar_collapsed = !sidebar_collapsed)}>
+            <span class="h-6">
+              <Sidebar />
+            </span>
+          </button>
+
+          <div class="flex flex-col gap-1 border-t border-neutral-500/50">
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger
+                class={[
+                  "group m-2 flex h-10 flex-nowrap items-center gap-2 overflow-hidden px-2  transition-colors hover:bg-neutral-500/10",
+                ]}>
+                <span
+                  class="flex size-6 min-w-6 items-center justify-center border border-neutral-500/50 font-mono text-lg text-neutral-500 transition-colors select-none group-hover:border-current group-hover:text-current"
+                  aria-hidden="true">
+                  {data.username.slice(0, 1).toUpperCase()}
+                </span>
+                <span
+                  class={[
+                    "overflow-hidden text-nowrap text-neutral-500 transition-colors group-hover:border-current group-hover:text-current",
+                    sidebar_collapsed && "sr-only",
+                  ]}>{data.username}</span>
+              </DropdownMenu.Trigger>
+              <MyDropdownMenuContent align="start">
+                <DropdownMenu.Item>
+                  <a
+                    href="/@{data.username}"
+                    class="flex w-full min-w-60 items-center gap-2 p-2 text-left text-neutral-500 transition-colors duration-150 hover:bg-neutral-500/10 hover:text-current">
+                    <span class="size-5"><AtSymbol /></span>/profile
+                  </a>
+                </DropdownMenu.Item>
+                <DropdownMenu.Item>
+                  <a
+                    href="/settings"
+                    class="flex w-full min-w-60 items-center gap-2 p-2 text-left text-neutral-500 transition-colors duration-150 hover:bg-neutral-500/10 hover:text-current">
+                    <span class="size-5"><Cog /></span>/settings
+                  </a>
+                </DropdownMenu.Item>
+                <DropdownMenu.Item>
+                  <a
+                    href="/signout"
+                    data-sveltekit-reload
+                    class="flex w-full min-w-40 items-center gap-2 p-2 text-left text-neutral-500 transition-colors duration-150 hover:bg-neutral-500/10 hover:text-current">
+                    <span class="size-5"><ArrowRightStartOnRectangle /></span>/signout
+                  </a>
+                </DropdownMenu.Item>
+              </MyDropdownMenuContent>
+            </DropdownMenu.Root>
           </div>
         </nav>
       </aside>
@@ -222,7 +275,7 @@
           <XMark />
         </button>
       </div>
-      {#each nav_items as item (item.name)}
+      {#each mobile_nav_items as item (item.name)}
         <a
           href={item.href}
           data-sveltekit-reload={item.reload ? true : undefined}

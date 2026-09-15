@@ -107,9 +107,9 @@
                 aria-label="View @{res.username}'s profile"
                 class="group flex items-center gap-4 p-4 transition-colors hover:bg-neutral-500/10 sm:px-7">
                 <span
-                  class="flex size-10 shrink-0 items-center justify-center border border-neutral-500/50 font-nova text-lg text-neutral-500 transition-colors group-hover:border-current group-hover:text-inherit"
+                  class="flex size-10 shrink-0 items-center justify-center border border-neutral-500/50 font-mono text-lg text-neutral-500 transition-colors group-hover:border-current group-hover:text-inherit"
                   aria-hidden="true">
-                  {(res.name || res.username).slice(0, 1).toUpperCase()}
+                  {res.username.slice(0, 1).toUpperCase()}
                 </span>
 
                 <span class="min-w-0 flex-1">

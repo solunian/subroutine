@@ -143,7 +143,9 @@
       <div class="flex flex-nowrap items-center gap-2 text-nowrap opacity-50">
         <span>{to_date_str(new Date(data.subroutine.created_at))}</span>
         <span>·</span>
-        <span>{data.entries.length} {(data.entries.length ?? 0) !== 1 ? "entries" : "entry"}</span>
+        <span
+          >{data.subroutine.entries.length}
+          {(data.subroutine.entries.length ?? 0) !== 1 ? "entries" : "entry"}</span>
         <span>·</span>
         <span>updated {from_now(now, new Date(data.subroutine.updated_at))}</span>
       </div>
@@ -160,13 +162,13 @@
           editable={data.is_self}
           username={data.username}
           subroutine={data.subroutine}
-          entries={data.entries} />
+          entries={data.subroutine.entries} />
       {:else if data.subroutine.type === "torch"}
         <Torch
           editable={data.is_self}
           username={data.username}
           subroutine={data.subroutine}
-          entries={data.entries} />
+          entries={data.subroutine.entries} />
       {:else}
         <div class="flex aspect-video w-full items-center justify-center border font-mono">
           not implemented yet -_-
@@ -174,12 +176,12 @@
       {/if}
     </div>
 
-    <ActivityGrid entries={data.entries} subroutine_type={data.subroutine.type} />
+    <ActivityGrid entries={data.subroutine.entries} subroutine_type={data.subroutine.type} />
 
     <Entries
       username={data.username}
       subroutine_id={data.subroutine.id}
-      entries={data.entries}
+      entries={data.subroutine.entries}
       editable={data.is_self} />
 
     <!-- delete subroutine dialog -->
@@ -196,8 +198,8 @@
           </span>
           <span>·</span>
           <span>
-            {data.entries.length}
-            {(data.entries.length ?? 0) !== 1 ? "entries" : "entry"}
+            {data.subroutine.entries.length}
+            {(data.subroutine.entries.length ?? 0) !== 1 ? "entries" : "entry"}
           </span>
         </div>
 

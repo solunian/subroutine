@@ -40,7 +40,6 @@ export const load: PageServerLoad = async ({
 
   return {
     subroutine: sub_res.data,
-    entries: sub_res.data.entries,
   };
 };
 
