@@ -35,9 +35,11 @@
 {#if data.session}
   <div class="flex flex-col gap-4">
     <header class="flex flex-col gap-1 p-4">
-      <a href="/@{data.username}" class="flex w-fit items-center font-nova text-xl opacity-50">
+      <a
+        href="/@{data.subroutine.profiles.username}"
+        class="flex w-fit items-center font-nova text-xl opacity-50">
         <span class="size-5"><AtSymbol /></span>
-        {data.username}
+        {data.subroutine.profiles.username}
       </a>
 
       <div class="flex items-center gap-3 text-2xl">
@@ -158,7 +160,6 @@
     <div class="max-w-5xl">
       <SubroutineSmallView
         editable={data.is_self}
-        username={data.username}
         subroutine={data.subroutine}
         entries={data.subroutine.entries} />
     </div>
@@ -166,7 +167,6 @@
     <ActivityGrid entries={data.subroutine.entries} subroutine_type={data.subroutine.type} />
 
     <Entries
-      username={data.username}
       subroutine_id={data.subroutine.id}
       entries={data.subroutine.entries}
       editable={data.is_self} />

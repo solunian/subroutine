@@ -17,8 +17,8 @@ export const load: PageServerLoad = async ({
   params,
   locals: { safeGetSession, supabase },
 }) => {
-  const { session } = await safeGetSession();
-  if (!session) {
+  const { session, user } = await safeGetSession();
+  if (!session || !user) {
     redirect(303, `/signin?redirect=${url}`);
   }
 
@@ -27,8 +27,7 @@ export const load: PageServerLoad = async ({
   // load subroutine and entries
   const sub_res = await supabase
     .from("subroutines")
-    .select("*, profiles!inner(username), entries(*)")
-    .eq("profiles.username", params.username)
+    .select("*, profiles!inner(id, username), entries(*)")
     .eq("id", params.subroutine_id)
     .order("created_at")
     .order("created_at", { referencedTable: "entries", ascending: true })
@@ -39,6 +38,7 @@ export const load: PageServerLoad = async ({
   }
 
   return {
+    is_self: user.id === sub_res.data.profiles.id,
     subroutine: sub_res.data,
   };
 };

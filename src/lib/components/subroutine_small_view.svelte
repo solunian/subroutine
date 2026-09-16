@@ -5,13 +5,11 @@
   import Torch from "./small_view/torch.svelte";
 
   let {
-    username,
     subroutine,
     entries = [],
-    href,
+    href = `/s/${subroutine.id}`,
     editable = false,
   }: {
-    username: string;
     subroutine: Tables<"subroutines">;
     entries?: Tables<"entries">[];
     href?: string;
@@ -20,11 +18,11 @@
 </script>
 
 {#if subroutine.type === "dot" || subroutine.type === "semaphore"}
-  <DotSemaphore {username} {subroutine} {entries} {href} {editable} />
+  <DotSemaphore {subroutine} {entries} {href} {editable} />
 {:else if subroutine.type === "torch"}
-  <Torch {username} {subroutine} {entries} {href} {editable} />
+  <Torch {subroutine} {entries} {href} {editable} />
 {:else if subroutine.type === "journal"}
-  <Journal {username} {subroutine} {entries} {href} {editable} />
+  <Journal {subroutine} {entries} {href} {editable} />
 {:else}
   <div class="flex aspect-video w-full items-center justify-center border font-mono">
     not implemented yet -_-

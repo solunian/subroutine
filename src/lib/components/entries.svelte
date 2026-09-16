@@ -10,12 +10,10 @@
   import MyDialog from "./ui/my_dialog.svelte";
 
   let {
-    username,
     subroutine_id,
     entries = [],
     editable = false,
   }: {
-    username: string;
     subroutine_id: string;
     entries?: Tables<"entries">[];
     editable?: boolean;
@@ -113,7 +111,7 @@
 
       <form
         method="POST"
-        action="/@{username}/{subroutine_id}?/insert_entry"
+        action="/s/{subroutine_id}?/insert_entry"
         use:enhance={({ formData }) => {
           formData.append("timestamp", new Date().toISOString());
 
@@ -156,7 +154,7 @@
           {#if editable}
             <form
               method="POST"
-              action="/@{username}/{subroutine_id}?/delete_entry"
+              action="/s/{subroutine_id}?/delete_entry"
               use:enhance={({ formData }) => {
                 formData.append("timestamp", new Date().toISOString());
 

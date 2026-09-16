@@ -9,13 +9,11 @@
   import Identicon from "../identicon.svelte";
 
   let {
-    username,
     subroutine,
     entries = [],
     href,
     editable = false,
   }: {
-    username: string;
     subroutine: Tables<"subroutines">;
     entries?: Tables<"entries">[];
     href?: string;
@@ -83,7 +81,7 @@
   ]}>
   <h2 class="flex items-center gap-1 text-xl">
     <Identicon name={subroutine.type} />
-    <a href={href ?? `/@${username}/${subroutine.id}`}>{subroutine.title}</a>
+    <a {href}>{subroutine.title}</a>
   </h2>
 
   <div class="flex flex-col items-center gap-1 px-3 py-2 font-mono text-2xl">
@@ -147,7 +145,7 @@
   {#if editable}
     <form
       method="POST"
-      action="/@{username}/{subroutine.id}?/insert_entry"
+      action="/s/{subroutine.id}?/insert_entry"
       use:enhance={({ formData }) => {
         const created_at = new Date().toISOString();
         formData.append("timestamp", created_at);
