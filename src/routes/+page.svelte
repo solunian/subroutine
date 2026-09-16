@@ -1,9 +1,9 @@
 <script lang="ts">
-  import TypeIdenticon from "$lib/components/type_identicon.svelte";
   import type { PageProps } from "./$types";
   import type { Database } from "$lib/types/database.types";
   import LandingPage from "$lib/components/landing_page.svelte";
   import SubroutineSmallView from "$lib/components/subroutine_small_view.svelte";
+  import Identicon from "$lib/components/identicon.svelte";
 
   let { data }: PageProps = $props();
 
@@ -27,7 +27,7 @@
     {#each subtype_display_order as subtype (subtype)}
       {#if (grouped_subroutines.get(subtype) ?? []).length > 0}
         <h2 class="flex items-center gap-1 p-2 text-xl">
-          <TypeIdenticon type={subtype} /><span>{subtype}</span>
+          <Identicon name={subtype} /><span>{subtype}</span>
         </h2>
         <div class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {#each grouped_subroutines.get(subtype) as sub (sub.id)}

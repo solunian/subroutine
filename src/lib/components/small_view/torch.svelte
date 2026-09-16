@@ -3,10 +3,10 @@
   import { now } from "$lib/state/time.svelte";
   import { enhance } from "$app/forms";
   import NumberFlow, { NumberFlowGroup } from "@number-flow/svelte";
-  import TypeIdenticon from "../type_identicon.svelte";
   import { from_now, get_n_days_date, round_to_fixed } from "$lib/helpers";
   import ArrowTrendingUp from "$lib/icons/arrow_trending_up.svelte";
   import ArrowLongRight from "$lib/icons/arrow_long_right.svelte";
+  import Identicon from "../identicon.svelte";
   let {
     username,
     subroutine,
@@ -81,7 +81,7 @@
     torch_on ? "border-amber-500 bg-amber-100 dark:bg-amber-900" : "border-neutral-500/50",
   ]}>
   <h2 class="flex items-center gap-1 text-xl">
-    <TypeIdenticon type={subroutine.type} />
+    <Identicon name={subroutine.type} />
     <a href={href ?? `/@${username}/${subroutine.id}`}>{subroutine.title}</a>
   </h2>
 

@@ -2,9 +2,9 @@
   import { enhance } from "$app/forms";
   import CircularSpinner from "$lib/components/circular_spinner.svelte";
   import DropSelect from "$lib/components/drop_select.svelte";
+  import Identicon from "$lib/components/identicon.svelte";
   import MarkdownTextarea from "$lib/components/markdown_textarea.svelte";
   import SuccessCheckmark from "$lib/components/success_checkmark.svelte";
-  import TypeIdenticon from "$lib/components/type_identicon.svelte";
   import LockClosed from "$lib/icons/lock_closed.svelte";
   import Users from "$lib/icons/users.svelte";
   import { Constants } from "$lib/types/database.types";
@@ -66,7 +66,7 @@
           {/if}
           <span
             class="inline-flex aspect-square h-full items-center justify-center border border-neutral-500/50 p-2">
-            <TypeIdenticon type={selected_type} />
+            <Identicon name={selected_type} />
           </span>
         </div>
       </div>

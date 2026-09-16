@@ -3,7 +3,6 @@
   import ActivityGrid from "$lib/components/activity_grid.svelte";
   import MyDropdownMenuContent from "$lib/components/ui/my_dropdown_menu_content.svelte";
   import Entries from "$lib/components/entries.svelte";
-  import TypeIdenticon from "$lib/components/type_identicon.svelte";
   import { diff_days, from_now, to_date_str } from "$lib/helpers";
   import AtSymbol from "$lib/icons/at_symbol.svelte";
   import Check from "$lib/icons/check.svelte";
@@ -17,6 +16,7 @@
   import LockClosed from "$lib/icons/lock_closed.svelte";
   import Users from "$lib/icons/users.svelte";
   import SubroutineSmallView from "$lib/components/subroutine_small_view.svelte";
+  import Identicon from "$lib/components/identicon.svelte";
 
   let { data } = $props();
 
@@ -42,7 +42,7 @@
 
       <div class="flex items-center gap-3 text-2xl">
         <span class="flex items-center gap-1">
-          <TypeIdenticon type={data.subroutine.type} />
+          <Identicon name={data.subroutine.type} />
           {#if !editing_title}
             <h1 class="h-8">{data.subroutine.title}</h1>
           {:else}

@@ -18,7 +18,6 @@
   import Hashtag from "$lib/icons/hashtag.svelte";
   import ThemeToggle from "$lib/components/theme_toggle.svelte";
   import Bars3 from "$lib/icons/bars_3.svelte";
-  import NavIdenticon from "$lib/components/nav_identicon.svelte";
   import XMark from "$lib/icons/x_mark.svelte";
   import { fade } from "svelte/transition";
   import Sidebar from "$lib/icons/sidebar.svelte";
@@ -27,6 +26,7 @@
   import ArrowRightStartOnRectangle from "$lib/icons/arrow_right_start_on_rectangle.svelte";
   import Cog from "$lib/icons/cog.svelte";
   import AtSymbol from "$lib/icons/at_symbol.svelte";
+  import Identicon from "$lib/components/identicon.svelte";
 
   if (!browser) {
     update_now();
@@ -63,6 +63,7 @@
     { name: "/search", href: "/search" },
     { name: ">/friends", href: data.username ? `/@${data.username}/friends` : "" },
     { name: "/create", href: "/create" },
+    { name: "hr", href: "" },
   ]);
 
   const mobile_nav_items = $derived([
@@ -158,20 +159,24 @@
         ]}>
         <nav class="flex h-full flex-col gap-1">
           {#each nav_items as item (item.name)}
-            <a
-              href={item.href}
-              aria-current={is_active(item.href) ? "page" : undefined}
-              title={sidebar_collapsed ? item.name : undefined}
-              class={[
-                "mx-2 flex h-10 flex-nowrap items-center gap-1 overflow-hidden px-2 text-neutral-500/95 transition-colors first:mt-2 last:mb-2 hover:text-inherit",
-                is_active(item.href) ? "bg-neutral-500/15" : "hover:bg-neutral-500/10",
-                sidebar_collapsed && "w-fit",
-              ]}>
-              <NavIdenticon name={item.name} />
-              <span class={["text-nowrap", sidebar_collapsed && "sr-only"]}>
-                {item.name}
-              </span>
-            </a>
+            {#if item.name === "hr"}
+              <hr class="my-1 border-neutral-500/50" />
+            {:else}
+              <a
+                href={item.href}
+                aria-current={is_active(item.href) ? "page" : undefined}
+                title={sidebar_collapsed ? item.name : undefined}
+                class={[
+                  "mx-2 flex h-10 flex-nowrap items-center gap-1 overflow-hidden px-2 text-neutral-500/95 transition-colors first:mt-2 last:mb-2 hover:text-inherit",
+                  is_active(item.href) ? "bg-neutral-500/15" : "hover:bg-neutral-500/10",
+                  sidebar_collapsed && "w-fit",
+                ]}>
+                <Identicon name={item.name} />
+                <span class={["text-nowrap", sidebar_collapsed && "sr-only"]}>
+                  {item.name}
+                </span>
+              </a>
+            {/if}
           {/each}
 
           <button
@@ -285,7 +290,7 @@
             is_active(item.href) ? "bg-neutral-500/15" : "hover:bg-neutral-500/10",
           ]}
           onclick={() => (mobile_menu_open = false)}>
-          <NavIdenticon name={item.name} />
+          <Identicon name={item.name} />
           <span>{item.name}</span>
         </a>
       {/each}
