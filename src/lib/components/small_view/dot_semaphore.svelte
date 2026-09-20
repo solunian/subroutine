@@ -1,11 +1,10 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import ArrowLongRight from "$lib/icons/arrow_long_right.svelte";
-  import ChevronDown from "$lib/icons/chevron_down.svelte";
-  import ChevronUp from "$lib/icons/chevron_up.svelte";
   import type { Tables } from "$lib/types/database.types";
   import LineChart from "$lib/components/line_chart.svelte";
   import Identicon from "../identicon.svelte";
+  import { eval_math } from "$lib/eval_math";
 
   let {
     subroutine,
@@ -22,11 +21,11 @@
   // svelte-ignore state_referenced_locally
   let optimistic_entries = $state(entries);
   // svelte-ignore state_referenced_locally
-  let sem_value = $state(entries.at(-1)?.data?.value ?? 0);
+  let sem_expr = $state(entries.at(-1)?.data?.value ?? "0");
 
   $effect(() => {
     optimistic_entries = entries;
-    sem_value = entries.at(-1)?.data?.value ?? 0;
+    sem_expr = entries.at(-1)?.data?.value ?? "0";
   });
 </script>
 
@@ -51,7 +50,7 @@
         // optimistic update
         optimistic_entries.push({
           created_at,
-          data: subroutine.type === "semaphore" ? { value: sem_value } : null,
+          data: subroutine.type === "semaphore" ? { value: eval_math(sem_expr) } : null,
           id: "",
           subroutine_id: "",
           user_id: "",
@@ -82,30 +81,12 @@
         <input hidden name="subroutine_type" value="semaphore" />
         <div class="flex shrink-0 gap-2">
           <input
-            name="value"
-            type="number"
-            step="any"
-            bind:value={sem_value}
-            class="w-full basis-4/6 border border-neutral-500/50 bg-transparent p-2 py-2 text-center font-mono text-xl outline-none focus:border-current" />
-          <div class="flex basis-1/6 flex-col gap-1">
-            <button
-              aria-label="increment"
-              onclick={() => sem_value++}
-              type="button"
-              class="flex items-center justify-center border border-neutral-500/50">
-              <span class="h-6">
-                <ChevronUp />
-              </span>
-            </button>
-            <button
-              aria-label="decrement"
-              type="button"
-              onclick={() => sem_value--}
-              class="flex items-center justify-center border border-neutral-500/50">
-              <span class="h-6">
-                <ChevronDown />
-              </span>
-            </button>
+            bind:value={sem_expr}
+            class="w-full basis-3/6 border border-neutral-500/50 bg-transparent p-2 py-2 text-center font-mono text-xl outline-none focus:border-current" />
+          <input name="value" type="text" value={eval_math(sem_expr)} required hidden />
+          <div
+            class="flex basis-2/6 flex-col items-center justify-center gap-1 overflow-scroll bg-neutral-500/10 font-mono text-sm whitespace-nowrap text-neutral-500">
+            = {eval_math(sem_expr) ?? "?"}
           </div>
           <button
             aria-label="submit"
