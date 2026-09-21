@@ -34,8 +34,19 @@
 
   let { data, children } = $props();
   let { supabase, session } = $derived(data);
-  let sidebar_collapsed = $state(false);
+  let sidebar_collapsed = $derived(data.sidebar_collapsed);
   let mobile_menu_open = $state(false);
+
+  const toggle_sidebar = () => {
+    sidebar_collapsed = !sidebar_collapsed;
+
+    try {
+      const secure = location.protocol === "https:" ? "; Secure" : "";
+      document.cookie = `subroutine-sidebar-collapsed=${sidebar_collapsed}; Path=/; Max-Age=31536000; SameSite=Lax${secure}`;
+    } catch {
+      // Keep the sidebar usable when cookies are unavailable.
+    }
+  };
 
   // for maintaining scroll position between navs
   let page_scroller: HTMLDivElement | undefined;
@@ -184,7 +195,7 @@
             class="mx-2 mt-auto flex w-fit items-center border-neutral-500/50 px-2 py-2 text-neutral-500/95 transition-colors first:mt-2 last:mb-2 hover:bg-neutral-500/10 hover:text-inherit"
             aria-label={sidebar_collapsed ? "expand sidebar" : "collapse sidebar"}
             aria-expanded={!sidebar_collapsed}
-            onclick={() => (sidebar_collapsed = !sidebar_collapsed)}>
+            onclick={toggle_sidebar}>
             <span class="h-6">
               <Sidebar />
             </span>

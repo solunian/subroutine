@@ -11,6 +11,7 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession, supabas
     session,
     user,
     username: profile?.data?.username ?? null,
+    sidebar_collapsed: cookies.get("subroutine-sidebar-collapsed") === "true",
     cookies: cookies.getAll(),
   };
 };

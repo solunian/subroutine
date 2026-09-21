@@ -42,6 +42,7 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
     supabase,
     session,
     username: data.username,
+    sidebar_collapsed: data.sidebar_collapsed,
     latest_gitcommit: latest_gitcommit_res.data,
   };
 };
