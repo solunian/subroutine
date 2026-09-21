@@ -9,6 +9,7 @@
   import ArrowTrendingDown from "$lib/icons/arrow_trending_down.svelte";
   import ArrowLongRight from "$lib/icons/arrow_long_right.svelte";
   import NullSet from "$lib/icons/null_set.svelte";
+  import { fade } from "svelte/transition";
 
   interface DataPoint {
     time: Date;
@@ -315,92 +316,128 @@
   </span>
 </div>
 
-<div class="relative w-full space-y-2 font-mono" bind:clientWidth={containter_width}>
-  {#if containter_width > 0}
-    {#if entries.length > 0}
-      <svg {width} {height}>
-        <defs>
-          <linearGradient id={area_gradient_id} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="var(--color-purple-400)" stop-opacity="0.32" />
-            <stop offset="100%" stop-color="var(--color-purple-400)" stop-opacity="0" />
-          </linearGradient>
-        </defs>
-        <g transform={`translate(${margin.left}, ${margin.top})`}>
-          {#if tooltip_data}
-            <g transform={`translate(${tooltip_data.x}, 0)`}>
-              <text
-                text-anchor={text_anchor}
-                x={anchor_x_offset}
-                y="0"
-                class="fill-neutral-500 text-sm">
-                {to_24hrtime_str(tooltip_data.data.time)}
-              </text>
-              <line y1={10} y2={height - 60} class="stroke-neutral-500 stroke-1" />
-              <text
-                text-anchor={text_anchor}
-                x={anchor_x_offset}
-                y={height - 40}
-                class="fill-neutral-500 text-sm">
-                {to_date_str(tooltip_data.data.time)}
-              </text>
-            </g>
-          {/if}
-
-          {#if view_data.length > 0}
-            <path d={area_path} fill={`url(#${area_gradient_id})`} />
-            <path
-              d={line_path}
-              transform="translate(0, 0)"
-              class="fill-none stroke-purple-500 stroke-2" />
-
-            <!-- New: Dotted average line -->
-            <line
-              x1="0"
-              y1={y_scale(average)}
-              x2={inner_width}
-              y2={y_scale(average)}
-              class="stroke-neutral-500 stroke-2 opacity-50"
-              stroke-dasharray="5,5" />
-
-            {#if selected_point}
-              <g
-                class="pointer-events-none"
-                transform={`translate(${selected_point.x}, ${selected_point.y})`}>
-                <circle cx="0" cy="0" r="6" class="selected-point-pulse fill-purple-400/30" />
-                <circle cx="0" cy="0" r="3" class="fill-purple-500" />
-              </g>
-            {/if}
-          {/if}
-
-          <rect
-            role="tooltip"
-            width={Math.max(0, inner_width)}
-            height={Math.max(0, inner_height)}
-            fill="transparent"
-            onmousemove={handle_mouse_move}
-            onmouseleave={handle_mouse_leave} />
-        </g>
-      </svg>
-    {:else}
-      <NoData {height} />
-    {/if}
-
-    <div class="flex justify-center-safe gap-2 overflow-x-auto">
-      {#each ranges as range_select (range_select)}
-        <button
-          class={[
-            "border px-2 transition ease-out",
-            current_range === range_select
-              ? "border-neutral-500 bg-neutral-500/25"
-              : "border-neutral-500/0 bg-neutral-500/15",
-          ]}
-          onclick={() => (current_range = range_select)}>{range_select}</button>
-      {/each}
+<div class="relative w-full font-mono" bind:clientWidth={containter_width}>
+  <div class="grid">
+    <div
+      class="graph-skeleton pointer-events-none col-start-1 row-start-1 flex flex-col gap-2 transition-opacity duration-200"
+      data-loaded={containter_width > 0}
+      aria-hidden="true">
+      <div class="w-full bg-neutral-500/15" style:aspect-ratio={aspect_ratio}></div>
+      <div class="flex justify-center-safe gap-2 overflow-hidden">
+        {#each ranges as range_select (range_select)}
+          <span class="border border-transparent bg-neutral-500/15 px-2 text-transparent">
+            {range_select}
+          </span>
+        {/each}
+      </div>
     </div>
-  {/if}
+
+    {#if containter_width > 0}
+      <div class="col-start-1 row-start-1 flex flex-col gap-2" in:fade={{ duration: 250 }}>
+        {#if entries.length > 0}
+          <svg class="block" {width} {height}>
+            <defs>
+              <linearGradient id={area_gradient_id} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--color-purple-400)" stop-opacity="0.32" />
+                <stop offset="100%" stop-color="var(--color-purple-400)" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <g transform={`translate(${margin.left}, ${margin.top})`}>
+              {#if tooltip_data}
+                <g transform={`translate(${tooltip_data.x}, 0)`}>
+                  <text
+                    text-anchor={text_anchor}
+                    x={anchor_x_offset}
+                    y="0"
+                    class="fill-neutral-500 text-sm">
+                    {to_24hrtime_str(tooltip_data.data.time)}
+                  </text>
+                  <line y1={10} y2={height - 60} class="stroke-neutral-500 stroke-1" />
+                  <text
+                    text-anchor={text_anchor}
+                    x={anchor_x_offset}
+                    y={height - 40}
+                    class="fill-neutral-500 text-sm">
+                    {to_date_str(tooltip_data.data.time)}
+                  </text>
+                </g>
+              {/if}
+
+              {#if view_data.length > 0}
+                <path d={area_path} fill={`url(#${area_gradient_id})`} />
+                <path
+                  d={line_path}
+                  transform="translate(0, 0)"
+                  class="fill-none stroke-purple-500 stroke-2" />
+
+                <!-- New: Dotted average line -->
+                <line
+                  x1="0"
+                  y1={y_scale(average)}
+                  x2={inner_width}
+                  y2={y_scale(average)}
+                  class="stroke-neutral-500 stroke-2 opacity-50"
+                  stroke-dasharray="5,5" />
+
+                {#if selected_point}
+                  <g
+                    class="pointer-events-none"
+                    transform={`translate(${selected_point.x}, ${selected_point.y})`}>
+                    <circle cx="0" cy="0" r="6" class="selected-point-pulse fill-purple-400/30" />
+                    <circle cx="0" cy="0" r="3" class="fill-purple-500" />
+                  </g>
+                {/if}
+              {/if}
+
+              <rect
+                role="tooltip"
+                width={Math.max(0, inner_width)}
+                height={Math.max(0, inner_height)}
+                fill="transparent"
+                onmousemove={handle_mouse_move}
+                onmouseleave={handle_mouse_leave} />
+            </g>
+          </svg>
+        {:else}
+          <NoData {height} />
+        {/if}
+
+        <div class="flex justify-center-safe gap-2 overflow-x-auto">
+          {#each ranges as range_select (range_select)}
+            <button
+              class={[
+                "border px-2 transition ease-out",
+                current_range === range_select
+                  ? "border-neutral-500 bg-neutral-500/25"
+                  : "border-neutral-500/0 bg-neutral-500/15",
+              ]}
+              onclick={() => (current_range = range_select)}>{range_select}</button>
+          {/each}
+        </div>
+      </div>
+    {/if}
+  </div>
 </div>
 
 <style>
+  .graph-skeleton {
+    animation: graph-skeleton-pulse 1.6s ease-in-out infinite alternate;
+  }
+
+  .graph-skeleton[data-loaded="true"] {
+    animation: none;
+    opacity: 0;
+  }
+
+  @keyframes graph-skeleton-pulse {
+    from {
+      opacity: 0.65;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   .selected-point-pulse {
     transform-box: fill-box;
     transform-origin: center;
@@ -420,6 +457,10 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .graph-skeleton {
+      animation: none;
+    }
+
     .selected-point-pulse {
       animation: none;
       opacity: 0.8;
