@@ -22,20 +22,16 @@
   let grouped_subroutines = $derived(Map.groupBy(data.subroutines ?? [], (r) => r.type));
 </script>
 
-<main class="flex flex-col gap-2 py-2">
+<main class="@container flex flex-col gap-2 py-2">
   {#if data.session && data.username}
     {#each subtype_display_order as subtype (subtype)}
       {#if (grouped_subroutines.get(subtype) ?? []).length > 0}
         <h2 class="flex items-center gap-1 p-2 text-xl">
           <Identicon name={subtype} /><span>{subtype}</span>
         </h2>
-        <div class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <div class="grid grid-cols-1 gap-2 @3xl:grid-cols-2 @5xl:grid-cols-3 @7xl:grid-cols-4">
           {#each grouped_subroutines.get(subtype) as sub (sub.id)}
-            <SubroutineSmallView
-              editable
-              username={data.username}
-              subroutine={sub}
-              entries={sub.entries} />
+            <SubroutineSmallView editable subroutine={sub} entries={sub.entries} />
           {/each}
         </div>
       {/if}

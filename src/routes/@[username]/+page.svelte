@@ -16,7 +16,7 @@
   let grouped_subroutines = $derived(Map.groupBy(data.subroutines ?? [], (r) => r.type));
 </script>
 
-<div class="flex flex-col gap-2">
+<div class="@container flex flex-col gap-2">
   <header class="flex flex-col gap-1 p-4">
     <div class="text-lg opacity-50">{data.profile.name}</div>
 
@@ -101,13 +101,9 @@
         <h2 class="flex items-center gap-1 p-2 text-xl">
           <Identicon name={subtype} /><span>{subtype}</span>
         </h2>
-        <div class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <div class="grid grid-cols-1 gap-2 @3xl:grid-cols-2 @5xl:grid-cols-3 @7xl:grid-cols-4">
           {#each grouped_subroutines.get(subtype) as sub (sub.id)}
-            <SubroutineSmallView
-              editable
-              username={data.username}
-              subroutine={sub}
-              entries={sub.entries} />
+            <SubroutineSmallView editable subroutine={sub} entries={sub.entries} />
           {/each}
         </div>
       {/if}

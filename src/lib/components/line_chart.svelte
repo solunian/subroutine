@@ -316,16 +316,16 @@
   </span>
 </div>
 
-<div class="relative w-full font-mono" bind:clientWidth={containter_width}>
-  <div class="grid">
+<div class="relative w-full min-w-0 font-mono" bind:clientWidth={containter_width}>
+  <div class="grid min-w-0 grid-cols-1">
     <div
-      class="graph-skeleton pointer-events-none col-start-1 row-start-1 flex flex-col gap-2 transition-opacity duration-200"
+      class="graph-skeleton pointer-events-none col-start-1 row-start-1 flex min-w-0 flex-col gap-2 transition-opacity duration-200"
       data-loaded={containter_width > 0}
       aria-hidden="true">
       <div class="w-full bg-neutral-500/15" style:aspect-ratio={aspect_ratio}></div>
       <div class="flex justify-center-safe gap-2 overflow-hidden">
         {#each ranges as range_select (range_select)}
-          <span class="border border-transparent bg-neutral-500/15 px-2 text-transparent">
+          <span class="shrink-0 border border-transparent bg-neutral-500/15 px-2 text-transparent">
             {range_select}
           </span>
         {/each}
@@ -333,9 +333,9 @@
     </div>
 
     {#if containter_width > 0}
-      <div class="col-start-1 row-start-1 flex flex-col gap-2" in:fade={{ duration: 250 }}>
+      <div class="col-start-1 row-start-1 flex min-w-0 flex-col gap-2" in:fade={{ duration: 250 }}>
         {#if entries.length > 0}
-          <svg class="block" {width} {height}>
+          <svg class="block max-w-full" {width} {height}>
             <defs>
               <linearGradient id={area_gradient_id} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stop-color="var(--color-purple-400)" stop-opacity="0.32" />
@@ -402,11 +402,11 @@
           <NoData {height} />
         {/if}
 
-        <div class="flex justify-center-safe gap-2 overflow-x-auto">
+        <div class="flex min-w-0 justify-center-safe gap-2 overflow-x-auto">
           {#each ranges as range_select (range_select)}
             <button
               class={[
-                "border px-2 transition ease-out",
+                "shrink-0 border px-2 whitespace-nowrap transition ease-out",
                 current_range === range_select
                   ? "border-neutral-500 bg-neutral-500/25"
                   : "border-neutral-500/0 bg-neutral-500/15",

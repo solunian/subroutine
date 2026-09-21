@@ -35,7 +35,7 @@
   }
 </script>
 
-<div class="flex flex-col gap-2 border border-neutral-500/50 p-2">
+<div class="flex min-w-0 flex-col gap-2 border border-neutral-500/50 p-2">
   <div>
     <h2 class="flex items-center gap-1 overflow-x-auto text-xl whitespace-nowrap">
       <Identicon name={subroutine.type} />
