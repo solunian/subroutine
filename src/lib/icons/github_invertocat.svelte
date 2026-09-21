@@ -4,7 +4,7 @@
   viewBox="0 0 98 96"
   fill="currentColor"
   xmlns="http://www.w3.org/2000/svg"
-  stroke-width="2"
+  stroke-width="1.5"
   stroke="currentColor"
   class="aspect-square h-full">
   <g clip-path="url(#clip0_730_27126)">

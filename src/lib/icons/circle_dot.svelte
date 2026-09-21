@@ -3,6 +3,6 @@
   fill="none"
   xmlns="http://www.w3.org/2000/svg"
   class="aspect-square h-full">
-  <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" />
+  <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5" />
   <circle cx="12" cy="12" r="2" fill="currentColor" />
 </svg>
