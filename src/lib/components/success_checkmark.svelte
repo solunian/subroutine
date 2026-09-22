@@ -28,7 +28,7 @@
   <path
     d="m8 12 2.6 2.6L16.5 9"
     stroke="currentColor"
-    stroke-width="2"
+    stroke-width="1.5"
     stroke-linecap="square"
     stroke-linejoin="miter" />
 </svg>

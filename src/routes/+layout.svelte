@@ -75,6 +75,10 @@
     { name: ">/friends", href: data.username ? `/@${data.username}/friends` : "" },
     { name: "/create", href: "/create" },
     { name: "hr", href: "" },
+    { name: ">/dot", href: "/dashboard/dot" },
+    { name: ">/semaphore", href: "/dashboard/semaphore" },
+    { name: ">/torch", href: "/dashboard/torch" },
+    { name: ">/journal", href: "/dashboard/journal" },
   ]);
 
   const mobile_nav_items = $derived([

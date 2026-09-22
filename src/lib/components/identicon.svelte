@@ -27,13 +27,13 @@
     <Cog />
   {:else if name === "/signout"}
     <ArrowRightStartOnRectangle />
-  {:else if name === "dot"}
+  {:else if name === "dot" || name == ">/dot"}
     <CircleDot />
-  {:else if name === "semaphore"}
+  {:else if name === "semaphore" || name == ">/semaphore"}
     <ArrowsUpDown />
-  {:else if name === "torch"}
+  {:else if name === "torch" || name == ">/torch"}
     <Fire />
-  {:else if name === "journal"}
+  {:else if name === "journal" || name == ">/journal"}
     <PencilSquare />
   {:else}
     <QuestionMarkCircle />
