@@ -223,7 +223,10 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      search_users_page: {
+        Args: { p_limit?: number; p_offset?: number; p_query: string };
+        Returns: Json;
+      };
     };
     Enums: {
       relationship_status_type: "pending" | "accepted" | "blocked";
