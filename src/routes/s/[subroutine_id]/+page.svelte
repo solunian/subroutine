@@ -21,13 +21,6 @@
   let { data } = $props();
 
   let editing_title = $state(false);
-  let title_input = $state<HTMLInputElement>();
-
-  $effect(() => {
-    if (editing_title) {
-      title_input?.focus();
-    }
-  });
 
   let opened_delete_dialog = $state(false);
 </script>
@@ -62,7 +55,7 @@
               class="flex h-8 gap-2">
               <input name="subroutine_id" value={data.subroutine.id} class="hidden" />
               <input
-                bind:this={title_input}
+                {@attach (element) => element.focus()}
                 name="title"
                 value={data.subroutine.title}
                 required
@@ -168,6 +161,7 @@
 
     <Entries
       subroutine_id={data.subroutine.id}
+      subroutine_type={data.subroutine.type}
       entries={data.subroutine.entries}
       editable={data.is_self} />
 
