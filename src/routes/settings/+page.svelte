@@ -2,11 +2,38 @@
   import { enhance } from "$app/forms";
   import CircularSpinner from "$lib/components/circular_spinner.svelte";
   import Cog from "$lib/icons/cog.svelte";
+  import Trash from "$lib/icons/trash.svelte";
+  import MyDialog from "$lib/components/ui/my_dialog.svelte";
+  import { Dialog } from "bits-ui";
   import type { SubmitFunction } from "@sveltejs/kit";
 
   let { data, form } = $props();
 
   let loading = $state(false);
+  let opened_delete_dialog = $state(false);
+  let deleting = $state(false);
+  let delete_error = $state("");
+
+  const submit_delete: SubmitFunction = ({ cancel }) => {
+    if (deleting) {
+      cancel();
+      return;
+    }
+    deleting = true;
+    delete_error = "";
+    return async ({ result, update }) => {
+      deleting = false;
+      if (result.type === "failure") {
+        delete_error = String(
+          result.data?.delete_error ?? "Unable to delete your account. Try again."
+        );
+      } else if (result.type === "error") {
+        delete_error = "Unable to delete your account. Try again.";
+      } else {
+        await update({ reset: false });
+      }
+    };
+  };
 
   const submit: SubmitFunction = ({ formData }) => {
     formData.append("timestamp", new Date().toISOString());
@@ -25,7 +52,11 @@
       <span class="size-10 animate-[spin_7s_linear_infinite]"><Cog /></span>
       <span>/settings</span>
     </h1>
-    <form method="POST" use:enhance={submit} class="flex w-full flex-col gap-2">
+    <form
+      method="POST"
+      action="?/update_profile"
+      use:enhance={submit}
+      class="flex w-full flex-col gap-2">
       {form?.message}
 
       <div>
@@ -75,6 +106,61 @@
           class="w-full bg-black/10 px-4 py-1 text-center dark:bg-white/10">/signout</a>
       </div>
     </form>
+    <div class="w-full border-t border-neutral-500/50 pt-4">
+      <button
+        type="button"
+        onclick={() => {
+          delete_error = "";
+          opened_delete_dialog = true;
+        }}
+        class="flex w-full items-center justify-center gap-2 bg-red-500/25 px-4 py-1">
+        <span class="size-5"><Trash /></span> delete account
+      </button>
+    </div>
+
+    <MyDialog
+      bind:open={opened_delete_dialog}
+      contentProps={{
+        onEscapeKeydown: (event) => {
+          if (deleting) event.preventDefault();
+        },
+        onInteractOutside: (event) => {
+          if (deleting) event.preventDefault();
+        },
+      }}>
+      <div class="flex flex-col gap-4">
+        <Dialog.Title class="flex items-center gap-2 text-2xl">
+          <span class="h-8"><Trash /></span> delete account
+        </Dialog.Title>
+        <Dialog.Description class="text-neutral-500">
+          this will permanently delete your account, profile, subroutines, entries, and connections.
+          this cannot be undone.
+        </Dialog.Description>
+        {#if delete_error}
+          <p role="alert" class="text-red-600 dark:text-red-400">{delete_error}</p>
+        {/if}
+        <div class="flex gap-2">
+          <button
+            type="button"
+            disabled={deleting}
+            onclick={() => (opened_delete_dialog = false)}
+            class="grow bg-neutral-500/25 py-1 text-lg">cancel</button>
+          <form method="POST" action="?/delete_account" use:enhance={submit_delete} class="grow">
+            <button
+              type="submit"
+              disabled={deleting}
+              class="flex h-9 w-full items-center justify-center bg-red-500/25 py-1 text-lg">
+              {#if deleting}
+                <CircularSpinner />
+                <span class="sr-only">deleting account...</span>
+              {:else}
+                confirm
+              {/if}
+            </button>
+          </form>
+        </div>
+      </div>
+    </MyDialog>
   </div>
 </div>
 

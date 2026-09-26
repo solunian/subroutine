@@ -103,7 +103,7 @@
         </h2>
         <div class="grid grid-cols-1 gap-2 @3xl:grid-cols-2 @5xl:grid-cols-3 @7xl:grid-cols-4">
           {#each grouped_subroutines.get(subtype) as sub (sub.id)}
-            <SubroutineSmallView editable subroutine={sub} entries={sub.entries} />
+            <SubroutineSmallView editable={data.is_self} subroutine={sub} entries={sub.entries} />
           {/each}
         </div>
       {/if}

@@ -18,7 +18,7 @@
   <Dialog.Portal>
     <Dialog.Overlay
       class="fixed inset-0 z-50 bg-black/30 opacity-100 transition-opacity duration-150 ease-out data-ending-style:opacity-0 
-      data-ending-style:duration-100 data-ending-style:ease-in data-starting-style:opacity-0" />
+      data-ending-style:duration-100 data-ending-style:ease-in data-starting-style:opacity-0 starting:opacity-0" />
     <Dialog.Content
       {...contentProps}
       class="
@@ -34,10 +34,11 @@
 
       data-starting-style:scale-[0.97]
       data-starting-style:opacity-0
+      sm:max-w-lg md:w-full
 
-      sm:max-w-lg
-      md:w-full
-      dark:border-neutral-500/50 dark:bg-neutral-500/10
+      dark:border-neutral-500/50
+      dark:bg-neutral-500/10
+      starting:scale-[0.97] starting:opacity-0
     ">
       {@render children?.()}
     </Dialog.Content>

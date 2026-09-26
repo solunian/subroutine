@@ -17,6 +17,15 @@ subroutine is a web app for recording routines and reviewing how they change ove
 - user profiles, profile search, and friend requests
 - editable profile details and light/dark themes
 
+## account deletion setup
+
+Set `SUPABASE_SECRET_KEY` in the server environment to a Supabase secret key (or legacy
+service-role key) for the same project as `PUBLIC_SUPABASE_URL`. Never prefix this key
+with `PUBLIC_`. Settings uses it only on the server to delete the authenticated user's
+account after confirmation. Existing database foreign keys cascade deletion to their
+profile, subroutines, entries, and relationships. Without the key, deletion returns an
+unavailable message and leaves the account intact.
+
 ## project status
 
 subroutine is in early development. `dot`, `semaphore`, and `torch` are the currently implemented tracker types. additional types appear in the interface but are placeholders.
