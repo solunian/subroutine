@@ -51,7 +51,7 @@
 
 <section class="border border-neutral-500/50" aria-labelledby="{id}-heading">
   <div
-    class="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-3 border-b border-neutral-500/50 bg-neutral-500/10 px-6 py-2 text-neutral-500 backdrop-blur dark:bg-neutral-900/95">
+    class="sticky top-0 flex flex-wrap items-center justify-between gap-3 border-b border-neutral-500/50 bg-neutral-500/10 px-6 py-2 text-neutral-500 backdrop-blur dark:bg-neutral-900/95">
     <div class="flex items-center gap-3">
       <h2 id="{id}-heading" class="text-xl">entries</h2>
       {#if can_edit}
