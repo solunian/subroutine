@@ -2,22 +2,25 @@ import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 import * as v from "valibot";
 import { EmailSchema, TrimNormalStrSchema } from "$lib/schemas";
+import { auth_redirect } from "$lib/server/auth_redirect";
 
 export const load: PageServerLoad = async ({ url, locals: { safeGetSession } }) => {
   const { session } = await safeGetSession();
 
-  const redirect_url = url.searchParams.get("redirect");
+  const redirect_url = auth_redirect(url.searchParams.get("redirect"), url.origin);
 
   // if the user is already logged in return them to the home page
   if (session) {
-    redirect(303, redirect_url ?? "/");
+    redirect(303, redirect_url);
   }
 
   return {
     message:
-      url.searchParams.get("reset") === "success"
-        ? "password reset. sign in with your new password."
-        : undefined,
+      url.searchParams.get("oauth") === "error"
+        ? "unable to sign in with google. please try again."
+        : url.searchParams.get("reset") === "success"
+          ? "password reset. sign in with your new password."
+          : undefined,
   };
 };
 
