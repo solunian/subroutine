@@ -32,17 +32,9 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const latest_gitcommit_res = await supabase
-    .from("globals")
-    .select("value, updated_at")
-    .eq("key", "latest_gitcommit_hash")
-    .maybeSingle();
-
   return {
+    ...data,
     supabase,
     session,
-    username: data.username,
-    sidebar_collapsed: data.sidebar_collapsed,
-    latest_gitcommit: latest_gitcommit_res.data,
   };
 };

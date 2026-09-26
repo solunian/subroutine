@@ -223,6 +223,17 @@
                   ]}>{data.username}</span>
               </DropdownMenu.Trigger>
               <MyDropdownMenuContent align="start">
+                <DropdownMenu.Item
+                  closeOnSelect={false}
+                  class="flex w-full min-w-60 flex-col p-2 text-left text-neutral-500">
+                  {#if data.name}
+                    <span class="text-sm opacity-80">{data.name}</span>
+                  {/if}
+                  <span>@{data.username}</span>
+                </DropdownMenu.Item>
+
+                <DropdownMenu.Separator class="border-t border-neutral-500/50"
+                ></DropdownMenu.Separator>
                 <DropdownMenu.Item>
                   <a
                     href="/@{data.username}"
