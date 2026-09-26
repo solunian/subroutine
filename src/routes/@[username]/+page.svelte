@@ -84,8 +84,8 @@
       </span>
       <span>·</span>
       <a href="/@{data.username}/friends" class="transition-opacity hover:opacity-70">
-        {data.num_friends}
-        {data.num_friends !== 1 ? "friends" : "friend"}
+        {data.num_friends ?? 0}
+        {(data.num_friends ?? 0) !== 1 ? "friends" : "friend"}
       </a>
     </div>
 
