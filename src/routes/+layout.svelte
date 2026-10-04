@@ -1,32 +1,32 @@
 <script lang="ts">
   import "../app.css";
-  import { browser } from "$app/environment";
-  import { afterNavigate, invalidate, invalidateAll } from "$app/navigation";
+  import { browser } from "$app/env";
+  import { afterNavigate, invalidate, refreshAll, snapshot } from "$app/navigation";
   import { page } from "$app/state";
   import { onMount } from "svelte";
   import type { Attachment } from "svelte/attachments";
-  import ReleaseStageBanner from "$lib/components/release_stage_banner.svelte";
-  import TimeInfo from "$lib/components/time_info.svelte";
+  import ReleaseStageBanner from "#lib/components/release_stage_banner.svelte";
+  import TimeInfo from "#lib/components/time_info.svelte";
   import {
     now,
     start_now_interval,
     stop_now_interval,
     update_now,
-  } from "$lib/state/time.svelte.js";
-  import GithubInvertocat from "$lib/icons/github_invertocat.svelte";
-  import { from_now } from "$lib/helpers";
-  import Hashtag from "$lib/icons/hashtag.svelte";
-  import ThemeToggle from "$lib/components/theme_toggle.svelte";
-  import Bars3 from "$lib/icons/bars_3.svelte";
-  import XMark from "$lib/icons/x_mark.svelte";
+  } from "#lib/state/time.svelte.js";
+  import GithubInvertocat from "#lib/icons/github_invertocat.svelte";
+  import { from_now } from "#lib/helpers.js";
+  import Hashtag from "#lib/icons/hashtag.svelte";
+  import ThemeToggle from "#lib/components/theme_toggle.svelte";
+  import Bars3 from "#lib/icons/bars_3.svelte";
+  import XMark from "#lib/icons/x_mark.svelte";
   import { fade } from "svelte/transition";
-  import Sidebar from "$lib/icons/sidebar.svelte";
+  import Sidebar from "#lib/icons/sidebar.svelte";
   import { DropdownMenu } from "bits-ui";
-  import MyDropdownMenuContent from "$lib/components/ui/my_dropdown_menu_content.svelte";
-  import ArrowRightStartOnRectangle from "$lib/icons/arrow_right_start_on_rectangle.svelte";
-  import Cog from "$lib/icons/cog.svelte";
-  import AtSymbol from "$lib/icons/at_symbol.svelte";
-  import Identicon from "$lib/components/identicon.svelte";
+  import MyDropdownMenuContent from "#lib/components/ui/my_dropdown_menu_content.svelte";
+  import ArrowRightStartOnRectangle from "#lib/icons/arrow_right_start_on_rectangle.svelte";
+  import Cog from "#lib/icons/cog.svelte";
+  import AtSymbol from "#lib/icons/at_symbol.svelte";
+  import Identicon from "#lib/components/identicon.svelte";
 
   if (!browser) {
     update_now();
@@ -59,16 +59,19 @@
     };
   };
 
-  afterNavigate(({ from, to, type }) => {
+  afterNavigate(({ from, to, type, shallow }) => {
+    if (shallow) return;
+
     if (type !== "popstate" && from?.url.pathname !== to?.url.pathname && !to?.url.hash) {
       page_scroller?.scrollTo({ top: 0, left: 0 });
     }
   });
 
-  export const snapshot: import("./$types").Snapshot<number> = {
+  snapshot({
+    id: "root-page-scroll",
     capture: () => page_scroller?.scrollTop ?? 0,
     restore: (scroll_top) => page_scroller?.scrollTo({ top: scroll_top, left: 0 }),
-  };
+  });
 
   const nav_items = $derived([
     { name: "/search", href: "/search" },
@@ -97,7 +100,7 @@
   const handle_visibility_change = () => {
     if (document.visibilityState === "visible") {
       start_now_interval();
-      invalidateAll();
+      refreshAll();
     } else {
       stop_now_interval();
     }
@@ -107,7 +110,7 @@
     start_now_interval();
 
     if (event.persisted) {
-      invalidateAll();
+      refreshAll();
     }
   };
 
@@ -130,10 +133,7 @@
   });
 </script>
 
-<svelte:head>
-  <title>subroutine</title>
-</svelte:head>
-
+<svelte:head><title>subroutine</title></svelte:head>
 <svelte:window onpageshow={handle_page_show} />
 <svelte:document onvisibilitychange={handle_visibility_change} />
 
@@ -159,9 +159,8 @@
         aria-label={mobile_menu_open ? "close navigation menu" : "open navigation menu"}
         aria-expanded={mobile_menu_open}
         aria-controls="mobile-navigation"
-        onclick={() => (mobile_menu_open = !mobile_menu_open)}>
-        <span class="h-6"><Bars3 /></span>
-      </button>
+        onclick={() => (mobile_menu_open = !mobile_menu_open)}
+        ><span class="h-6"><Bars3 /></span></button>
     {/if}
   </header>
 
@@ -232,8 +231,8 @@
                   <span>@{data.username}</span>
                 </DropdownMenu.Item>
 
-                <DropdownMenu.Separator class="border-t border-neutral-500/50"
-                ></DropdownMenu.Separator>
+                <DropdownMenu.Separator class="border-t border-neutral-500/50" />
+
                 <DropdownMenu.Item>
                   <a
                     href="/@{data.username}"
@@ -302,9 +301,7 @@
         <span class="h-8 font-nova text-3xl">menu</span>
         <button
           class="size-8 bg-neutral-500/0 p-1 transition-colors hover:bg-neutral-500/10"
-          onclick={() => (mobile_menu_open = false)}>
-          <XMark />
-        </button>
+          onclick={() => (mobile_menu_open = false)}><XMark /></button>
       </div>
       {#each mobile_nav_items as item (item.name)}
         <a

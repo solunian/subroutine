@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { PageProps } from "./$types";
-  import SubroutineSmallView from "$lib/components/subroutine_small_view.svelte";
+  import SubroutineSmallView from "#lib/components/subroutine_small_view.svelte";
 
   let { data }: PageProps = $props();
 </script>

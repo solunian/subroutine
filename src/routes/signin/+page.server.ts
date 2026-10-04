@@ -1,8 +1,8 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 import * as v from "valibot";
-import { EmailSchema, TrimNormalStrSchema } from "$lib/schemas";
-import { auth_redirect } from "$lib/server/auth_redirect";
+import { EmailSchema, TrimNormalStrSchema } from "#lib/schemas.js";
+import { auth_redirect } from "#lib/server/auth_redirect.js";
 
 export const load: PageServerLoad = async ({ url, locals: { safeGetSession } }) => {
   const { session } = await safeGetSession();

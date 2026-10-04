@@ -1,11 +1,10 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
-  import CircularSpinner from "$lib/components/circular_spinner.svelte";
-  import Cog from "$lib/icons/cog.svelte";
-  import Trash from "$lib/icons/trash.svelte";
-  import MyDialog from "$lib/components/ui/my_dialog.svelte";
+  import { enhance, type SubmitFunction } from "$app/forms";
+  import CircularSpinner from "#lib/components/circular_spinner.svelte";
+  import Cog from "#lib/icons/cog.svelte";
+  import Trash from "#lib/icons/trash.svelte";
+  import MyDialog from "#lib/components/ui/my_dialog.svelte";
   import { Dialog } from "bits-ui";
-  import type { SubmitFunction } from "@sveltejs/kit";
 
   let { data, form } = $props();
 
@@ -41,7 +40,7 @@
     loading = true;
     return async ({ update }) => {
       loading = false;
-      update({ reset: false, invalidateAll: false });
+      update({ reset: false, refreshAll: false });
     };
   };
 </script>
@@ -145,6 +144,7 @@
             disabled={deleting}
             onclick={() => (opened_delete_dialog = false)}
             class="grow bg-neutral-500/25 py-1 text-lg">cancel</button>
+
           <form method="POST" action="?/delete_account" use:enhance={submit_delete} class="grow">
             <button
               type="submit"
@@ -164,7 +164,7 @@
   </div>
 </div>
 
-<style>
+<style lang="postcss">
   @reference "tailwindcss";
 
   input,

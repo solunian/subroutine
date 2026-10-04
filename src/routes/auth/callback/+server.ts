@@ -1,5 +1,5 @@
 import { redirect } from "@sveltejs/kit";
-import { auth_redirect } from "$lib/server/auth_redirect";
+import { auth_redirect } from "#lib/server/auth_redirect.js";
 import type { RequestHandler } from "./$types";
 
 export const GET: RequestHandler = async ({ url, locals: { supabase } }) => {

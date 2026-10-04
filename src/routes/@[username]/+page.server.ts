@@ -1,4 +1,4 @@
-import { RelationshipStatusType, TrimNormalStrSchema } from "$lib/schemas";
+import { RelationshipStatusType, TrimNormalStrSchema } from "#lib/schemas.js";
 import { error, fail, redirect, type Actions } from "@sveltejs/kit";
 import * as v from "valibot";
 import type { PageServerLoad } from "./$types";

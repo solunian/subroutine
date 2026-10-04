@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { now } from "$lib/state/time.svelte";
+  import { now } from "#lib/state/time.svelte.js";
   import { enhance } from "$app/forms";
-  import DropSelect from "$lib/components/drop_select.svelte";
-  import { to_fulltime_str } from "$lib/helpers";
-  import ArrowLeft from "$lib/icons/arrow_left.svelte";
-  import ArrowRight from "$lib/icons/arrow_right.svelte";
-  import PlusCircle from "$lib/icons/plus_circle.svelte";
-  import XMark from "$lib/icons/x_mark.svelte";
-  import type { Tables } from "$lib/types/database.types";
+  import DropSelect from "#lib/components/drop_select.svelte";
+  import { to_fulltime_str } from "#lib/helpers.js";
+  import ArrowLeft from "#lib/icons/arrow_left.svelte";
+  import ArrowRight from "#lib/icons/arrow_right.svelte";
+  import PlusCircle from "#lib/icons/plus_circle.svelte";
+  import XMark from "#lib/icons/x_mark.svelte";
+  import type { Tables } from "#lib/types/database.types.js";
   import EntryForm from "./entry_form.svelte";
-  import ChevronDown from "$lib/icons/chevron_down.svelte";
-  import { entry_rows, interval_duration, supports_entry_editor } from "$lib/entry_helpers";
+  import ChevronDown from "#lib/icons/chevron_down.svelte";
+  import { entry_rows, interval_duration, supports_entry_editor } from "#lib/entry_helpers.js";
 
   let {
     subroutine_id,
@@ -213,7 +213,7 @@
                   formData.append("timestamp", new Date().toISOString());
 
                   return async ({ update }) => {
-                    await update({ reset: false });
+                    await update({ reset: false, navigate: false });
                   };
                 }}
                 class="h-6">

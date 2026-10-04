@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { get_day_start, get_next_day, to_date_str, to_duration_str } from "$lib/helpers";
-  import { now } from "$lib/state/time.svelte";
-  import type { Tables } from "$lib/types/database.types";
+  import { get_day_start, get_next_day, to_date_str, to_duration_str } from "#lib/helpers.js";
+  import { now } from "#lib/state/time.svelte.js";
+  import type { Tables } from "#lib/types/database.types.js";
 
   type EntryActivity = Pick<Tables<"entries">, "created_at">;
   type SubroutineType = Tables<"subroutines">["type"];

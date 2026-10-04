@@ -1,8 +1,9 @@
+import type { Handle } from "@sveltejs/kit/hooks";
+
 // src/hooks.server.ts
-import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from "$env/static/public";
-import type { Database } from "$lib/types/database.types";
+import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from "$app/env/public";
+import type { Database } from "#lib/types/database.types.js";
 import { createServerClient } from "@supabase/ssr";
-import type { Handle } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
   event.locals.supabase = createServerClient<Database>(

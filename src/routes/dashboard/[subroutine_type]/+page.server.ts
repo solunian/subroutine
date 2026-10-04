@@ -1,6 +1,6 @@
 import { error, redirect } from "@sveltejs/kit";
 import * as v from "valibot";
-import { SubroutineType } from "$lib/schemas";
+import { SubroutineType } from "#lib/schemas.js";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import "$lib/styles/markdown.css";
-  import { parse_markdown, type MarkdownNode } from "$lib/markdown";
+  import "#lib/styles/markdown.css";
+  import { parse_markdown, type MarkdownNode } from "#lib/markdown.js";
 
   interface Props {
     text: string;

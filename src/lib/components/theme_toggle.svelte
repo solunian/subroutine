@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import ComputerDesktop from "$lib/icons/computer_desktop.svelte";
-  import Moon from "$lib/icons/moon.svelte";
-  import Sun from "$lib/icons/sun.svelte";
+  import ComputerDesktop from "#lib/icons/computer_desktop.svelte";
+  import Moon from "#lib/icons/moon.svelte";
+  import Sun from "#lib/icons/sun.svelte";
 
   type Theme = "system" | "light" | "dark";
 

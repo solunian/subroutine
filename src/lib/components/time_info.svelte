@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { round_to_fixed } from "$lib/helpers";
-  import { now, update_now } from "$lib/state/time.svelte";
+  import { round_to_fixed } from "#lib/helpers.js";
+  import { now, update_now } from "#lib/state/time.svelte.js";
   import NumberFlow, { NumberFlowGroup } from "@number-flow/svelte";
   import { onMount } from "svelte";
 
@@ -15,17 +15,18 @@
     (end.getTime() - start.getTime()) / (1000 * 60 * 60);
 
   const start_of_monday_week = (date: Date) => {
-    const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     const days_since_monday = date.getDay() === 0 ? 6 : date.getDay() - 1;
-    start.setDate(start.getDate() - days_since_monday);
-    return start;
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days_since_monday);
   };
 
   const duration_info = $derived.by(() => {
     const end_of_day = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     const start_of_week = start_of_monday_week(now);
-    const end_of_week = new Date(start_of_week);
-    end_of_week.setDate(start_of_week.getDate() + 7);
+    const end_of_week = new Date(
+      start_of_week.getFullYear(),
+      start_of_week.getMonth(),
+      start_of_week.getDate() + 7
+    );
     const start_of_month = new Date(now.getFullYear(), now.getMonth(), 1);
     const end_of_month = new Date(now.getFullYear(), now.getMonth() + 1, 1);
     const start_of_year = new Date(now.getFullYear(), 0, 1);

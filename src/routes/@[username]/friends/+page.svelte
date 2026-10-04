@@ -1,6 +1,6 @@
 <script lang="ts">
-  import ArrowRight from "$lib/icons/arrow_right.svelte";
-  import NullSet from "$lib/icons/null_set.svelte";
+  import ArrowRight from "#lib/icons/arrow_right.svelte";
+  import NullSet from "#lib/icons/null_set.svelte";
 
   let { data } = $props();
 

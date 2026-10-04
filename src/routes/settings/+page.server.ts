@@ -1,17 +1,17 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 import * as v from "valibot";
-import { env } from "$env/dynamic/private";
-import { PUBLIC_SUPABASE_URL } from "$env/static/public";
+import { SUPABASE_SECRET_KEY } from "$app/env/private";
+import { PUBLIC_SUPABASE_URL } from "$app/env/public";
 import { createClient } from "@supabase/supabase-js";
-import { delete_account } from "$lib/server/delete_account";
+import { delete_account } from "#lib/server/delete_account.js";
 import {
   NormalStrSchema,
   TrimNormalStrSchema,
   URLSchema,
   UsernameSchema,
   empty_to_null,
-} from "$lib/schemas";
+} from "#lib/schemas.js";
 
 export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession } }) => {
   const { session, user } = await safeGetSession();
@@ -30,7 +30,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 
 export const actions: Actions = {
   delete_account: delete_account(() => {
-    const key = env.SUPABASE_SECRET_KEY;
+    const key = SUPABASE_SECRET_KEY;
     return key
       ? createClient(PUBLIC_SUPABASE_URL, key, {
           auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },

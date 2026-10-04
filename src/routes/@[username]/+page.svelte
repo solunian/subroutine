@@ -1,10 +1,10 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import Identicon from "$lib/components/identicon.svelte";
-  import SubroutineSmallView from "$lib/components/subroutine_small_view.svelte";
-  import AtSymbol from "$lib/icons/at_symbol.svelte";
-  import XMark from "$lib/icons/x_mark.svelte";
-  import type { Database } from "$lib/types/database.types";
+  import Identicon from "#lib/components/identicon.svelte";
+  import SubroutineSmallView from "#lib/components/subroutine_small_view.svelte";
+  import AtSymbol from "#lib/icons/at_symbol.svelte";
+  import XMark from "#lib/icons/x_mark.svelte";
+  import type { Database } from "#lib/types/database.types.js";
 
   let { data } = $props();
 

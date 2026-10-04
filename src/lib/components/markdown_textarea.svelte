@@ -47,8 +47,8 @@
 </script>
 
 <script lang="ts">
-  import { parse_markdown, type MarkdownNode } from "$lib/markdown";
-  import "$lib/styles/markdown.css";
+  import { parse_markdown, type MarkdownNode } from "#lib/markdown.js";
+  import "#lib/styles/markdown.css";
   import { tick } from "svelte";
   import type { Attachment } from "svelte/attachments";
 

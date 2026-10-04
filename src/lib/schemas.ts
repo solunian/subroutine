@@ -1,5 +1,5 @@
 import * as v from "valibot";
-import { Constants } from "$lib/types/database.types";
+import { Constants } from "#lib/types/database.types.js";
 
 export const NormalStrSchema = v.pipe(v.string("invalid string"), v.normalize());
 

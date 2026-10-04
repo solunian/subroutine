@@ -1,7 +1,7 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import CircularSpinner from "$lib/components/circular_spinner.svelte";
-  import PasswordInput from "$lib/components/password_input.svelte";
+  import CircularSpinner from "#lib/components/circular_spinner.svelte";
+  import PasswordInput from "#lib/components/password_input.svelte";
   import type { PageProps, SubmitFunction } from "./$types";
 
   let { form }: PageProps = $props();

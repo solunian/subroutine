@@ -1,22 +1,22 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import ActivityGrid from "$lib/components/activity_grid.svelte";
-  import MyDropdownMenuContent from "$lib/components/ui/my_dropdown_menu_content.svelte";
-  import Entries from "$lib/components/entries.svelte";
-  import { diff_days, from_now, to_date_str } from "$lib/helpers";
-  import AtSymbol from "$lib/icons/at_symbol.svelte";
-  import Check from "$lib/icons/check.svelte";
-  import EllipsisHorizontal from "$lib/icons/ellipsis_horizontal.svelte";
-  import Pencil from "$lib/icons/pencil.svelte";
-  import Trash from "$lib/icons/trash.svelte";
-  import XMark from "$lib/icons/x_mark.svelte";
+  import ActivityGrid from "#lib/components/activity_grid.svelte";
+  import MyDropdownMenuContent from "#lib/components/ui/my_dropdown_menu_content.svelte";
+  import Entries from "#lib/components/entries.svelte";
+  import { diff_days, from_now, to_date_str } from "#lib/helpers.js";
+  import AtSymbol from "#lib/icons/at_symbol.svelte";
+  import Check from "#lib/icons/check.svelte";
+  import EllipsisHorizontal from "#lib/icons/ellipsis_horizontal.svelte";
+  import Pencil from "#lib/icons/pencil.svelte";
+  import Trash from "#lib/icons/trash.svelte";
+  import XMark from "#lib/icons/x_mark.svelte";
   import { DropdownMenu } from "bits-ui";
-  import MyDialog from "$lib/components/ui/my_dialog.svelte";
-  import { now } from "$lib/state/time.svelte";
-  import LockClosed from "$lib/icons/lock_closed.svelte";
-  import Users from "$lib/icons/users.svelte";
-  import SubroutineSmallView from "$lib/components/subroutine_small_view.svelte";
-  import Identicon from "$lib/components/identicon.svelte";
+  import MyDialog from "#lib/components/ui/my_dialog.svelte";
+  import { now } from "#lib/state/time.svelte.js";
+  import LockClosed from "#lib/icons/lock_closed.svelte";
+  import Users from "#lib/icons/users.svelte";
+  import SubroutineSmallView from "#lib/components/subroutine_small_view.svelte";
+  import Identicon from "#lib/components/identicon.svelte";
 
   let { data } = $props();
 

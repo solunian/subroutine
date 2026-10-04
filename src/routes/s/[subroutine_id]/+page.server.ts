@@ -1,5 +1,5 @@
-import { torch_pair } from "$lib/entry_helpers";
-import { save_entry } from "$lib/server/save_entry";
+import { torch_pair } from "#lib/entry_helpers.js";
+import { save_entry } from "#lib/server/save_entry.js";
 import { error, fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import * as v from "valibot";
@@ -11,7 +11,7 @@ import {
   SubroutineVisibility,
   TrimNormalStrSchema,
   UUIDSchema,
-} from "$lib/schemas";
+} from "#lib/schemas.js";
 
 export const load: PageServerLoad = async ({
   url,

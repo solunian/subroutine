@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Eye from "$lib/icons/eye.svelte";
-  import EyeSlash from "$lib/icons/eye_slash.svelte";
+  import Eye from "#lib/icons/eye.svelte";
+  import EyeSlash from "#lib/icons/eye_slash.svelte";
 
   let { name, required }: { name: string; required?: boolean } = $props();
   let password_hidden = $state(true);
@@ -24,7 +24,7 @@
   </button>
 </div>
 
-<style>
+<style lang="postcss">
   @reference "tailwindcss";
 
   input {

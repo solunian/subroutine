@@ -1,14 +1,14 @@
 <script lang="ts">
   import * as d3 from "d3";
   import NoData from "./no_data.svelte";
-  import type { Tables } from "$lib/types/database.types";
-  import { now } from "$lib/state/time.svelte";
+  import type { Tables } from "#lib/types/database.types.js";
+  import { now } from "#lib/state/time.svelte.js";
   import NumberFlow from "@number-flow/svelte";
-  import { round_to_fixed, to_24hrtime_str, to_date_str } from "$lib/helpers";
-  import ArrowTrendingUp from "$lib/icons/arrow_trending_up.svelte";
-  import ArrowTrendingDown from "$lib/icons/arrow_trending_down.svelte";
-  import ArrowLongRight from "$lib/icons/arrow_long_right.svelte";
-  import NullSet from "$lib/icons/null_set.svelte";
+  import { round_to_fixed, to_24hrtime_str, to_date_str } from "#lib/helpers.js";
+  import ArrowTrendingUp from "#lib/icons/arrow_trending_up.svelte";
+  import ArrowTrendingDown from "#lib/icons/arrow_trending_down.svelte";
+  import ArrowLongRight from "#lib/icons/arrow_long_right.svelte";
+  import NullSet from "#lib/icons/null_set.svelte";
   import { fade } from "svelte/transition";
 
   interface DataPoint {

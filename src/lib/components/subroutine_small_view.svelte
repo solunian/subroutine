@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Tables } from "$lib/types/database.types";
+  import type { Tables } from "#lib/types/database.types.js";
   import DotSemaphore from "./small_view/dot_semaphore.svelte";
   import Journal from "./small_view/journal.svelte";
   import Torch from "./small_view/torch.svelte";

@@ -7,7 +7,7 @@ import {
   SubroutineType,
   SubroutineVisibility,
   TrimNormalStrSchema,
-} from "$lib/schemas";
+} from "#lib/schemas.js";
 
 export const load: PageServerLoad = async ({ url, locals: { safeGetSession } }) => {
   const { session } = await safeGetSession();

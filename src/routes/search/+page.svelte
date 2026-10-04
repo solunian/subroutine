@@ -1,10 +1,10 @@
 <script lang="ts">
   import * as v from "valibot";
-  import { SearchResultSchema, type SearchResult } from "$lib/search";
-  import CircularSpinner from "$lib/components/circular_spinner.svelte";
-  import ArrowLeft from "$lib/icons/arrow_left.svelte";
-  import ArrowRight from "$lib/icons/arrow_right.svelte";
-  import MagnifyingGlass from "$lib/icons/magnifying_glass.svelte";
+  import { SearchResultSchema, type SearchResult } from "#lib/search.js";
+  import CircularSpinner from "#lib/components/circular_spinner.svelte";
+  import ArrowLeft from "#lib/icons/arrow_left.svelte";
+  import ArrowRight from "#lib/icons/arrow_right.svelte";
+  import MagnifyingGlass from "#lib/icons/magnifying_glass.svelte";
   import { onDestroy } from "svelte";
   import { cubicOut } from "svelte/easing";
   import { slide } from "svelte/transition";

@@ -1,4 +1,4 @@
-import type { Tables } from "$lib/types/database.types";
+import type { Tables } from "#lib/types/database.types.js";
 
 export function supports_entry_editor(type: string) {
   return type === "dot" || type === "semaphore" || type === "torch";

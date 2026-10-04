@@ -1,10 +1,10 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import ArrowLongRight from "$lib/icons/arrow_long_right.svelte";
-  import type { Tables } from "$lib/types/database.types";
-  import LineChart from "$lib/components/line_chart.svelte";
+  import ArrowLongRight from "#lib/icons/arrow_long_right.svelte";
+  import type { Tables } from "#lib/types/database.types.js";
+  import LineChart from "#lib/components/line_chart.svelte";
   import Identicon from "../identicon.svelte";
-  import { eval_math } from "$lib/eval_math";
+  import { eval_math } from "#lib/eval_math.js";
 
   let {
     subroutine,
@@ -78,7 +78,7 @@
             // console.log("success (form submitted)");
           }
 
-          await update({ reset: false });
+          await update({ reset: false, navigate: false });
 
           if (result.type === "success") {
             draft_expr = null;

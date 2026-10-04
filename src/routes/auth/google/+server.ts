@@ -1,5 +1,5 @@
 import { redirect } from "@sveltejs/kit";
-import { auth_redirect } from "$lib/server/auth_redirect";
+import { auth_redirect } from "#lib/server/auth_redirect.js";
 import type { RequestHandler } from "./$types";
 
 export const POST: RequestHandler = async ({ request, url, locals: { supabase } }) => {
@@ -18,5 +18,5 @@ export const POST: RequestHandler = async ({ request, url, locals: { supabase } 
     redirect(303, `/signin?oauth=error&redirect=${encodeURIComponent(next)}`);
   }
 
-  redirect(303, data.url);
+  redirect(303, data.url, { external: true });
 };

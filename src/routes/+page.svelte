@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { PageProps } from "./$types";
-  import type { Database } from "$lib/types/database.types";
-  import LandingPage from "$lib/components/landing_page.svelte";
-  import SubroutineSmallView from "$lib/components/subroutine_small_view.svelte";
-  import Identicon from "$lib/components/identicon.svelte";
+  import type { Database } from "#lib/types/database.types.js";
+  import LandingPage from "#lib/components/landing_page.svelte";
+  import SubroutineSmallView from "#lib/components/subroutine_small_view.svelte";
+  import Identicon from "#lib/components/identicon.svelte";
 
   let { data }: PageProps = $props();
 

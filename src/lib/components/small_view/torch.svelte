@@ -1,11 +1,11 @@
 <script lang="ts">
-  import type { Tables } from "$lib/types/database.types";
-  import { now } from "$lib/state/time.svelte";
+  import type { Tables } from "#lib/types/database.types.js";
+  import { now } from "#lib/state/time.svelte.js";
   import { enhance } from "$app/forms";
   import NumberFlow, { NumberFlowGroup } from "@number-flow/svelte";
-  import { from_now, get_n_days_date, round_to_fixed } from "$lib/helpers";
-  import ArrowTrendingUp from "$lib/icons/arrow_trending_up.svelte";
-  import ArrowLongRight from "$lib/icons/arrow_long_right.svelte";
+  import { from_now, get_n_days_date, round_to_fixed } from "#lib/helpers.js";
+  import ArrowTrendingUp from "#lib/icons/arrow_trending_up.svelte";
+  import ArrowLongRight from "#lib/icons/arrow_long_right.svelte";
   import Identicon from "../identicon.svelte";
   let {
     subroutine,
@@ -19,11 +19,7 @@
     editable?: boolean;
   } = $props();
 
-  // svelte-ignore state_referenced_locally
-  let optimistic_entries = $state(entries);
-  $effect(() => {
-    optimistic_entries = entries;
-  });
+  let optimistic_entries = $derived(entries);
 
   let torch_on = $derived(optimistic_entries.length % 2 !== 0);
 
@@ -150,28 +146,31 @@
         formData.append("timestamp", created_at);
 
         // optimistic update
-        optimistic_entries.push({
-          created_at,
-          data: null,
-          id: "",
-          subroutine_id: "",
-          user_id: "",
-          title: null,
-          description: null,
-          location: null,
-          ascii_art: null,
-        });
+        optimistic_entries = [
+          ...optimistic_entries,
+          {
+            created_at,
+            data: null,
+            id: "",
+            subroutine_id: "",
+            user_id: "",
+            title: null,
+            description: null,
+            location: null,
+            ascii_art: null,
+          },
+        ];
         // console.log("optimistic update");
 
         return async ({ result, update }) => {
           if (result.type === "error") {
-            optimistic_entries.pop();
+            optimistic_entries = optimistic_entries.slice(0, -1);
             // console.log(result.type, "(form submission failed)");
           } else {
             // console.log("success (form submitted)");
           }
 
-          await update({ reset: false });
+          await update({ reset: false, navigate: false });
           // console.log("update state with fetched page data");
         };
       }}>

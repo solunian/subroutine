@@ -1,7 +1,7 @@
 import { fail } from "@sveltejs/kit";
 import type { Actions } from "./$types";
 import * as v from "valibot";
-import { EmailSchema } from "$lib/schemas";
+import { EmailSchema } from "#lib/schemas.js";
 
 export const actions: Actions = {
   default: async ({ request, url, locals: { supabase } }) => {

@@ -1,9 +1,9 @@
 <script lang="ts">
   import DateTimeField from "./date_time_field.svelte";
   import { enhance } from "$app/forms";
-  import { adjacent_entries, local_datetime, torch_pair } from "$lib/entry_helpers";
-  import { to_fulltime_str } from "$lib/helpers";
-  import type { Tables } from "$lib/types/database.types";
+  import { adjacent_entries, local_datetime, torch_pair } from "#lib/entry_helpers.js";
+  import { to_fulltime_str } from "#lib/helpers.js";
+  import type { Tables } from "#lib/types/database.types.js";
 
   let {
     subroutine_id,
@@ -61,7 +61,7 @@
     return async ({ result, update }) => {
       try {
         if (result.type === "success") {
-          await update({ reset: false });
+          await update({ reset: false, navigate: false });
           onsaved();
         } else if (result.type === "redirect") {
           await update();

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { local_datetime } from "$lib/entry_helpers";
+  import { local_datetime } from "#lib/entry_helpers.js";
   import { DateField } from "bits-ui";
   import { parseDateTime } from "@internationalized/date";
 

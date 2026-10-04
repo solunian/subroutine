@@ -1,8 +1,8 @@
 import { fail, redirect, type Action } from "@sveltejs/kit";
 import * as v from "valibot";
-import { FinNumberSchema, TimestampSchema, UUIDSchema } from "$lib/schemas";
-import { supports_entry_editor, torch_pair, torch_overlaps } from "$lib/entry_helpers";
-import type { TablesInsert } from "$lib/types/database.types";
+import { FinNumberSchema, TimestampSchema, UUIDSchema } from "#lib/schemas.js";
+import { supports_entry_editor, torch_pair, torch_overlaps } from "#lib/entry_helpers.js";
+import type { TablesInsert } from "#lib/types/database.types.js";
 
 export function save_entry(editing: boolean): Action {
   return async ({ request, params, locals: { safeGetSession, supabase } }) => {

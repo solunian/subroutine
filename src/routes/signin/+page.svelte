@@ -1,9 +1,9 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import GoogleSignin from "$lib/components/google_signin.svelte";
-  import CircularSpinner from "$lib/components/circular_spinner.svelte";
-  import PasswordInput from "$lib/components/password_input.svelte";
-  import SuccessCheckmark from "$lib/components/success_checkmark.svelte";
+  import GoogleSignin from "#lib/components/google_signin.svelte";
+  import CircularSpinner from "#lib/components/circular_spinner.svelte";
+  import PasswordInput from "#lib/components/password_input.svelte";
+  import SuccessCheckmark from "#lib/components/success_checkmark.svelte";
   import type { PageProps, SubmitFunction } from "./$types";
 
   let { data, form }: PageProps = $props();
@@ -17,7 +17,7 @@
     return async ({ update, result }) => {
       loading = false;
       success = result.type === "success";
-      update({ reset: false, invalidateAll: true });
+      update({ reset: false, refreshAll: true });
     };
   };
 </script>
@@ -69,7 +69,7 @@
   </div>
 </div>
 
-<style>
+<style lang="postcss">
   @reference "tailwindcss";
 
   input {

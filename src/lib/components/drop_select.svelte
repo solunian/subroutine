@@ -1,5 +1,5 @@
 <script lang="ts" generics="Value extends string">
-  import ChevronDown from "$lib/icons/chevron_down.svelte";
+  import ChevronDown from "#lib/icons/chevron_down.svelte";
   import { tick } from "svelte";
   import type { Attachment } from "svelte/attachments";
   import { cubicOut } from "svelte/easing";
