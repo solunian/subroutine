@@ -1,7 +1,7 @@
 <script lang="ts">
   import "../app.css";
   import { browser } from "$app/env";
-  import { afterNavigate, invalidate, refreshAll, snapshot } from "$app/navigation";
+  import { afterNavigate, invalidate, snapshot } from "$app/navigation";
   import { page } from "$app/state";
   import { onMount } from "svelte";
   import type { Attachment } from "svelte/attachments";
@@ -100,17 +100,8 @@
   const handle_visibility_change = () => {
     if (document.visibilityState === "visible") {
       start_now_interval();
-      refreshAll();
     } else {
       stop_now_interval();
-    }
-  };
-
-  const handle_page_show = (event: PageTransitionEvent) => {
-    start_now_interval();
-
-    if (event.persisted) {
-      refreshAll();
     }
   };
 
@@ -134,7 +125,7 @@
 </script>
 
 <svelte:head><title>subroutine</title></svelte:head>
-<svelte:window onpageshow={handle_page_show} />
+<svelte:window onpageshow={start_now_interval} />
 <svelte:document onvisibilitychange={handle_visibility_change} />
 
 <div class="flex h-dvh flex-col overflow-hidden">
