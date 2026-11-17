@@ -276,7 +276,7 @@
           <a
             href="https://github.com/solunian/subroutine/commit/{data.latest_gitcommit.value.hash}"
             class="flex items-center gap-1">
-            <Hashtag />
+            <span class="h-5"><Hashtag /></span>
 
             <div class="flex flex-col font-mono text-sm">
               <span>{data.latest_gitcommit.value.hash.slice(0, 7)} </span>
